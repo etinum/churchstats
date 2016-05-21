@@ -4,6 +4,8 @@
     [MeetingType]  INT            NOT NULL,
     [DayOfTheWeek] INT            NULL,
     [Description]  NVARCHAR (MAX) NULL,
-    [UsualTime]    TIME (7)       NULL
+    [UsualTime]    DATETIME       NULL
 );
+
+
 
