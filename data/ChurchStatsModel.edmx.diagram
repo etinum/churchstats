@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="478800ceffb4489299ac95bdf3fa08df" Name="Diagram1">
+        <EntityTypeShape EntityType="chruchstatsModel.Attendance" Width="1.5" PointX="5.25" PointY="1.25" />
+        <EntityTypeShape EntityType="chruchstatsModel.Group" Width="1.5" PointX="0.75" PointY="1.875" />
+        <EntityTypeShape EntityType="chruchstatsModel.Meeting" Width="1.5" PointX="3" PointY="5.375" />
+        <EntityTypeShape EntityType="chruchstatsModel.MeetingType" Width="1.5" PointX="0.75" PointY="5.875" />
+        <EntityTypeShape EntityType="chruchstatsModel.sysdiagram" Width="1.5" PointX="5.75" PointY="5.75" />
+        <EntityTypeShape EntityType="chruchstatsModel.User" Width="1.5" PointX="3" PointY="1" />
+        <AssociationConnector Association="chruchstatsModel.FK_Attendance_Meeting" />
+        <AssociationConnector Association="chruchstatsModel.FK_Attendance_Recorder" />
+        <AssociationConnector Association="chruchstatsModel.FK_Attendance_User" />
+        <AssociationConnector Association="chruchstatsModel.FK_Meeting_MeetingType" />
+        <AssociationConnector Association="chruchstatsModel.X_User_Group" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
