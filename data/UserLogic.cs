@@ -21,7 +21,7 @@ namespace data
             return _ctx.Users.FirstOrDefault(u => u.Id == id);
         }
 
-        public IEnumerable<User> GetUsers()
+        public IEnumerable<User> GetAllMembers()
         {
             return _ctx.Users.ToList();
         }
@@ -38,6 +38,13 @@ namespace data
             _ctx.SaveChanges();
 
             return true;
+        }
+
+        public IEnumerable<User> GetMembers(int meetingId)
+        {
+            var users = new List<User>();
+            users = _ctx.Users.Where(u => u.Attendances.Any(att => att.MeetingId == meetingId)).ToList();
+            return users;
         }
     }
 }

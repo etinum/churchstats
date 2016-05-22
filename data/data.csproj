@@ -54,6 +54,7 @@
     <Compile Include="Attendance.cs">
       <DependentUpon>ChurchStatsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="AttendanceLogic.cs" />
     <Compile Include="ChurchStatsModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
