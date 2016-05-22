@@ -16,11 +16,7 @@ namespace webapi.Controllers
         // GET api/<controller>
         public IEnumerable<User> Get()
         {
-<<<<<<< HEAD
-            return _ctx.Users;
-=======
             return new UserLogic().GetUsers();
->>>>>>> 39bc65b441c12c9ddfc150b26a28335791741590
         }
 
         // GET api/<controller>/5

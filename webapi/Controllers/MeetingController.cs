@@ -12,7 +12,7 @@ namespace webapi.Controllers
     {
         public IEnumerable<Meeting> Get()
         {
-            return new Meeting[] {new Meeting() {MeetingName = "TestMeeting", Description = "Test Description"}};
+            return new Meeting[] {new Meeting() {Name = "TestMeeting", Description = "Test Description"}};
         }
     }
 }
