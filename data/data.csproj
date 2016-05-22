@@ -89,6 +89,7 @@
     <Compile Include="User.cs">
       <DependentUpon>ChurchStatsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="UserLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="ChurchStatsModel.edmx">
