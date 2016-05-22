@@ -5,11 +5,18 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using data;
+using System.Data.Entity;
 
 namespace webapi.Controllers
 {
     public class UserController : ApiController
     {
+        private chruchstatsEntities data;
+        public UserController()
+        {
+            data = new chruchstatsEntities();
+        }
+
         // GET api/<controller>
         public IEnumerable<User> Get()
         {
@@ -17,9 +24,9 @@ namespace webapi.Controllers
         }
 
         // GET api/<controller>/5
-        public string Get(int id)
+        public User Get(int id)
         {
-            return "value";
+            return data.Users.FirstOrDefault(u => u.Id == id);
         }
 
         // POST api/<controller>
