@@ -21,14 +21,14 @@ namespace data
         }
     
         public int Id { get; set; }
-        public string MeetingName { get; set; }
-        public int MeetingType { get; set; }
-        public Nullable<Day> DayOfTheWeek { get; set; }
+        public string Name { get; set; }
+        public int MeetingTypeId { get; set; }
+        public Nullable<int> DayOfTheWeek { get; set; }
         public string Description { get; set; }
         public Nullable<System.DateTime> UsualTime { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Attendance> Attendances { get; set; }
-        public virtual MeetingType MeetingType1 { get; set; }
+        public virtual MeetingType MeetingType { get; set; }
     }
 }

@@ -9,7 +9,6 @@
         <EntityTypeShape EntityType="chruchstatsModel.Group" Width="1.5" PointX="0.75" PointY="1.875" />
         <EntityTypeShape EntityType="chruchstatsModel.Meeting" Width="1.5" PointX="3" PointY="5.375" />
         <EntityTypeShape EntityType="chruchstatsModel.MeetingType" Width="1.5" PointX="0.75" PointY="5.875" />
-        <EntityTypeShape EntityType="chruchstatsModel.sysdiagram" Width="1.5" PointX="5.75" PointY="5.75" />
         <EntityTypeShape EntityType="chruchstatsModel.User" Width="1.5" PointX="3" PointY="1" />
         <AssociationConnector Association="chruchstatsModel.FK_Attendance_Meeting" />
         <AssociationConnector Association="chruchstatsModel.FK_Attendance_Recorder" />
