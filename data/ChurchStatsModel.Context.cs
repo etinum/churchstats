@@ -29,7 +29,6 @@ namespace data
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<Meeting> Meetings { get; set; }
         public virtual DbSet<MeetingType> MeetingTypes { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<User> Users { get; set; }
     }
 }
