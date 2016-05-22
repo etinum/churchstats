@@ -1,6 +1,6 @@
 app.controller('homeCtrl', ['$scope', '$location', '$http', function ($scope, $location, $http) {
-        $scope.GotoRepoForm = function () {
-            $location.path('/repoform');
+        $scope.GotoAttendanceForm = function () {
+            $location.path('/attendance');
         };
         $scope.ViewRepos = function () {
             alert('Build and they will come');
@@ -23,16 +23,9 @@ app.controller('homeCtrl', ['$scope', '$location', '$http', function ($scope, $l
             });
         };
     }]);
-app.controller('repoCtrl', ['$scope', '$http', function ($scope, $http) {
+app.controller('attendanceCtrl', ['$scope', '$http', function ($scope, $http) {
         $scope.ng_maxLength = 50;
         $scope.maxLength = 50;
-        $http.get('http://localhost/webapi/api/RepoForm/TypeAheadData')
-            .then(function (response) {
-            var data = response.data;
-            $scope.typeAheadModel = data;
-        }, function (response) {
-            alert("Connection failed: " + response.status);
-        });
         $scope.states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Dakota', 'North Carolina', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
         $scope.getLocation = function (val) { return $http.get('//maps.googleapis.com/maps/api/geocode/json', {
             params: {

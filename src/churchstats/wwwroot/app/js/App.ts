@@ -2,7 +2,7 @@
 /// <reference path="../typings/angular-resource.d.ts" />
 
 
-var app = angular.module('repoFormsApp', ['ngRoute', 'ngMessages', 'ui.bootstrap', 'signature']);
+var app = angular.module('formsApp', ['ngRoute', 'ngMessages', 'ui.bootstrap']);
 
 app.config(["$routeProvider", "$locationProvider",
     ($routeProvider, $locationProvider) => {
@@ -11,9 +11,9 @@ app.config(["$routeProvider", "$locationProvider",
                 templateUrl: "app/html/Home.html",
                 controller: "homeCtrl"
             })
-            .when("/repoform", {
-                templateUrl: "app/html/RepoForm.html",
-                controller: "repoCtrl"
+            .when("/attendance", {
+                templateUrl: "app/html/Attendance.html",
+                controller: "attendanceCtrl"
             })
             .when("/viewReports", {
                 templateUrl: "app/html/ViewReports.html",

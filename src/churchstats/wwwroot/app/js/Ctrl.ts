@@ -6,8 +6,8 @@
 app.controller('homeCtrl', ['$scope', '$location', '$http', ($scope, $location, $http) => {
 
 
-    $scope.GotoRepoForm = () => {
-        $location.path('/repoform');
+    $scope.GotoAttendanceForm = () => {
+        $location.path('/attendance');
     };
 
     $scope.ViewRepos = () => {
@@ -46,23 +46,23 @@ app.controller('homeCtrl', ['$scope', '$location', '$http', ($scope, $location, 
 }]);
 
 
-app.controller('repoCtrl', ['$scope', '$http', ($scope, $http) => {
+app.controller('attendanceCtrl', ['$scope', '$http', ($scope, $http) => {
 
     // Input constrain variables.. 
     $scope.ng_maxLength = 50;
     $scope.maxLength = 50;
 
 
-    $http.get('http://localhost/webapi/api/RepoForm/TypeAheadData')
-        .then(response => {
-            var data = <modeltypings.RepoFormTypeAheadModel>response.data;
-            $scope.typeAheadModel = data;
+    //$http.get('http://localhost/webapi/api/RepoForm/TypeAheadData')
+    //    .then(response => {
+    //        var data = <modeltypings.RepoFormTypeAheadModel>response.data;
+    //        $scope.typeAheadModel = data;
 
             
-            },
-        response => {
-            alert("Connection failed: " + response.status);
-        });
+    //        },
+    //    response => {
+    //        alert("Connection failed: " + response.status);
+    //    });
 
     
 
