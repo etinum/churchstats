@@ -6,15 +6,16 @@ using System.Net.Http;
 using System.Web.Http;
 using data;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 
 namespace webapi.Controllers
 {
     public class UserController : ApiController
     {
-        private chruchstatsEntities data;
+        private chruchstatsEntities _ctx;
         public UserController()
         {
-            data = new chruchstatsEntities();
+            _ctx = new chruchstatsEntities();
         }
 
         // GET api/<controller>
@@ -26,17 +27,21 @@ namespace webapi.Controllers
         // GET api/<controller>/5
         public User Get(int id)
         {
-            return data.Users.FirstOrDefault(u => u.Id == id);
+            return _ctx.Users.FirstOrDefault(u => u.Id == id);
         }
 
-        // POST api/<controller>
-        public void Post([FromBody]string value)
+        public bool Update(User user)
         {
-        }
+            if (user == null || user.Id <= 0) return false;
 
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
-        {
+            var olduser = _ctx.Users.FirstOrDefault(u => u.Id == user.Id);
+
+            if (olduser == null) return false;
+
+            _ctx.Users.AddOrUpdate(user);
+            _ctx.SaveChanges();
+
+            return true;
         }
 
         // DELETE api/<controller>/5
