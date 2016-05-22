@@ -21,7 +21,7 @@ namespace webapi.Controllers
         // GET api/<controller>
         public IEnumerable<User> Get()
         {
-            return new User[] { new User() {Age = 1, FirstName = "Test", LastName = "User"} };
+            return _ctx.Users;
         }
 
         // GET api/<controller>/5
