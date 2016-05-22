@@ -80,6 +80,7 @@
     <Compile Include="Meeting.cs">
       <DependentUpon>ChurchStatsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="MeetingLogic.cs" />
     <Compile Include="MeetingType.cs">
       <DependentUpon>ChurchStatsModel.tt</DependentUpon>
     </Compile>
