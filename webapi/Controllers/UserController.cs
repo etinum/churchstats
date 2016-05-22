@@ -16,13 +16,18 @@ namespace webapi.Controllers
         // GET api/<controller>
         public IEnumerable<User> Get()
         {
-            return new UserLogic().GetUsers();
+            return new UserLogic().GetAllMembers();
         }
 
         // GET api/<controller>/5
         public User Get(int id)
         {
             return new UserLogic().GetUserById(id);
+        }
+
+        public IEnumerable<User> GetMembersForMeeting(int meetingId)
+        {
+            return new UserLogic().GetMembers(meetingId);
         }
 
         public bool Update(User user)
