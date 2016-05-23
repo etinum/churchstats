@@ -71,9 +71,6 @@
       <DependentUpon>ChurchStatsModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Class1.cs" />
-    <Compile Include="Day.cs">
-      <DependentUpon>ChurchStatsModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Group.cs">
       <DependentUpon>ChurchStatsModel.tt</DependentUpon>
     </Compile>
@@ -89,6 +86,9 @@
       <DependentUpon>ChurchStatsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="UserLogic.cs" />
+    <Compile Include="X_User_Meeting.cs">
+      <DependentUpon>ChurchStatsModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="ChurchStatsModel.edmx">

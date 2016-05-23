@@ -8,8 +8,11 @@
     [isSaved]    BIT             NULL,
     [isBaptized] BIT             NULL,
     [MiddleName] NVARCHAR (50)   NULL,
+    [Notes]      NVARCHAR (MAX)  NULL,
     CONSTRAINT [PK_User] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+
+
 
 
 

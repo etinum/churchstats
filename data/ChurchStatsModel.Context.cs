@@ -30,5 +30,6 @@ namespace data
         public virtual DbSet<Meeting> Meetings { get; set; }
         public virtual DbSet<MeetingType> MeetingTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<X_User_Meeting> X_User_Meeting { get; set; }
     }
 }

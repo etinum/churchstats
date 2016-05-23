@@ -67,5 +67,6 @@
     <Build Include="dbo\Tables\Meeting.sql" />
     <Build Include="dbo\Tables\Group.sql" />
     <Build Include="dbo\Tables\Attendance.sql" />
+    <Build Include="dbo\Tables\X_User_Meeting.sql" />
   </ItemGroup>
 </Project>

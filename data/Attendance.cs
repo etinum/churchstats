@@ -19,6 +19,7 @@ namespace data
         public int MeetingId { get; set; }
         public int RecorderId { get; set; }
         public System.DateTime DateRecorded { get; set; }
+        public System.DateTime LastUpdated { get; set; }
         public bool isAttend { get; set; }
     
         public virtual Meeting Meeting { get; set; }

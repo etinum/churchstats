@@ -19,6 +19,7 @@ namespace data
         {
             this.Attendances = new HashSet<Attendance>();
             this.Attendances1 = new HashSet<Attendance>();
+            this.X_User_Meeting = new HashSet<X_User_Meeting>();
             this.Groups = new HashSet<Group>();
         }
     
@@ -31,11 +32,14 @@ namespace data
         public Nullable<bool> isSaved { get; set; }
         public Nullable<bool> isBaptized { get; set; }
         public string MiddleName { get; set; }
+        public string Notes { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Attendance> Attendances { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Attendance> Attendances1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<X_User_Meeting> X_User_Meeting { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Group> Groups { get; set; }
     }

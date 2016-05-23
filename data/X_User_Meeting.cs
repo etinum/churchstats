@@ -10,15 +10,15 @@
 namespace data
 {
     using System;
+    using System.Collections.Generic;
     
-    public enum Day : int
+    public partial class X_User_Meeting
     {
-        Sunday = 0,
-        Monday = 1,
-        Tuesday = 2,
-        Wednesday = 3,
-        Thursday = 4,
-        Friday = 5,
-        Saturday = 6
+        public int UserId { get; set; }
+        public int MeetingId { get; set; }
+        public bool Active { get; set; }
+    
+        public virtual Meeting Meeting { get; set; }
+        public virtual User User { get; set; }
     }
 }

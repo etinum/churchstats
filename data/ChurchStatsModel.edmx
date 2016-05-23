@@ -14,6 +14,7 @@
           <Property Name="MeetingId" Type="int" Nullable="false" />
           <Property Name="RecorderId" Type="int" Nullable="false" />
           <Property Name="DateRecorded" Type="date" Nullable="false" />
+          <Property Name="LastUpdated" Type="date" Nullable="false" />
           <Property Name="isAttend" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Group">
@@ -54,9 +55,8 @@
           <Property Name="isSaved" Type="bit" />
           <Property Name="isBaptized" Type="bit" />
           <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Notes" Type="nvarchar(max)" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ChurchStats.dbo.X_User_Group' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="X_User_Group">
           <Key>
             <PropertyRef Name="UserId" />
@@ -64,6 +64,15 @@ warning 6002: The table/view 'ChurchStats.dbo.X_User_Group' does not have a prim
           </Key>
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="GroupId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="X_User_Meeting">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="MeetingId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="MeetingId" Type="int" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="FK_Attendance_Meeting">
           <End Role="Meeting" Type="Self.Meeting" Multiplicity="1" />
@@ -137,18 +146,38 @@ warning 6002: The table/view 'ChurchStats.dbo.X_User_Group' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_X_User_Meeting_Meeting">
+          <End Role="Meeting" Type="Self.Meeting" Multiplicity="1" />
+          <End Role="X_User_Meeting" Type="Self.X_User_Meeting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meeting">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="X_User_Meeting">
+              <PropertyRef Name="MeetingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_X_User_Meeting_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="X_User_Meeting" Type="Self.X_User_Meeting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="X_User_Meeting">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="chruchstatsModelStoreContainer">
           <EntitySet Name="Attendance" EntityType="Self.Attendance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Meeting" EntityType="Self.Meeting" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MeetingType" EntityType="Self.MeetingType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="X_User_Group" EntityType="Self.X_User_Group" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [X_User_Group].[UserId] AS [UserId], 
-    [X_User_Group].[GroupId] AS [GroupId]
-    FROM [dbo].[X_User_Group] AS [X_User_Group]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="X_User_Group" EntityType="Self.X_User_Group" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="X_User_Meeting" EntityType="Self.X_User_Meeting" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Attendance_Meeting" Association="Self.FK_Attendance_Meeting">
             <End Role="Meeting" EntitySet="Meeting" />
             <End Role="Attendance" EntitySet="Attendance" />
@@ -173,6 +202,14 @@ warning 6002: The table/view 'ChurchStats.dbo.X_User_Group' does not have a prim
             <End Role="User" EntitySet="User" />
             <End Role="X_User_Group" EntitySet="X_User_Group" />
           </AssociationSet>
+          <AssociationSet Name="FK_X_User_Meeting_Meeting" Association="Self.FK_X_User_Meeting_Meeting">
+            <End Role="Meeting" EntitySet="Meeting" />
+            <End Role="X_User_Meeting" EntitySet="X_User_Meeting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_X_User_Meeting_User" Association="Self.FK_X_User_Meeting_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="X_User_Meeting" EntitySet="X_User_Meeting" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -184,6 +221,7 @@ warning 6002: The table/view 'ChurchStats.dbo.X_User_Group' does not have a prim
           <EntitySet Name="Meetings" EntityType="chruchstatsModel.Meeting" />
           <EntitySet Name="MeetingTypes" EntityType="chruchstatsModel.MeetingType" />
           <EntitySet Name="Users" EntityType="chruchstatsModel.User" />
+          <EntitySet Name="X_User_Meeting" EntityType="chruchstatsModel.X_User_Meeting" />
           <AssociationSet Name="FK_Attendance_Meeting" Association="chruchstatsModel.FK_Attendance_Meeting">
             <End Role="Meeting" EntitySet="Meetings" />
             <End Role="Attendance" EntitySet="Attendances" />
@@ -199,6 +237,14 @@ warning 6002: The table/view 'ChurchStats.dbo.X_User_Group' does not have a prim
           <AssociationSet Name="FK_Meeting_MeetingType" Association="chruchstatsModel.FK_Meeting_MeetingType">
             <End Role="MeetingType" EntitySet="MeetingTypes" />
             <End Role="Meeting" EntitySet="Meetings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_X_User_Meeting_Meeting" Association="chruchstatsModel.FK_X_User_Meeting_Meeting">
+            <End Role="Meeting" EntitySet="Meetings" />
+            <End Role="X_User_Meeting" EntitySet="X_User_Meeting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_X_User_Meeting_User" Association="chruchstatsModel.FK_X_User_Meeting_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="X_User_Meeting" EntitySet="X_User_Meeting" />
           </AssociationSet>
           <AssociationSet Name="X_User_Group" Association="chruchstatsModel.X_User_Group">
             <End Role="Group" EntitySet="Groups" />
@@ -223,6 +269,7 @@ warning 6002: The table/view 'ChurchStats.dbo.X_User_Group' does not have a prim
           <Property Name="MeetingId" Type="Int32" Nullable="false" />
           <Property Name="RecorderId" Type="Int32" Nullable="false" />
           <Property Name="DateRecorded" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="LastUpdated" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="isAttend" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Meeting" Relationship="chruchstatsModel.FK_Attendance_Meeting" FromRole="Attendance" ToRole="Meeting" />
           <NavigationProperty Name="User" Relationship="chruchstatsModel.FK_Attendance_Recorder" FromRole="Attendance" ToRole="User" />
@@ -243,11 +290,12 @@ warning 6002: The table/view 'ChurchStats.dbo.X_User_Group' does not have a prim
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="MeetingTypeId" Type="Int32" Nullable="false" />
-          <Property Name="DayOfTheWeek" Type="Int32" />
+          <Property Name="DayOfTheWeek" Type="chruchstatsModel.dayofweek" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="UsualTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Attendances" Relationship="chruchstatsModel.FK_Attendance_Meeting" FromRole="Meeting" ToRole="Attendance" />
           <NavigationProperty Name="MeetingType" Relationship="chruchstatsModel.FK_Meeting_MeetingType" FromRole="Meeting" ToRole="MeetingType" />
+          <NavigationProperty Name="X_User_Meeting" Relationship="chruchstatsModel.FK_X_User_Meeting_Meeting" FromRole="Meeting" ToRole="X_User_Meeting" />
         </EntityType>
         <EntityType Name="MeetingType">
           <Key>
@@ -270,9 +318,22 @@ warning 6002: The table/view 'ChurchStats.dbo.X_User_Group' does not have a prim
           <Property Name="isSaved" Type="Boolean" />
           <Property Name="isBaptized" Type="Boolean" />
           <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Attendances" Relationship="chruchstatsModel.FK_Attendance_Recorder" FromRole="User" ToRole="Attendance" />
           <NavigationProperty Name="Attendances1" Relationship="chruchstatsModel.FK_Attendance_User" FromRole="User" ToRole="Attendance" />
+          <NavigationProperty Name="X_User_Meeting" Relationship="chruchstatsModel.FK_X_User_Meeting_User" FromRole="User" ToRole="X_User_Meeting" />
           <NavigationProperty Name="Groups" Relationship="chruchstatsModel.X_User_Group" FromRole="User" ToRole="Group" />
+        </EntityType>
+        <EntityType Name="X_User_Meeting">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="MeetingId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="MeetingId" Type="Int32" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Meeting" Relationship="chruchstatsModel.FK_X_User_Meeting_Meeting" FromRole="X_User_Meeting" ToRole="Meeting" />
+          <NavigationProperty Name="User" Relationship="chruchstatsModel.FK_X_User_Meeting_User" FromRole="X_User_Meeting" ToRole="User" />
         </EntityType>
         <Association Name="FK_Attendance_Meeting">
           <End Type="chruchstatsModel.Meeting" Role="Meeting" Multiplicity="1" />
@@ -322,11 +383,44 @@ warning 6002: The table/view 'ChurchStats.dbo.X_User_Group' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_X_User_Meeting_Meeting">
+          <End Type="chruchstatsModel.Meeting" Role="Meeting" Multiplicity="1" />
+          <End Type="chruchstatsModel.X_User_Meeting" Role="X_User_Meeting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meeting">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="X_User_Meeting">
+              <PropertyRef Name="MeetingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_X_User_Meeting_User">
+          <End Type="chruchstatsModel.User" Role="User" Multiplicity="1" />
+          <End Type="chruchstatsModel.X_User_Meeting" Role="X_User_Meeting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="X_User_Meeting">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="X_User_Group">
           <End Type="chruchstatsModel.Group" Role="Group" Multiplicity="*" />
           <End Type="chruchstatsModel.User" Role="User" Multiplicity="*" />
         </Association>
-      </Schema>
+        <EnumType Name="dayofweek">
+          <Member Name="Sun" Value="0" />
+          <Member Name="Mon" Value="1" />
+          <Member Name="Tues" Value="2" />
+          <Member Name="Wed" Value="3" />
+          <Member Name="Thurs" Value="4" />
+          <Member Name="Fri" Value="5" />
+          <Member Name="Sat" Value="6" />
+        </EnumType>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -336,6 +430,7 @@ warning 6002: The table/view 'ChurchStats.dbo.X_User_Group' does not have a prim
             <EntityTypeMapping TypeName="chruchstatsModel.Attendance">
               <MappingFragment StoreEntitySet="Attendance">
                 <ScalarProperty Name="isAttend" ColumnName="isAttend" />
+                <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
                 <ScalarProperty Name="DateRecorded" ColumnName="DateRecorded" />
                 <ScalarProperty Name="RecorderId" ColumnName="RecorderId" />
                 <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
@@ -375,6 +470,7 @@ warning 6002: The table/view 'ChurchStats.dbo.X_User_Group' does not have a prim
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="chruchstatsModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
                 <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
                 <ScalarProperty Name="isBaptized" ColumnName="isBaptized" />
                 <ScalarProperty Name="isSaved" ColumnName="isSaved" />
@@ -384,6 +480,15 @@ warning 6002: The table/view 'ChurchStats.dbo.X_User_Group' does not have a prim
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="X_User_Meeting">
+            <EntityTypeMapping TypeName="chruchstatsModel.X_User_Meeting">
+              <MappingFragment StoreEntitySet="X_User_Meeting">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
