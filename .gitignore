@@ -1,4 +1,4 @@
-###################
+﻿###################
 # compiled source #
 ###################
 *.com
@@ -79,4 +79,4 @@ project.lock.json
 *.swp
 src/*/node_modules/*
 
-.vs/config/applicationhost.config
+

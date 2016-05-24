@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9288635A-60AD-4305-8B59-76DFAF830991}"
 EndProject
@@ -48,5 +48,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{20F1878E-9DBF-4CF5-BED7-69AB3D2B8CAC} = {9288635A-60AD-4305-8B59-76DFAF830991}
+		{999AF0BC-4EC0-4783-B976-425C5EF24E34} = {9288635A-60AD-4305-8B59-76DFAF830991}
 	EndGlobalSection
 EndGlobal

@@ -255,7 +255,9 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>32481</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/webapi</IISUrl>
+          <IISUrl>http://localhost:32464/webapi</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost:32464/webapi</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
