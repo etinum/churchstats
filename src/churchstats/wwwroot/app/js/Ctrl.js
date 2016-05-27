@@ -138,12 +138,18 @@ app.controller('attendanceCtrl', ['$scope', '$http', function ($scope, $http) {
     }]);
 app.controller('viewCtrl', function ($scope) {
     var chat = $.connection.attendenceHub;
-    chat.client.syncRadioButtons = function (name, message) {
+    chat.client.popupSync = function (name, message) {
         alert(name + " " + message);
+    };
+    chat.client.syncRadioButtons = function (name, value) {
+        $('input:radio[name=singalrTest]').val([value]);
     };
     $.connection.hub.start().done(function () {
         $('#signalRButton').click(function () {
-            chat.server.syncRadioButtons($('input:radio[name=singalrTest]:checked').val(), "Empty");
+            chat.server.popupSync($('input:radio[name=singalrTest]:checked').val(), $('input:radio[name=singalrTest]:checked').val());
+        });
+        $('#signalRSync').click(function () {
+            chat.server.syncRadioButtons($('input:radio[name=singalrTest]:checked').val(), $('input:radio[name=singalrTest]:checked').val());
         });
     });
 });

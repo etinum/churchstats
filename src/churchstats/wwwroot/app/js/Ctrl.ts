@@ -202,15 +202,27 @@ app.controller('viewCtrl', $scope => {
     // Reference the auto-generated proxy for the hub.
     var chat = $.connection.attendenceHub;
     // Create a function that the hub can call back to display messages.
-    chat.client.syncRadioButtons = function (name, message) {
+    chat.client.popupSync = function (name, message) {
         // Display Server message
         alert(name + " " + message);
     };
+    chat.client.syncRadioButtons = function (name, value) {
+        // Display Server message
+        //alert(name + " " + value);
+        // sync radio values
+        $('input:radio[name=singalrTest]').val([value]);
+    };
+
     // Start the connection.
     $.connection.hub.start().done(function () {
         $('#signalRButton').click(function () {
             // Call the Send method on the hub.
-            chat.server.syncRadioButtons($('input:radio[name=singalrTest]:checked').val(), "Empty");
+            chat.server.popupSync($('input:radio[name=singalrTest]:checked').val(), $('input:radio[name=singalrTest]:checked').val());
+            // Clear text box and reset focus for next comment.
+        });
+        $('#signalRSync').click(function () {
+            // Call the Send method on the hub.
+            chat.server.syncRadioButtons($('input:radio[name=singalrTest]:checked').val(), $('input:radio[name=singalrTest]:checked').val());
             // Clear text box and reset focus for next comment.
         });
     });

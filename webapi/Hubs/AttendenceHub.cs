@@ -5,10 +5,15 @@ namespace webapi
 {
     public class AttendenceHub : Hub
     {
-        public void SyncRadioButtons(string name, string message)
+        public void PopupSync(string name, string message)
         {
-            // Call the addNewMessageToPage method to update clients.
-            Clients.All.syncRadioButtons(name, "FROM_SERVER");
+            // Call the syncRadioButtons method to update clients.
+            Clients.All.popupSync(name, "FROM_SERVER");
+        }
+        public void SyncRadioButtons(string id, string newValue)
+        {
+            // Call the syncRadioButtons method to update clients.
+            Clients.All.syncRadioButtons(id, newValue);
         }
     }
 }
