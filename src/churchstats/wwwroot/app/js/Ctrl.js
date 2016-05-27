@@ -142,14 +142,14 @@ app.controller('viewCtrl', function ($scope) {
         alert(name + " " + message);
     };
     chat.client.syncRadioButtons = function (name, value) {
-        $('input:radio[name=singalrTest]').val([value]);
+        $('input:radio[name=' + name + ']').val([value]);
     };
     $.connection.hub.start().done(function () {
         $('#signalRButton').click(function () {
-            chat.server.popupSync($('input:radio[name=singalrTest]:checked').val(), $('input:radio[name=singalrTest]:checked').val());
+            chat.server.popupSync("val", $('input:radio[name=singalrTest]:checked').val());
         });
-        $('#signalRSync').click(function () {
-            chat.server.syncRadioButtons($('input:radio[name=singalrTest]:checked').val(), $('input:radio[name=singalrTest]:checked').val());
+        $('input:radio').click(function () {
+            chat.server.syncRadioButtons($(this).attr('name'), $(this).val());
         });
     });
 });

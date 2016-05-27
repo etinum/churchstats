@@ -210,19 +210,19 @@ app.controller('viewCtrl', $scope => {
         // Display Server message
         //alert(name + " " + value);
         // sync radio values
-        $('input:radio[name=singalrTest]').val([value]);
+        $('input:radio[name='+name+']').val([value]);
     };
 
     // Start the connection.
     $.connection.hub.start().done(function () {
         $('#signalRButton').click(function () {
             // Call the Send method on the hub.
-            chat.server.popupSync($('input:radio[name=singalrTest]:checked').val(), $('input:radio[name=singalrTest]:checked').val());
+            chat.server.popupSync("val", $('input:radio[name=singalrTest]:checked').val());
             // Clear text box and reset focus for next comment.
         });
-        $('#signalRSync').click(function () {
+        $('input:radio').click(function () {
             // Call the Send method on the hub.
-            chat.server.syncRadioButtons($('input:radio[name=singalrTest]:checked').val(), $('input:radio[name=singalrTest]:checked').val());
+            chat.server.syncRadioButtons($(this).attr('name'), $(this).val());
             // Clear text box and reset focus for next comment.
         });
     });
