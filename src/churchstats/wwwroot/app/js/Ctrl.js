@@ -137,5 +137,14 @@ app.controller('attendanceCtrl', ['$scope', '$http', function ($scope, $http) {
         };
     }]);
 app.controller('viewCtrl', function ($scope) {
+    var chat = $.connection.attendenceHub;
+    chat.client.syncRadioButtons = function (name, message) {
+        alert(name + " " + message);
+    };
+    $.connection.hub.start().done(function () {
+        $('#signalRButton').click(function () {
+            chat.server.syncRadioButtons($('input:radio[name=singalrTest]:checked').val(), "Empty");
+        });
+    });
 });
 //# sourceMappingURL=Ctrl.js.map

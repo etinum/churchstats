@@ -8,7 +8,7 @@ namespace webapi
         public void SyncRadioButtons(string name, string message)
         {
             // Call the addNewMessageToPage method to update clients.
-            Clients.All.syncRadioButtons(name, message);
+            Clients.All.syncRadioButtons(name, "FROM_SERVER");
         }
     }
 }

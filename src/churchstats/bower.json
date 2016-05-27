@@ -8,8 +8,7 @@
     "angular-messages": "~1.5.5",
     "bootstrap": "~3.3.6",
     "angular-smart-table": "~2.1.8",
-    "momentjs": "~2.13.0" 
-
+    "momentjs": "~2.13.0"
   },
   "resolutions": {
     "angular": "~1.5.6"

@@ -1,8 +1,7 @@
 /// <reference path="../typings/persontest.cs.d.ts" />
 /// <reference path="../typings/repoformviewmodel.cs.d.ts" />
 /// <reference path="App.ts" />
-
-
+/// <reference path="/webapi/Scripts/jquery.signalR-2.2.0.min.js" />
 app.controller('homeCtrl', ['$scope', '$location', '$http', ($scope, $location, $http) => {
 
 
@@ -200,5 +199,19 @@ app.controller('attendanceCtrl', ['$scope', '$http', ($scope, $http) => {
 }]);
 
 app.controller('viewCtrl', $scope => {
-
+    // Reference the auto-generated proxy for the hub.
+    var chat = $.connection.attendenceHub;
+    // Create a function that the hub can call back to display messages.
+    chat.client.syncRadioButtons = function (name, message) {
+        // Display Server message
+        alert(name + " " + message);
+    };
+    // Start the connection.
+    $.connection.hub.start().done(function () {
+        $('#signalRButton').click(function () {
+            // Call the Send method on the hub.
+            chat.server.syncRadioButtons($('input:radio[name=singalrTest]:checked').val(), "Empty");
+            // Clear text box and reset focus for next comment.
+        });
+    });
 });
