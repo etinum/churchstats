@@ -23,7 +23,7 @@ namespace data
         public bool isAttend { get; set; }
     
         public virtual Meeting Meeting { get; set; }
+        public virtual User Recorder { get; set; }
         public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
     }
 }

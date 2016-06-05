@@ -43,7 +43,7 @@ namespace data
         public IEnumerable<User> GetMembers(int meetingId)
         {
             var users = new List<User>();
-            users = _ctx.Users.Where(u => u.Attendances.Any(att => att.MeetingId == meetingId)).ToList();
+            users = _ctx.Users.Where(u => _ctx.Attendances.Any(att => att.MeetingId == meetingId)).ToList();
             return users;
         }
     }

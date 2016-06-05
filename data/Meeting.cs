@@ -18,13 +18,13 @@ namespace data
         public Meeting()
         {
             this.Attendances = new HashSet<Attendance>();
-            this.X_User_Meeting = new HashSet<X_User_Meeting>();
+            this.MeetingsUsers = new HashSet<X_User_Meeting>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
         public int MeetingTypeId { get; set; }
-        public Nullable<DayOfWeek> DayOfTheWeek { get; set; }
+        public Nullable<dayofweek> DayOfTheWeek { get; set; }
         public string Description { get; set; }
         public Nullable<System.DateTime> UsualTime { get; set; }
     
@@ -32,6 +32,6 @@ namespace data
         public virtual ICollection<Attendance> Attendances { get; set; }
         public virtual MeetingType MeetingType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<X_User_Meeting> X_User_Meeting { get; set; }
+        public virtual ICollection<X_User_Meeting> MeetingsUsers { get; set; }
     }
 }

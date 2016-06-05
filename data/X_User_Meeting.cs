@@ -17,8 +17,5 @@ namespace data
         public int UserId { get; set; }
         public int MeetingId { get; set; }
         public bool Active { get; set; }
-    
-        public virtual Meeting Meeting { get; set; }
-        public virtual User User { get; set; }
     }
 }

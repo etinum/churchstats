@@ -11,7 +11,7 @@ app.controller('homeCtrl', ['$scope', '$location', '$http', ($scope, $location, 
 
     $scope.ViewRepos = () => {
 
-        alert('Build and they will come');
+        $location.path('/viewReports');
 
     };
 

@@ -17,9 +17,7 @@ namespace data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            this.Attendances = new HashSet<Attendance>();
-            this.Attendances1 = new HashSet<Attendance>();
-            this.X_User_Meeting = new HashSet<X_User_Meeting>();
+            this.UsersMeetings = new HashSet<X_User_Meeting>();
             this.Groups = new HashSet<Group>();
         }
     
@@ -35,11 +33,7 @@ namespace data
         public string Notes { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Attendance> Attendances { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Attendance> Attendances1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<X_User_Meeting> X_User_Meeting { get; set; }
+        public virtual ICollection<X_User_Meeting> UsersMeetings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Group> Groups { get; set; }
     }

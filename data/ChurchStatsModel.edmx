@@ -272,8 +272,8 @@
           <Property Name="LastUpdated" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="isAttend" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Meeting" Relationship="chruchstatsModel.FK_Attendance_Meeting" FromRole="Attendance" ToRole="Meeting" />
-          <NavigationProperty Name="User" Relationship="chruchstatsModel.FK_Attendance_Recorder" FromRole="Attendance" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="chruchstatsModel.FK_Attendance_User" FromRole="Attendance" ToRole="User" />
+          <NavigationProperty Name="Recorder" Relationship="chruchstatsModel.FK_Attendance_Recorder" FromRole="Attendance" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="chruchstatsModel.FK_Attendance_User" FromRole="Attendance" ToRole="User" />
         </EntityType>
         <EntityType Name="Group">
           <Key>
@@ -281,7 +281,6 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Users" Relationship="chruchstatsModel.X_User_Group" FromRole="Group" ToRole="User" />
         </EntityType>
         <EntityType Name="Meeting">
           <Key>
@@ -295,7 +294,7 @@
           <Property Name="UsualTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Attendances" Relationship="chruchstatsModel.FK_Attendance_Meeting" FromRole="Meeting" ToRole="Attendance" />
           <NavigationProperty Name="MeetingType" Relationship="chruchstatsModel.FK_Meeting_MeetingType" FromRole="Meeting" ToRole="MeetingType" />
-          <NavigationProperty Name="X_User_Meeting" Relationship="chruchstatsModel.FK_X_User_Meeting_Meeting" FromRole="Meeting" ToRole="X_User_Meeting" />
+          <NavigationProperty Name="MeetingsUsers" Relationship="chruchstatsModel.FK_X_User_Meeting_Meeting" FromRole="Meeting" ToRole="X_User_Meeting" />
         </EntityType>
         <EntityType Name="MeetingType">
           <Key>
@@ -303,7 +302,6 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Meetings" Relationship="chruchstatsModel.FK_Meeting_MeetingType" FromRole="MeetingType" ToRole="Meeting" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -319,9 +317,7 @@
           <Property Name="isBaptized" Type="Boolean" />
           <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Attendances" Relationship="chruchstatsModel.FK_Attendance_Recorder" FromRole="User" ToRole="Attendance" />
-          <NavigationProperty Name="Attendances1" Relationship="chruchstatsModel.FK_Attendance_User" FromRole="User" ToRole="Attendance" />
-          <NavigationProperty Name="X_User_Meeting" Relationship="chruchstatsModel.FK_X_User_Meeting_User" FromRole="User" ToRole="X_User_Meeting" />
+          <NavigationProperty Name="UsersMeetings" Relationship="chruchstatsModel.FK_X_User_Meeting_User" FromRole="User" ToRole="X_User_Meeting" />
           <NavigationProperty Name="Groups" Relationship="chruchstatsModel.X_User_Group" FromRole="User" ToRole="Group" />
         </EntityType>
         <EntityType Name="X_User_Meeting">
@@ -332,8 +328,6 @@
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="MeetingId" Type="Int32" Nullable="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Meeting" Relationship="chruchstatsModel.FK_X_User_Meeting_Meeting" FromRole="X_User_Meeting" ToRole="Meeting" />
-          <NavigationProperty Name="User" Relationship="chruchstatsModel.FK_X_User_Meeting_User" FromRole="X_User_Meeting" ToRole="User" />
         </EntityType>
         <Association Name="FK_Attendance_Meeting">
           <End Type="chruchstatsModel.Meeting" Role="Meeting" Multiplicity="1" />

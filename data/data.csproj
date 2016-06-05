@@ -71,6 +71,12 @@
       <DependentUpon>ChurchStatsModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Class1.cs" />
+    <Compile Include="Day.cs">
+      <DependentUpon>ChurchStatsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="dayofweek.cs">
+      <DependentUpon>ChurchStatsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Group.cs">
       <DependentUpon>ChurchStatsModel.tt</DependentUpon>
     </Compile>

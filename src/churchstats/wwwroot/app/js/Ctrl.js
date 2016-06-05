@@ -3,7 +3,7 @@ app.controller('homeCtrl', ['$scope', '$location', '$http', function ($scope, $l
             $location.path('/attendance');
         };
         $scope.ViewRepos = function () {
-            alert('Build and they will come');
+            $location.path('/viewReports');
         };
         var testlist = [];
         $scope.TestClick = function () {

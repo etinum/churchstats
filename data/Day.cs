@@ -10,11 +10,15 @@
 namespace data
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Group
+    public enum Day : int
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        Sunday = 0,
+        Monday = 1,
+        Tuesday = 2,
+        Wednesday = 3,
+        Thursday = 4,
+        Friday = 5,
+        Saturday = 6
     }
 }
