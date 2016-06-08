@@ -24,7 +24,7 @@ var myApp = angular.module('repoFormsApp', ['ngRoute', 'ngMessages', 'ui.bootstr
         $envServiceProvider.config({
             domains: {
                 development: ['localhost', 'dev.local'],
-                iisexpress: ['localhost:15021'],
+                iisexpress: ['localhost:12345'],
                 production: ['plsf', 'plsf.portfoliorecovery.com']
             },
             vars: {
@@ -33,8 +33,8 @@ var myApp = angular.module('repoFormsApp', ['ngRoute', 'ngMessages', 'ui.bootstr
                     staticUrl: '//localhost/'
                 },
                 iisexpress: {
-                    apiUrl: '//localhost:15021/webapi/',
-                    staticUrl: '//localhost:15021/'
+                    apiUrl: '//localhost:12345/webapi/',
+                    staticUrl: '//localhost:12345/'
                 },
                 production: {
                     apiUrl: '//plsf/webapi/',

@@ -21,7 +21,11 @@
   },
 
   "frameworks": {
-    "dnx452": { },
+    "dnx452": {
+      "dependencies": {
+        "Microsoft.AspNet.SignalR": "2.2.0"
+      }
+    },
     "dnxcore50": { }
   },
 

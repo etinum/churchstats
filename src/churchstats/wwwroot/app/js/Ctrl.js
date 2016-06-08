@@ -12,6 +12,16 @@
 })(angular.module("repoFormsApp"));
 (function (app) {
     var controller = function ($scope, $location, $dataService, $window) {
+        var hub = $.connection.attendHub;
+        hub.client.ClientCall = function () {
+            alert('hello value, world');
+        };
+        $.connection.hub.start()
+            .done(function () {
+            if (!$scope.$$phase) {
+                $scope.$apply();
+            }
+        });
         $scope.GotoRepoForm = function () {
             $location.path('/repoform');
         };

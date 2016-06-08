@@ -33,7 +33,7 @@ var myApp = angular.module('repoFormsApp', ['ngRoute', 'ngMessages', 'ui.bootstr
         $envServiceProvider.config({
             domains: {
                 development: ['localhost', 'dev.local'],
-                iisexpress: ['localhost:15021'],
+                iisexpress: ['localhost:12345'],
                 production: ['plsf', 'plsf.portfoliorecovery.com']
                 // anotherStage: ['domain1', 'domain2'],
                 // anotherStage: ['domain1', 'domain2']
@@ -46,8 +46,8 @@ var myApp = angular.module('repoFormsApp', ['ngRoute', 'ngMessages', 'ui.bootstr
                     // antoherCustomVar: 'ipsum'
                 },
                 iisexpress: {
-                    apiUrl: '//localhost:15021/webapi/',
-                    staticUrl: '//localhost:15021/'
+                    apiUrl: '//localhost:12345/webapi/',
+                    staticUrl: '//localhost:12345/'
                     // antoherCustomVar: 'lorem',
                     // antoherCustomVar: 'ipsum'
                 },

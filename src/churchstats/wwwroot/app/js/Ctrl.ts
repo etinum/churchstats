@@ -34,6 +34,22 @@
     var controller = ($scope, $location, $dataService, $window) => {
 
 
+        var hub = $.connection.attendHub;
+
+        // Testing signalR
+        hub.client.ClientCall = () => {
+            alert('hello value, world');
+        };
+
+        $.connection.hub.start()
+            .done(() => {
+                if (!$scope.$$phase) {
+                    $scope.$apply();
+                }
+
+            });
+
+
         $scope.GotoRepoForm = () => {
             $location.path('/repoform');
         };
