@@ -60,7 +60,7 @@ var myApp = angular.module('repoFormsApp', ['ngRoute', 'ngMessages', 'ui.bootstr
                 // anotherStage: {
                 //  customVar: 'lorem',
                 //  customVar: 'ipsum'
-                // }
+                // } --
             }
         });
 
