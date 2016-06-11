@@ -7,32 +7,48 @@ using System.Web.Http;
 using data;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using AutoMapper;
+using webapi.Mappers;
+using webapi.Models;
 
 namespace webapi.Controllers
 {
     public class UserController : ApiController
     {
 
-        // GET api/<controller>
-        public IEnumerable<User> Get()
+        IMapper mapper;
+        UserLogic userLogic;
+
+        public UserController()
         {
-            return new UserLogic().GetAllMembers();
+            var config = new MapperConfiguration(cfg => {
+                cfg.AddProfile<ModelMapper>();
+            });
+            mapper = config.CreateMapper();
+            userLogic = new UserLogic();
+        }
+
+        // GET api/<controller>
+        public IEnumerable<UserModel> Get()
+        {
+            return mapper.Map<IEnumerable<User>,IEnumerable<UserModel>>(userLogic.GetAllMembers());
         }
 
         // GET api/<controller>/5
-        public User Get(int id)
+        public UserModel Get(int id)
         {
-            return new UserLogic().GetUserById(id);
+            return mapper.Map<User,UserModel>(userLogic.GetUserById(id));
         }
 
-        public IEnumerable<User> GetMembersForMeeting(int meetingId)
+        public IEnumerable<UserModel> GetMembersForMeeting(int meetingId)
         {
-            return new UserLogic().GetMembers(meetingId);
+            return mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(userLogic.GetMembers(meetingId));
         }
 
-        public bool Update(User user)
+        public bool Update(UserModel um)
         {
-            return new UserLogic().Update(user);
+            var user = mapper.Map<UserModel, User>(um);
+            return userLogic.Update(user);
         }
 
         // DELETE api/<controller>/5
