@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Text;
@@ -16,19 +17,22 @@ namespace data
             _ctx = new chruchstatsEntities();
         }
 
-        public UserModel GetUserById(int id)
+        public UserLogic(chruchstatsEntities context)
+        {
+            _ctx = context;
+        }
+
+        public User GetUserById(int id)
         {
             return _ctx.Users.FirstOrDefault(u => u.Id == id);
         }
 
-        public IEnumerable<UserModel> GetAllMembers()
+        public IEnumerable<User> GetAllMembers()
         {
-            var members = _ctx.Users.ToList();
-
-            return members;
+            return _ctx.Users.ToList();
         }
 
-        public bool Update(UserModel user)
+        public bool Update(User user)
         {
             if (user == null || user.Id <= 0) return false;
 
@@ -42,11 +46,18 @@ namespace data
             return true;
         }
 
-        public IEnumerable<UserModel> GetMembers(int meetingId)
+        public IEnumerable<User> GetMembers(int meetingId)
         {
-            var users = new List<UserModel>();
+            var users = new List<User>();
             users = _ctx.Users.Where(u => u.Attendances.Any(att => att.MeetingId == meetingId)).ToList();
             return users;
+        }
+
+        public void Delete(int id)
+        {
+            var userToDelete = GetUserById(id);
+            _ctx.Users.Remove(userToDelete);
+            _ctx.SaveChanges();
         }
     }
 }

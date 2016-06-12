@@ -15,11 +15,19 @@ namespace data
             _ctx = new chruchstatsEntities();
         }
 
-
-
         public IEnumerable<Meeting> GetAllMeetings()
         {
             return _ctx.Meetings.ToList();
+        }
+
+        public bool AddUserToMeeting(int userId, int meetingId)
+        {
+            var newLink = new X_User_Meeting();
+            newLink.MeetingId = meetingId;
+            newLink.UserId = userId;
+            newLink.Active = true;
+            _ctx.X_User_Meeting.Add(newLink);
+            return _ctx.SaveChanges() > 0;
         }
     }
 }

@@ -32,6 +32,23 @@ namespace data
             return _ctx.Users.ToList();
         }
 
+        public int AddUser(string firstName, string lastName)
+        {
+            var user = _ctx.Users.Create();
+            user.FirstName = firstName;
+            user.LastName = lastName;
+            _ctx.Users.Add(user);
+            _ctx.SaveChanges();
+            return user.Id;
+        }
+
+        public void Delete(int id)
+        {
+            var userToDelete = GetUserById(id);
+            _ctx.Users.Remove(userToDelete);
+            _ctx.SaveChanges();
+        }
+
         public bool Update(User user)
         {
             if (user == null || user.Id <= 0) return false;
@@ -46,18 +63,12 @@ namespace data
             return true;
         }
 
-        public IEnumerable<User> GetMembers(int meetingId)
+        public IEnumerable<User> GetMembersByMeeting(int meetingId)
         {
             var users = new List<User>();
             users = _ctx.Users.Where(u => u.Attendances.Any(att => att.MeetingId == meetingId)).ToList();
             return users;
         }
 
-        public void Delete(int id)
-        {
-            var userToDelete = GetUserById(id);
-            _ctx.Users.Remove(userToDelete);
-            _ctx.SaveChanges();
-        }
     }
 }

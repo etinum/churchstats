@@ -54,7 +54,6 @@
     <Compile Include="Attendance.cs">
       <DependentUpon>ChurchStatsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="AttendanceLogic.cs" />
     <Compile Include="ChurchStatsModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -79,10 +78,12 @@
     <Compile Include="Group.cs">
       <DependentUpon>ChurchStatsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="LogicClasses\AttendanceLogic.cs" />
+    <Compile Include="LogicClasses\MeetingLogic.cs" />
+    <Compile Include="LogicClasses\UserLogic.cs" />
     <Compile Include="Meeting.cs">
       <DependentUpon>ChurchStatsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="MeetingLogic.cs" />
     <Compile Include="MeetingType.cs">
       <DependentUpon>ChurchStatsModel.tt</DependentUpon>
     </Compile>
@@ -90,7 +91,6 @@
     <Compile Include="User.cs">
       <DependentUpon>ChurchStatsModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="UserLogic.cs" />
     <Compile Include="X_User_Meeting.cs">
       <DependentUpon>ChurchStatsModel.tt</DependentUpon>
     </Compile>

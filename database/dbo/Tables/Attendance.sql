@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[Attendance] (
-    [Id]           INT  NOT NULL,
+    [Id]           INT  IDENTITY (1, 1) NOT NULL,
     [UserId]       INT  NOT NULL,
     [MeetingId]    INT  NOT NULL,
     [RecorderId]   INT  NOT NULL,
@@ -11,6 +11,8 @@
     CONSTRAINT [FK_Attendance_Recorder] FOREIGN KEY ([RecorderId]) REFERENCES [dbo].[User] ([Id]),
     CONSTRAINT [FK_Attendance_User] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id])
 );
+
+
 
 
 
