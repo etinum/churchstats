@@ -18,9 +18,32 @@ namespace LogicTest
         [TestMethod]
         public void Get()
         {
-            var users = testCtx.Users.ToList();
+            var users = userLogic.GetAllMembers();
 
             Assert.IsNotNull(users);
+        }
+
+        [TestMethod]
+        public void GetFirstUser()
+        {
+            var user = userLogic.GetUserById(1);
+
+            Assert.IsNotNull(user);
+        }
+
+        [TestMethod]
+        // This method cannot be mocked currently. Pending some more advanded mocking techniques.
+        public void UpdateUser()
+        {
+            var user = userLogic.GetUserById(1);
+
+            user.Age = 30;
+
+            userLogic.Update(user);
+
+            var user2 = userLogic.GetUserById(1);
+
+            userLogic.ToString();
         }
     }
 }

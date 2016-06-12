@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,11 @@ namespace data
         public UserLogic()
         {
             _ctx = new chruchstatsEntities();
+        }
+
+        public UserLogic(chruchstatsEntities context)
+        {
+            _ctx = context;
         }
 
         public User GetUserById(int id)
