@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using webapi.Models;
+using webapi.ViewModels;
 
 namespace webapi.Mappers
 {
@@ -14,6 +14,9 @@ namespace webapi.Mappers
         {
             CreateMap<User, UserModel>();
             CreateMap<UserModel, User>();
+
+            CreateMap<ViewModels.MeetingModel, data.Meeting>();
+            CreateMap<data.Meeting, ViewModels.MeetingModel>();
 
         }
     }

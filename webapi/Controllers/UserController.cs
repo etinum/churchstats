@@ -9,7 +9,7 @@ using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using AutoMapper;
 using webapi.Mappers;
-using webapi.Models;
+using webapi.ViewModels;
 
 namespace webapi.Controllers
 {
@@ -28,19 +28,29 @@ namespace webapi.Controllers
             userLogic = new UserLogic();
         }
 
+        #region CRUD
         public IEnumerable<UserModel> Get()
         {
-            return mapper.Map<IEnumerable<User>,IEnumerable<UserModel>>(userLogic.GetAllMembers());
+            return mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(userLogic.GetAllMembers());
         }
 
         public UserModel Get(int id)
         {
-            return mapper.Map<User,UserModel>(userLogic.GetUserById(id));
+            return mapper.Map<User, UserModel>(userLogic.GetUserById(id));
         }
 
-        public IEnumerable<UserModel> GetMembersForMeeting(int meetingId)
+        [HttpGet]
+        public int Test()
         {
-            return mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(userLogic.GetMembers(meetingId));
+            return AddUser("D", "DD");
+        }
+
+        public int AddUser(string firstName, string lastName)
+        {
+            int userId = 0;
+            userId = userLogic.AddUser(firstName, lastName);
+
+            return userId;
         }
 
         [HttpPost]
@@ -48,7 +58,15 @@ namespace webapi.Controllers
         {
             var user = mapper.Map<UserModel, User>(um);
             return userLogic.Update(user);
+        } 
+        #endregion
+
+        public IEnumerable<UserModel> GetMembersForMeeting(int meetingId)
+        {
+            return mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(userLogic.GetMembersByMeeting(meetingId));
         }
+
+
 
     }
 }
