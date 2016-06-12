@@ -28,13 +28,11 @@ namespace webapi.Controllers
             userLogic = new UserLogic();
         }
 
-        // GET api/<controller>
         public IEnumerable<UserModel> Get()
         {
             return mapper.Map<IEnumerable<User>,IEnumerable<UserModel>>(userLogic.GetAllMembers());
         }
 
-        // GET api/<controller>/5
         public UserModel Get(int id)
         {
             return mapper.Map<User,UserModel>(userLogic.GetUserById(id));
@@ -45,6 +43,7 @@ namespace webapi.Controllers
             return mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(userLogic.GetMembers(meetingId));
         }
 
+        [HttpPost]
         public bool Update(UserModel um)
         {
             var user = mapper.Map<UserModel, User>(um);

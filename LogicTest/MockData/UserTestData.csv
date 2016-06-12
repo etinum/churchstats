@@ -1,0 +1,3 @@
+﻿Id,FirstName,LastName,Gender,Age,Picture,isSaved,isBaptized,MiddleName,Notes
+1,Daniel,deLamare,Male,23,NULL,1,1,A,None
+2,Eric,Tran,Male,50,NULL,1,1,B,Nope
