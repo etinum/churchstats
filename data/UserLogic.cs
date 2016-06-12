@@ -52,5 +52,12 @@ namespace data
             users = _ctx.Users.Where(u => u.Attendances.Any(att => att.MeetingId == meetingId)).ToList();
             return users;
         }
+
+        public void Delete(int id)
+        {
+            var userToDelete = GetUserById(id);
+            _ctx.Users.Remove(userToDelete);
+            _ctx.SaveChanges();
+        }
     }
 }

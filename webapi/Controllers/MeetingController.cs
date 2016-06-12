@@ -11,6 +11,13 @@ namespace webapi.Controllers
 {
     public class MeetingController : ApiControllerWithHub<AttendHub>
     {
+        MeetingLogic meetingLogic;
+
+        public MeetingController()
+        {
+            meetingLogic = new MeetingLogic();
+        }
+
         public IEnumerable<Meeting> Get()
         {
 
@@ -18,6 +25,10 @@ namespace webapi.Controllers
             return new Meeting[] {new Meeting() {Name = "TestMeeting", Description = "Test Description"}};
         }
 
+        public bool AddUserToMeeting(int userId, int meetingId)
+        {
+            return meetingLogic.AddUserToMeeting(userId, meetingId);
+        }
 
     }
 }

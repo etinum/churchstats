@@ -50,9 +50,5 @@ namespace webapi.Controllers
             return userLogic.Update(user);
         }
 
-        // DELETE api/<controller>/5
-        public void Delete(int id)
-        {
-        }
     }
 }
