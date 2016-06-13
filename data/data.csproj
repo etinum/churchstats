@@ -114,6 +114,7 @@
       <DependentUpon>ChurchStatsModel.edmx</DependentUpon>
       <LastGenOutput>ChurchStatsModel.Context.cs</LastGenOutput>
     </Content>
+    <Content Include="ChurchStatsModel.edmx.sql" />
     <Content Include="ChurchStatsModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ChurchStatsModel.edmx</DependentUpon>

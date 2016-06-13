@@ -66,9 +66,16 @@ namespace data
         public IEnumerable<User> GetMembersByMeeting(int meetingId)
         {
             var users = new List<User>();
-            users = _ctx.Users.Where(u => u.Attendances.Any(att => att.MeetingId == meetingId)).ToList();
+            users = _ctx.X_User_Meeting.Where(xum => xum.MeetingId == meetingId).Select(xum => xum.User).ToList();
             return users;
         }
 
+        // This function returns type ahead values. It should consist of all users currently not associated to this meeting id.
+        public IEnumerable<User> GetMembersForUserAdd(int meetingId)
+        {
+            var users = new List<User>();
+            users = _ctx.Users.Where(u => !u.X_User_Meeting.Any(xum => xum.MeetingId == meetingId && xum.Active)).ToList();
+            return users;
+        }
     }
 }

@@ -4,214 +4,219 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="chruchstatsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Attendance">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="MeetingId" Type="int" Nullable="false" />
-          <Property Name="RecorderId" Type="int" Nullable="false" />
-          <Property Name="DateRecorded" Type="date" Nullable="false" />
-          <Property Name="LastUpdated" Type="date" Nullable="false" />
-          <Property Name="isAttend" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Group">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Meeting">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="MeetingTypeId" Type="int" Nullable="false" />
-          <Property Name="DayOfTheWeek" Type="int" />
-          <Property Name="Description" Type="nvarchar(max)" />
-          <Property Name="UsualTime" Type="datetime" />
-        </EntityType>
-        <EntityType Name="MeetingType">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
-        </EntityType>
-        <EntityType Name="User">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Gender" Type="nvarchar" MaxLength="10" />
-          <Property Name="Age" Type="int" />
-          <Property Name="Picture" Type="varbinary(max)" />
-          <Property Name="isSaved" Type="bit" />
-          <Property Name="isBaptized" Type="bit" />
-          <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
-          <Property Name="Notes" Type="nvarchar(max)" />
-        </EntityType>
-        <EntityType Name="X_User_Group">
-          <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="GroupId" />
-          </Key>
-          <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="GroupId" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="X_User_Meeting">
-          <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="MeetingId" />
-          </Key>
-          <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="MeetingId" Type="int" Nullable="false" />
-          <Property Name="Active" Type="bit" Nullable="false" />
-        </EntityType>
-        <Association Name="FK_Attendance_Meeting">
-          <End Role="Meeting" Type="Self.Meeting" Multiplicity="1" />
-          <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Meeting">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Attendance">
-              <PropertyRef Name="MeetingId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Attendance_Recorder">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Attendance">
-              <PropertyRef Name="RecorderId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Attendance_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Attendance">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Meeting_MeetingType">
-          <End Role="MeetingType" Type="Self.MeetingType" Multiplicity="1" />
-          <End Role="Meeting" Type="Self.Meeting" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MeetingType">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Meeting">
-              <PropertyRef Name="MeetingTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_X_User_Group_Group">
-          <End Role="Group" Type="Self.Group" Multiplicity="1" />
-          <End Role="X_User_Group" Type="Self.X_User_Group" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Group">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="X_User_Group">
-              <PropertyRef Name="GroupId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_X_User_Group_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="X_User_Group" Type="Self.X_User_Group" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="X_User_Group">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_X_User_Meeting_Meeting">
-          <End Role="Meeting" Type="Self.Meeting" Multiplicity="1" />
-          <End Role="X_User_Meeting" Type="Self.X_User_Meeting" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Meeting">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="X_User_Meeting">
-              <PropertyRef Name="MeetingId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_X_User_Meeting_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="X_User_Meeting" Type="Self.X_User_Meeting" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="X_User_Meeting">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="chruchstatsModelStoreContainer">
-          <EntitySet Name="Attendance" EntityType="Self.Attendance" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Meeting" EntityType="Self.Meeting" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="MeetingType" EntityType="Self.MeetingType" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="X_User_Group" EntityType="Self.X_User_Group" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="X_User_Meeting" EntityType="Self.X_User_Meeting" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Attendance_Meeting" Association="Self.FK_Attendance_Meeting">
-            <End Role="Meeting" EntitySet="Meeting" />
-            <End Role="Attendance" EntitySet="Attendance" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Attendance_Recorder" Association="Self.FK_Attendance_Recorder">
-            <End Role="User" EntitySet="User" />
-            <End Role="Attendance" EntitySet="Attendance" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Attendance_User" Association="Self.FK_Attendance_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="Attendance" EntitySet="Attendance" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Meeting_MeetingType" Association="Self.FK_Meeting_MeetingType">
-            <End Role="MeetingType" EntitySet="MeetingType" />
-            <End Role="Meeting" EntitySet="Meeting" />
-          </AssociationSet>
-          <AssociationSet Name="FK_X_User_Group_Group" Association="Self.FK_X_User_Group_Group">
-            <End Role="Group" EntitySet="Group" />
-            <End Role="X_User_Group" EntitySet="X_User_Group" />
-          </AssociationSet>
-          <AssociationSet Name="FK_X_User_Group_User" Association="Self.FK_X_User_Group_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="X_User_Group" EntitySet="X_User_Group" />
-          </AssociationSet>
-          <AssociationSet Name="FK_X_User_Meeting_Meeting" Association="Self.FK_X_User_Meeting_Meeting">
-            <End Role="Meeting" EntitySet="Meeting" />
-            <End Role="X_User_Meeting" EntitySet="X_User_Meeting" />
-          </AssociationSet>
-          <AssociationSet Name="FK_X_User_Meeting_User" Association="Self.FK_X_User_Meeting_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="X_User_Meeting" EntitySet="X_User_Meeting" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema></edmx:StorageModels>
+    <Schema Namespace="chruchstatsModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="chruchstatsModelStoreContainer">
+    <EntitySet Name="Attendances" EntityType="chruchstatsModel.Store.Attendances" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Groups" EntityType="chruchstatsModel.Store.Groups" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Meetings" EntityType="chruchstatsModel.Store.Meetings" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="MeetingTypes" EntityType="chruchstatsModel.Store.MeetingTypes" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Users" EntityType="chruchstatsModel.Store.Users" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="X_User_Meeting" EntityType="chruchstatsModel.Store.X_User_Meeting" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="X_User_Group" EntityType="chruchstatsModel.Store.X_User_Group" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_Attendance_Meeting" Association="chruchstatsModel.Store.FK_Attendance_Meeting">
+      <End Role="Meeting" EntitySet="Meetings" />
+      <End Role="Attendance" EntitySet="Attendances" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Attendance_Recorder" Association="chruchstatsModel.Store.FK_Attendance_Recorder">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Attendance" EntitySet="Attendances" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Attendance_User" Association="chruchstatsModel.Store.FK_Attendance_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Attendance" EntitySet="Attendances" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Meeting_MeetingType" Association="chruchstatsModel.Store.FK_Meeting_MeetingType">
+      <End Role="MeetingType" EntitySet="MeetingTypes" />
+      <End Role="Meeting" EntitySet="Meetings" />
+    </AssociationSet>
+    <AssociationSet Name="FK_X_User_Meeting_Meeting" Association="chruchstatsModel.Store.FK_X_User_Meeting_Meeting">
+      <End Role="Meeting" EntitySet="Meetings" />
+      <End Role="X_User_Meeting" EntitySet="X_User_Meeting" />
+    </AssociationSet>
+    <AssociationSet Name="FK_X_User_Meeting_User" Association="chruchstatsModel.Store.FK_X_User_Meeting_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="X_User_Meeting" EntitySet="X_User_Meeting" />
+    </AssociationSet>
+    <AssociationSet Name="FK_X_User_Group_Group" Association="chruchstatsModel.Store.FK_X_User_Group_Group">
+      <End Role="Group" EntitySet="Groups" />
+      <End Role="X_User_Group" EntitySet="X_User_Group" />
+    </AssociationSet>
+    <AssociationSet Name="FK_X_User_Group_User" Association="chruchstatsModel.Store.FK_X_User_Group_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="X_User_Group" EntitySet="X_User_Group" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Attendances">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="MeetingId" Type="int" Nullable="false" />
+    <Property Name="RecorderId" Type="int" Nullable="false" />
+    <Property Name="DateRecorded" Type="datetime" Nullable="false" />
+    <Property Name="LastUpdated" Type="datetime" Nullable="false" />
+    <Property Name="isAttend" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Groups">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="Meetings">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="MeetingTypeId" Type="int" Nullable="false" />
+    <Property Name="DayOfTheWeek" Type="int" Nullable="true" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="UsualTime" Type="datetime" Nullable="true" />
+  </EntityType>
+  <EntityType Name="MeetingTypes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="LastName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Gender" Type="nvarchar" Nullable="true" MaxLength="10" />
+    <Property Name="BirthYear" Type="int" Nullable="true" />
+    <Property Name="Picture" Type="varbinary(max)" Nullable="true" />
+    <Property Name="isSaved" Type="bit" Nullable="true" />
+    <Property Name="isBaptized" Type="bit" Nullable="true" />
+    <Property Name="MiddleName" Type="nvarchar" Nullable="true" MaxLength="50" />
+    <Property Name="Notes" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Email" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="PhoneNumber" Type="int" Nullable="true" />
+    <Property Name="BaptizedDate" Type="datetime" Nullable="true" />
+    <Property Name="SavedDate" Type="datetime" Nullable="true" />
+    <Property Name="Locality" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="X_User_Meeting">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="MeetingId" />
+    </Key>
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="MeetingId" Type="int" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="X_User_Group">
+    <Key>
+      <PropertyRef Name="Groups_Id" />
+      <PropertyRef Name="Users_Id" />
+    </Key>
+    <Property Name="Groups_Id" Type="int" Nullable="false" />
+    <Property Name="Users_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Attendance_Meeting">
+    <End Role="Meeting" Type="chruchstatsModel.Store.Meetings" Multiplicity="1" />
+    <End Role="Attendance" Type="chruchstatsModel.Store.Attendances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Meeting">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Attendance">
+        <PropertyRef Name="MeetingId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Attendance_Recorder">
+    <End Role="User" Type="chruchstatsModel.Store.Users" Multiplicity="1" />
+    <End Role="Attendance" Type="chruchstatsModel.Store.Attendances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Attendance">
+        <PropertyRef Name="RecorderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Attendance_User">
+    <End Role="User" Type="chruchstatsModel.Store.Users" Multiplicity="1" />
+    <End Role="Attendance" Type="chruchstatsModel.Store.Attendances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Attendance">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Meeting_MeetingType">
+    <End Role="MeetingType" Type="chruchstatsModel.Store.MeetingTypes" Multiplicity="1" />
+    <End Role="Meeting" Type="chruchstatsModel.Store.Meetings" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MeetingType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Meeting">
+        <PropertyRef Name="MeetingTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_X_User_Meeting_Meeting">
+    <End Role="Meeting" Type="chruchstatsModel.Store.Meetings" Multiplicity="1" />
+    <End Role="X_User_Meeting" Type="chruchstatsModel.Store.X_User_Meeting" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Meeting">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="X_User_Meeting">
+        <PropertyRef Name="MeetingId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_X_User_Meeting_User">
+    <End Role="User" Type="chruchstatsModel.Store.Users" Multiplicity="1" />
+    <End Role="X_User_Meeting" Type="chruchstatsModel.Store.X_User_Meeting" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="X_User_Meeting">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_X_User_Group_Group">
+    <End Role="Group" Type="chruchstatsModel.Store.Groups" Multiplicity="1" />
+    <End Role="X_User_Group" Type="chruchstatsModel.Store.X_User_Group" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Group">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="X_User_Group">
+        <PropertyRef Name="Groups_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_X_User_Group_User">
+    <End Role="X_User_Group" Type="chruchstatsModel.Store.X_User_Group" Multiplicity="*" />
+    <End Role="User" Type="chruchstatsModel.Store.Users" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="X_User_Group">
+        <PropertyRef Name="Users_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="chruchstatsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -313,7 +318,7 @@
           <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Gender" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Age" Type="Int32" />
+          <Property Name="BirthYear" Type="Int32" Nullable="true" />
           <Property Name="Picture" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="isSaved" Type="Boolean" />
           <Property Name="isBaptized" Type="Boolean" />
@@ -323,6 +328,11 @@
           <NavigationProperty Name="Attendances1" Relationship="chruchstatsModel.FK_Attendance_User" FromRole="User" ToRole="Attendance" />
           <NavigationProperty Name="X_User_Meeting" Relationship="chruchstatsModel.FK_X_User_Meeting_User" FromRole="User" ToRole="X_User_Meeting" />
           <NavigationProperty Name="Groups" Relationship="chruchstatsModel.X_User_Group" FromRole="User" ToRole="Group" />
+          <Property Name="Email" Type="String" Nullable="true" Unicode="true" />
+          <Property Name="PhoneNumber" Type="Int32" Nullable="true" />
+          <Property Name="BaptizedDate" Type="DateTime" Nullable="true" />
+          <Property Name="SavedDate" Type="DateTime" Nullable="true" />
+          <Property Name="Locality" Type="String" Nullable="true" Unicode="true" />
         </EntityType>
         <EntityType Name="X_User_Meeting">
           <Key>
@@ -424,85 +434,89 @@
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="chruchstatsModelStoreContainer" CdmEntityContainer="chruchstatsEntities">
-          <EntitySetMapping Name="Attendances">
-            <EntityTypeMapping TypeName="chruchstatsModel.Attendance">
-              <MappingFragment StoreEntitySet="Attendance">
-                <ScalarProperty Name="isAttend" ColumnName="isAttend" />
-                <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
-                <ScalarProperty Name="DateRecorded" ColumnName="DateRecorded" />
-                <ScalarProperty Name="RecorderId" ColumnName="RecorderId" />
-                <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Groups">
-            <EntityTypeMapping TypeName="chruchstatsModel.Group">
-              <MappingFragment StoreEntitySet="Group">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Meetings">
-            <EntityTypeMapping TypeName="chruchstatsModel.Meeting">
-              <MappingFragment StoreEntitySet="Meeting">
-                <ScalarProperty Name="UsualTime" ColumnName="UsualTime" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="DayOfTheWeek" ColumnName="DayOfTheWeek" />
-                <ScalarProperty Name="MeetingTypeId" ColumnName="MeetingTypeId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MeetingTypes">
-            <EntityTypeMapping TypeName="chruchstatsModel.MeetingType">
-              <MappingFragment StoreEntitySet="MeetingType">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="chruchstatsModel.User">
-              <MappingFragment StoreEntitySet="User">
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
-                <ScalarProperty Name="isBaptized" ColumnName="isBaptized" />
-                <ScalarProperty Name="isSaved" ColumnName="isSaved" />
-                <ScalarProperty Name="Picture" ColumnName="Picture" />
-                <ScalarProperty Name="Age" ColumnName="Age" />
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="X_User_Meeting">
-            <EntityTypeMapping TypeName="chruchstatsModel.X_User_Meeting">
-              <MappingFragment StoreEntitySet="X_User_Meeting">
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="X_User_Group" TypeName="chruchstatsModel.X_User_Group" StoreEntitySet="X_User_Group">
-            <EndProperty Name="User">
-              <ScalarProperty Name="Id" ColumnName="UserId" />
-            </EndProperty>
-            <EndProperty Name="Group">
-              <ScalarProperty Name="Id" ColumnName="GroupId" />
-            </EndProperty>
-          </AssociationSetMapping>
-        </EntityContainerMapping>
-      </Mapping>
-    </edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="chruchstatsModelStoreContainer" CdmEntityContainer="chruchstatsEntities">
+    <EntitySetMapping Name="Attendances">
+      <EntityTypeMapping TypeName="IsTypeOf(chruchstatsModel.Attendance)">
+        <MappingFragment StoreEntitySet="Attendances">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
+          <ScalarProperty Name="RecorderId" ColumnName="RecorderId" />
+          <ScalarProperty Name="DateRecorded" ColumnName="DateRecorded" />
+          <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
+          <ScalarProperty Name="isAttend" ColumnName="isAttend" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Groups">
+      <EntityTypeMapping TypeName="IsTypeOf(chruchstatsModel.Group)">
+        <MappingFragment StoreEntitySet="Groups">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Meetings">
+      <EntityTypeMapping TypeName="IsTypeOf(chruchstatsModel.Meeting)">
+        <MappingFragment StoreEntitySet="Meetings">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="MeetingTypeId" ColumnName="MeetingTypeId" />
+          <ScalarProperty Name="DayOfTheWeek" ColumnName="DayOfTheWeek" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="UsualTime" ColumnName="UsualTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MeetingTypes">
+      <EntityTypeMapping TypeName="IsTypeOf(chruchstatsModel.MeetingType)">
+        <MappingFragment StoreEntitySet="MeetingTypes">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="IsTypeOf(chruchstatsModel.User)">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="BirthYear" ColumnName="BirthYear" />
+          <ScalarProperty Name="Picture" ColumnName="Picture" />
+          <ScalarProperty Name="isSaved" ColumnName="isSaved" />
+          <ScalarProperty Name="isBaptized" ColumnName="isBaptized" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="BaptizedDate" ColumnName="BaptizedDate" />
+          <ScalarProperty Name="SavedDate" ColumnName="SavedDate" />
+          <ScalarProperty Name="Locality" ColumnName="Locality" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="X_User_Meeting">
+      <EntityTypeMapping TypeName="IsTypeOf(chruchstatsModel.X_User_Meeting)">
+        <MappingFragment StoreEntitySet="X_User_Meeting">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="X_User_Group" TypeName="chruchstatsModel.X_User_Group" StoreEntitySet="X_User_Group">
+      <EndProperty Name="Group">
+        <ScalarProperty Name="Id" ColumnName="Groups_Id" />
+      </EndProperty>
+      <EndProperty Name="User">
+        <ScalarProperty Name="Id" ColumnName="Users_Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
   <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
@@ -516,7 +530,7 @@
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
-        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>

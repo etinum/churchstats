@@ -37,7 +37,7 @@ namespace LogicTest
         {
             var user = userLogic.GetUserById(1);
 
-            user.Age = 30;
+            user.BirthYear = 30;
 
             userLogic.Update(user);
 

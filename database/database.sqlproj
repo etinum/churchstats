@@ -62,11 +62,12 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\X_User_Group.sql" />
-    <Build Include="dbo\Tables\User.sql" />
-    <Build Include="dbo\Tables\MeetingType.sql" />
-    <Build Include="dbo\Tables\Meeting.sql" />
-    <Build Include="dbo\Tables\Group.sql" />
-    <Build Include="dbo\Tables\Attendance.sql" />
     <Build Include="dbo\Tables\X_User_Meeting.sql" />
+    <Build Include="dbo\Tables\Users.sql" />
+    <Build Include="dbo\Tables\MeetingTypeTestData.sql" />
+    <Build Include="dbo\Tables\MeetingTypes.sql" />
+    <Build Include="dbo\Tables\Meetings.sql" />
+    <Build Include="dbo\Tables\Groups.sql" />
+    <Build Include="dbo\Tables\Attendances.sql" />
   </ItemGroup>
 </Project>

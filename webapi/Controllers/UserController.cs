@@ -61,9 +61,16 @@ namespace webapi.Controllers
         } 
         #endregion
 
-        public IEnumerable<UserModel> GetMembersForMeeting(int meetingId)
+        [HttpGet]
+        public IEnumerable<UserModel> GetMembersForMeeting(int id)
         {
-            return mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(userLogic.GetMembersByMeeting(meetingId));
+            return mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(userLogic.GetMembersByMeeting(id));
+        }
+
+        [HttpGet]
+        public IEnumerable<UserModel> GetMembersForUserAdd(int id)
+        {
+            return mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(userLogic.GetMembersForUserAdd(id));
         }
 
 
