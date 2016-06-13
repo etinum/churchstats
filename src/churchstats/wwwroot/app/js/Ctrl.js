@@ -1,10 +1,5 @@
 (function (app) {
     var controller = function ($scope, $window, $dataService, $envService, $rootScope) {
-        $dataService.getUser()
-            .then(function (data) {
-            $window.userdata = data;
-            $scope.masterWelcome = "Welcome master " + data;
-        });
         $scope.baseWebApiUrl = $envService.read('apiUrl');
     };
     controller.$inject = ['$scope', '$window', 'dataService', 'envService', '$rootScope'];
@@ -22,6 +17,64 @@
                 $scope.$apply();
             }
         });
+        $scope.haveRecorder = true;
+        $scope.isNewMeeting = true;
+        $scope.haveMeeting = true;
+        $scope.userList = [
+            {
+                'label': 'Eric Tran',
+                'id': 1,
+                'status': null
+            },
+            {
+                'label': 'Daniel Delamare',
+                'id': 2,
+                'status': null
+            },
+            {
+                'label': 'Milky Man',
+                'id': 3,
+                'status': null
+            },
+            {
+                'label': 'Chris Change',
+                'id': 4,
+                'status': null
+            },
+            {
+                'label': 'Bill Franko',
+                'id': 5,
+                'status': null
+            }
+        ];
+        $scope.meetingTypeOptions = [
+            {
+                'label': 'Bible Study',
+                'id': 1
+            },
+            {
+                'label': '2s 3s',
+                'id': 2
+            },
+            {
+                'label': 'Cluster LT Meeting',
+                'id': 3
+            },
+            {
+                'label': 'Lord\'s Table',
+                'id': 4
+            },
+            {
+                'label': 'Small Group',
+                'id': 5
+            }
+        ];
+        $scope.meetingTypeChanged = function () {
+            alert('hi: ' + $scope.meetingTypeOptions.filter(function (item) { return item.id === parseInt($scope.rf.meetingTypeId); })[0].label);
+        };
+        $scope.memberSelected = function (item) {
+            alert('Update database for: ' + item.label);
+        };
         $scope.GotoRepoForm = function () {
             $location.path('/repoform');
         };

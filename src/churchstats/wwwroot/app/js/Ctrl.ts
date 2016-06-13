@@ -16,11 +16,11 @@
 (app => {
     var controller = ($scope, $window, $dataService, $envService, $rootScope) => {
 
-        $dataService.getUser()
-            .then(data => {
-                $window.userdata = data;
-                $scope.masterWelcome = "Welcome master " + data;
-            });
+        //$dataService.getUser()
+        //    .then(data => {
+        //        $window.userdata = data;
+        //        $scope.masterWelcome = "Welcome master " + data;
+        //    });
 
         //$rootScope.testroot = 'pinky';
         $scope.baseWebApiUrl = $envService.read('apiUrl');
@@ -49,6 +49,75 @@
 
             });
 
+        $scope.haveRecorder = true;
+        $scope.isNewMeeting = true;
+        $scope.haveMeeting = true;
+
+        // dummy data for checkbox.
+        $scope.userList = [
+            {
+                'label': 'Eric Tran',
+                'id': 1,
+                'status': null
+            },
+            {
+                'label': 'Daniel Delamare',
+                'id': 2,
+                'status': null
+            },
+            {
+                'label': 'Milky Man',
+                'id': 3,
+                'status': null
+            },
+            {
+                'label': 'Chris Change',
+                'id': 4,
+                'status': null
+            },
+            {
+                'label': 'Bill Franko',
+                'id': 5,
+                'status': null
+            }
+
+        ];
+
+        // dummy data for meeting type
+        $scope.meetingTypeOptions = [
+            {
+                'label': 'Bible Study',
+                'id': 1
+            },
+            {
+                'label': '2s 3s',
+                'id': 2
+            },
+            {
+                'label': 'Cluster LT Meeting',
+                'id': 3
+            },
+            {
+                'label': 'Lord\'s Table',
+                'id': 4
+            },
+            {
+                'label': 'Small Group',
+                'id': 5
+            }
+
+        ];
+        //= ['Bible Study', '2s 3s', 'Cluster LT Meeting', 'Lord\'s Table', 'Small Group'];
+
+
+        $scope.meetingTypeChanged = () => {
+            alert('hi: ' + $scope.meetingTypeOptions.filter(item => item.id === parseInt($scope.rf.meetingTypeId))[0].label);
+
+        };
+
+        $scope.memberSelected = (item) => {
+            alert('Update database for: ' + item.label);
+        };
 
         $scope.GotoRepoForm = () => {
             $location.path('/repoform');
