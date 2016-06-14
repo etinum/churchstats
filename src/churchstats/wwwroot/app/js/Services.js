@@ -16,12 +16,24 @@
             }
             return a;
         };
-        function arrayObjectIndexOf(myArray, searchTerm, property) {
-            for (var i = 0, len = myArray.length; i < len; i++) {
-                if (myArray[i][property] === searchTerm)
-                    return i;
+        function arrayObjectIndexOf(myArray, searchTerm, property, caseSensitive) {
+            caseSensitive = typeof caseSensitive !== 'undefined' ? caseSensitive : true;
+            var len = myArray.length;
+            if (caseSensitive) {
+                for (var i = 0; i < len; i++) {
+                    if (myArray[i][property] === searchTerm)
+                        return i;
+                }
+                return -1;
             }
-            return -1;
+            else {
+                searchTerm = searchTerm.toLowerCase();
+                for (var e = 0; e < len; e++) {
+                    if (myArray[e][property].toLowerCase() === searchTerm)
+                        return e;
+                }
+                return -1;
+            }
         }
         var baseWebApiUrl = $envService.read('apiUrl');
         var alertFailed = function (response) {

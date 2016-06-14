@@ -17,34 +17,69 @@
                 $scope.$apply();
             }
         });
-        $scope.haveRecorder = true;
-        $scope.isNewMeeting = true;
-        $scope.haveMeeting = true;
+        $scope.rf = {};
+        $scope.haveRecorder = false;
+        $scope.recorderFieldDisable = false;
+        $scope.meetingFieldDisable = false;
+        $scope.isNewUser = false;
+        $scope.isNewMeeting = false;
+        $scope.haveMeeting = false;
+        $scope.onBlurRecorder = function () {
+            if (!$scope.rf.recorderName) {
+                return;
+            }
+            var index = $dataService.arrayObjectIndexOf($scope.userList, $scope.rf.recorderName, "label", false);
+            if (index === -1) {
+                $scope.isNewUser = true;
+            }
+            else {
+                $scope.rf.recorderName = $scope.userList[index].label;
+                $scope.haveRecorder = true;
+                $scope.isNewUser = false;
+            }
+        };
+        $scope.onBlurMeeting = function () {
+            if (!$scope.rf.meetingName) {
+                return;
+            }
+            var index = $dataService.arrayObjectIndexOf($scope.meetingNameOptions, $scope.rf.meetingName, "label", false);
+            if (index === -1) {
+                $scope.isNewMeeting = true;
+                $scope.haveMeeting = false;
+            }
+            else {
+                $scope.rf.recorderName = $scope.userList[index].label;
+                $scope.recorderFieldDisable = true;
+                $scope.meetingFieldDisable = true;
+                $scope.haveMeeting = true;
+                $scope.isNewMeeting = false;
+            }
+        };
         $scope.userList = [
             {
                 'label': 'Eric Tran',
                 'id': 1,
-                'status': null
+                'isAttend': null
             },
             {
                 'label': 'Daniel Delamare',
                 'id': 2,
-                'status': null
+                'isAttend': null
             },
             {
                 'label': 'Milky Man',
                 'id': 3,
-                'status': null
+                'isAttend': null
             },
             {
-                'label': 'Chris Change',
+                'label': 'Chris Chang',
                 'id': 4,
-                'status': null
+                'isAttend': null
             },
             {
                 'label': 'Bill Franko',
                 'id': 5,
-                'status': null
+                'isAttend': null
             }
         ];
         $scope.meetingTypeOptions = [
@@ -69,11 +104,33 @@
                 'id': 5
             }
         ];
+        $scope.meetingNameOptions = [
+            {
+                'label': 'Folsom Home Meeting',
+                'id': 1
+            },
+            {
+                'label': 'Fair Oaks Small Group',
+                'id': 2
+            },
+            {
+                'label': 'Sacrament Cluster LT Meeting',
+                'id': 3
+            },
+            {
+                'label': 'Sacramento Lord\'s Table',
+                'id': 4
+            },
+            {
+                'label': 'Chang\'s Natomas Friday Night',
+                'id': 5
+            }
+        ];
         $scope.meetingTypeChanged = function () {
             alert('hi: ' + $scope.meetingTypeOptions.filter(function (item) { return item.id === parseInt($scope.rf.meetingTypeId); })[0].label);
         };
         $scope.memberSelected = function (item) {
-            alert('Update database for: ' + item.label);
+            alert('Update database for: ' + item.label + ", present: " + item.isAttend);
         };
         $scope.GotoRepoForm = function () {
             $location.path('/repoform');

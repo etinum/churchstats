@@ -49,36 +49,81 @@
 
             });
 
-        $scope.haveRecorder = true;
-        $scope.isNewMeeting = true;
-        $scope.haveMeeting = true;
+        $scope.rf = {};
+        $scope.haveRecorder = false;
+        $scope.recorderFieldDisable = false;
+        $scope.meetingFieldDisable = false;
+        $scope.isNewUser = false;
+        $scope.isNewMeeting = false;
+        $scope.haveMeeting = false;
+
+        $scope.onBlurRecorder = () => {
+            //alert('recorder selected: ' + $scope.rf.recorderId);
+            if (!$scope.rf.recorderName) {
+                return;
+            }
+
+            var index = $dataService.arrayObjectIndexOf($scope.userList, $scope.rf.recorderName, "label", false);
+            if (index === -1) {
+                //alert('Create new user');
+                $scope.isNewUser = true;
+            } else {
+                //alert('User exist');
+                $scope.rf.recorderName = $scope.userList[index].label;
+                $scope.haveRecorder = true;
+                $scope.isNewUser = false;
+            }
+            
+        };
+
+        $scope.onBlurMeeting = () => {
+
+            if (!$scope.rf.meetingName) {
+                return;
+            }
+
+            var index = $dataService.arrayObjectIndexOf($scope.meetingNameOptions, $scope.rf.meetingName, "label", false);
+            if (index === -1) {
+                //alert('Create new user');
+                $scope.isNewMeeting = true;
+                $scope.haveMeeting = false;
+            } else {
+                //alert('User exist');
+                $scope.rf.recorderName = $scope.userList[index].label;
+                $scope.recorderFieldDisable = true;
+                $scope.meetingFieldDisable = true;
+                $scope.haveMeeting = true;
+                $scope.isNewMeeting = false;
+            }
+
+        };
 
         // dummy data for checkbox.
         $scope.userList = [
             {
                 'label': 'Eric Tran',
                 'id': 1,
-                'status': null
+                'isAttend': null
             },
             {
                 'label': 'Daniel Delamare',
                 'id': 2,
-                'status': null
+                'isAttend': null
             },
             {
                 'label': 'Milky Man',
                 'id': 3,
-                'status': null
+                'isAttend': null
             },
             {
-                'label': 'Chris Change',
+                'label': 'Chris Chang',
                 'id': 4,
-                'status': null
+                'isAttend': null
             },
             {
                 'label': 'Bill Franko',
                 'id': 5,
-                'status': null
+                'isAttend': null
             }
 
         ];
@@ -107,6 +152,31 @@
             }
 
         ];
+
+        $scope.meetingNameOptions = [
+            {
+                'label': 'Folsom Home Meeting',
+                'id': 1
+            },
+            {
+                'label': 'Fair Oaks Small Group',
+                'id': 2
+            },
+            {
+                'label': 'Sacrament Cluster LT Meeting',
+                'id': 3
+            },
+            {
+                'label': 'Sacramento Lord\'s Table',
+                'id': 4
+            },
+            {
+                'label': 'Chang\'s Natomas Friday Night',
+                'id': 5
+            }
+
+        ];
+
         //= ['Bible Study', '2s 3s', 'Cluster LT Meeting', 'Lord\'s Table', 'Small Group'];
 
 
@@ -116,7 +186,7 @@
         };
 
         $scope.memberSelected = (item) => {
-            alert('Update database for: ' + item.label);
+            alert('Update database for: ' + item.label + ", present: " + item.isAttend);
         };
 
         $scope.GotoRepoForm = () => {
