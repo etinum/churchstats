@@ -57,23 +57,49 @@
         $scope.isNewMeeting = false;
         $scope.haveMeeting = false;
 
+
+        var recorderFieldTimeout;
+        $('#recorderName')
+            .keypress(() => {
+                if (recorderFieldTimeout) {
+                    clearTimeout(recorderFieldTimeout);
+                    recorderFieldTimeout = null;
+                }
+
+                recorderFieldTimeout = setTimeout($scope.onBlurRecorder, 1500);
+            });
+
+        var meetingFieldTimeout;
+        $('#meetingName')
+            .keypress(() => {
+                if (meetingFieldTimeout) {
+                    clearTimeout(meetingFieldTimeout);
+                    meetingFieldTimeout = null;
+                }
+
+                meetingFieldTimeout = setTimeout($scope.onBlurMeeting, 1500);
+            });
+
         $scope.onBlurRecorder = () => {
             //alert('recorder selected: ' + $scope.rf.recorderId);
             if (!$scope.rf.recorderName) {
                 return;
             }
-
+          
             var index = $dataService.arrayObjectIndexOf($scope.userList, $scope.rf.recorderName, "label", false);
-            if (index === -1) {
-                //alert('Create new user');
-                $scope.isNewUser = true;
-            } else {
-                //alert('User exist');
-                $scope.rf.recorderName = $scope.userList[index].label;
-                $scope.haveRecorder = true;
-                $scope.isNewUser = false;
-            }
-            
+            $scope.$evalAsync(() => {
+                if (index === -1) {
+                    //alert('Create new user');
+                    $scope.haveRecorder = false;
+                    $scope.isNewUser = true;
+                } else {
+                    //alert('User exist');
+                    $scope.rf.recorderName = $scope.userList[index].label;
+                    $scope.haveRecorder = true;
+                    $scope.isNewUser = false;
+                }
+            });
+
         };
 
         $scope.onBlurMeeting = () => {
@@ -83,18 +109,21 @@
             }
 
             var index = $dataService.arrayObjectIndexOf($scope.meetingNameOptions, $scope.rf.meetingName, "label", false);
-            if (index === -1) {
-                //alert('Create new user');
-                $scope.isNewMeeting = true;
-                $scope.haveMeeting = false;
-            } else {
-                //alert('User exist');
-                $scope.rf.recorderName = $scope.userList[index].label;
-                $scope.recorderFieldDisable = true;
-                $scope.meetingFieldDisable = true;
-                $scope.haveMeeting = true;
-                $scope.isNewMeeting = false;
-            }
+            $scope.$evalAsync(() => {
+
+                if (index === -1) {
+                    //alert('Create new user');
+                    $scope.isNewMeeting = true;
+                    $scope.haveMeeting = false;
+                } else {
+                    //alert('User exist');
+                    $scope.rf.recorderName = $scope.userList[index].label;
+                    $scope.recorderFieldDisable = true;
+                    $scope.meetingFieldDisable = true;
+                    $scope.haveMeeting = true;
+                    $scope.isNewMeeting = false;
+                }
+            });
 
         };
 

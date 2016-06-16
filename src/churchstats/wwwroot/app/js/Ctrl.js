@@ -24,36 +24,59 @@
         $scope.isNewUser = false;
         $scope.isNewMeeting = false;
         $scope.haveMeeting = false;
+        var recorderFieldTimeout;
+        $('#recorderName')
+            .keypress(function () {
+            if (recorderFieldTimeout) {
+                clearTimeout(recorderFieldTimeout);
+                recorderFieldTimeout = null;
+            }
+            recorderFieldTimeout = setTimeout($scope.onBlurRecorder, 1500);
+        });
+        var meetingFieldTimeout;
+        $('#meetingName')
+            .keypress(function () {
+            if (meetingFieldTimeout) {
+                clearTimeout(meetingFieldTimeout);
+                meetingFieldTimeout = null;
+            }
+            meetingFieldTimeout = setTimeout($scope.onBlurMeeting, 1500);
+        });
         $scope.onBlurRecorder = function () {
             if (!$scope.rf.recorderName) {
                 return;
             }
             var index = $dataService.arrayObjectIndexOf($scope.userList, $scope.rf.recorderName, "label", false);
-            if (index === -1) {
-                $scope.isNewUser = true;
-            }
-            else {
-                $scope.rf.recorderName = $scope.userList[index].label;
-                $scope.haveRecorder = true;
-                $scope.isNewUser = false;
-            }
+            $scope.$evalAsync(function () {
+                if (index === -1) {
+                    $scope.haveRecorder = false;
+                    $scope.isNewUser = true;
+                }
+                else {
+                    $scope.rf.recorderName = $scope.userList[index].label;
+                    $scope.haveRecorder = true;
+                    $scope.isNewUser = false;
+                }
+            });
         };
         $scope.onBlurMeeting = function () {
             if (!$scope.rf.meetingName) {
                 return;
             }
             var index = $dataService.arrayObjectIndexOf($scope.meetingNameOptions, $scope.rf.meetingName, "label", false);
-            if (index === -1) {
-                $scope.isNewMeeting = true;
-                $scope.haveMeeting = false;
-            }
-            else {
-                $scope.rf.recorderName = $scope.userList[index].label;
-                $scope.recorderFieldDisable = true;
-                $scope.meetingFieldDisable = true;
-                $scope.haveMeeting = true;
-                $scope.isNewMeeting = false;
-            }
+            $scope.$evalAsync(function () {
+                if (index === -1) {
+                    $scope.isNewMeeting = true;
+                    $scope.haveMeeting = false;
+                }
+                else {
+                    $scope.rf.recorderName = $scope.userList[index].label;
+                    $scope.recorderFieldDisable = true;
+                    $scope.meetingFieldDisable = true;
+                    $scope.haveMeeting = true;
+                    $scope.isNewMeeting = false;
+                }
+            });
         };
         $scope.userList = [
             {
