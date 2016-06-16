@@ -68,19 +68,36 @@
 
 
         // Testing service calls, can be removed later. 
-        var getPersons = () => {
-            var url = baseWebApiUrl + 'api/values/get';
-            var deferred = $q.defer();
+        var getAllUsers = () => {
 
-            $http.get(url)
-                .then(response => {
-                    trimObjectProperties(response.data);
-                    deferred.resolve(response.data);
-                }, (response) => {
-                    alertFailed(response);
-                    deferred.reject(response);
-                });
-            return deferred.promise;
+            return [
+                {
+                    'label': 'Eric Tran',
+                    'id': 1,
+                    'isAttend': null
+                },
+                {
+                    'label': 'Daniel Delamare',
+                    'id': 2,
+                    'isAttend': null
+                },
+                {
+                    'label': 'Milky Man',
+                    'id': 3,
+                    'isAttend': null
+                },
+                {
+                    'label': 'Chris Chang',
+                    'id': 4,
+                    'isAttend': null
+                },
+                {
+                    'label': 'Bill Franko',
+                    'id': 5,
+                    'isAttend': null
+                }
+
+            ];
         };
 
         var addPerson = (person) => {
@@ -99,24 +116,7 @@
         };
 
 
-        // Repo Form services
-        var saveForm = (formdata) => {
-            var url = baseWebApiUrl + 'api/RepoForm/SaveForm';
-            var deferred = $q.defer();
-
-            $http.post(url, formdata)
-                .then(() => {
-                    alert("Submission successful.");
-                    deferred.resolve();
-                }, (response) => {
-                    alertFailed(response);
-                    deferred.reject(response);
-                });
-            return deferred.promise;
-        }
-
-
-        // Google api 
+       // Google api 
         var getLocation = (val) => {
             var url = baseWebApiUrl + 'api/RepoForm/SaveForm';
             var deferred = $q.defer();
@@ -207,9 +207,7 @@
 
         return {
             getUser: getUser,
-            getTypeAheadData: getTypeAheadData,
-            saveForm: saveForm,
-            getPersons: getPersons,
+            getAllUsers: getAllUsers,
             addPerson: addPerson,
             getLocation: getLocation,
             getForms: getForms,

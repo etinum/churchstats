@@ -128,34 +128,7 @@
         };
 
         // dummy data for checkbox.
-        $scope.userList = [
-            {
-                'label': 'Eric Tran',
-                'id': 1,
-                'isAttend': null
-            },
-            {
-                'label': 'Daniel Delamare',
-                'id': 2,
-                'isAttend': null
-            },
-            {
-                'label': 'Milky Man',
-                'id': 3,
-                'isAttend': null
-            },
-            {
-                'label': 'Chris Chang',
-                'id': 4,
-                'isAttend': null
-            },
-            {
-                'label': 'Bill Franko',
-                'id': 5,
-                'isAttend': null
-            }
-
-        ];
+        $scope.userList = $dataService.getAllUsers();
 
         // dummy data for meeting type
         $scope.meetingTypeOptions = [
