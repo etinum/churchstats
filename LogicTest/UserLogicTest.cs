@@ -45,5 +45,26 @@ namespace LogicTest
 
             userLogic.ToString();
         }
+
+        [TestMethod]
+        public void SaveMemberForMeetingTest()
+        {
+            var meetingID = 0;
+            var userID = 0;
+            var firstName = string.Empty;
+            var lastName = string.Empty;
+            Assert.IsFalse( userLogic.SaveMemberForMeeting(ref userID, firstName, lastName, meetingID));
+
+            meetingID = 1;
+            Assert.IsFalse(userLogic.SaveMemberForMeeting(ref userID, firstName, lastName, meetingID));
+
+            //Add new user and add member to meeting
+            firstName = "abc";
+            lastName = "def";
+            Assert.IsTrue(userLogic.SaveMemberForMeeting(ref userID, firstName, lastName, meetingID));
+            Assert.IsTrue(userID > 0);
+            
+        }
+
     }
 }

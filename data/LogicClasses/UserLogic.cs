@@ -69,6 +69,22 @@ namespace data
             users = _ctx.X_User_Meeting.Where(xum => xum.MeetingId == meetingId).Select(xum => xum.User).ToList();
             return users;
         }
+        //This method search existing user and add to meeting
+        public bool SaveMemberForMeeting(ref int userID, string firstName, string lastName, int meetingId)
+        {
+            if (meetingId == 0) return false;
+            if (userID == 0)
+            {
+                if ((string.IsNullOrEmpty(firstName) && string.IsNullOrEmpty(lastName)))
+                    return false;
+                else //add new user and add this user as a member of the meeting
+                {
+                    userID = AddUser(firstName, lastName);
+                }
+            }
+            _ctx.X_User_Meeting.Add(new X_User_Meeting { MeetingId = meetingId, UserId = userID });
+            return _ctx.SaveChanges() > 0;
+        }
 
         // This function returns type ahead values. It should consist of all users currently not associated to this meeting id.
         public IEnumerable<User> GetMembersForUserAdd(int meetingId)

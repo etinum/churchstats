@@ -29,5 +29,22 @@ namespace data
             _ctx.X_User_Meeting.Add(newLink);
             return _ctx.SaveChanges() > 0;
         }
+        public IEnumerable<Meeting> GetMeetingsByUser(int userId)
+        {
+            var meetingIds = _ctx.X_User_Meeting.Where(x => x.UserId == userId).Select(x=>x.MeetingId);
+            return _ctx.Meetings.Where(x => meetingIds.Contains(x.Id)).ToList();
+        }
+        public IEnumerable<MeetingType> GetMeetingType()
+        {
+            return _ctx.MeetingTypes.ToList();
+        }
+        public bool SaveMeeting(string meetingName, int meetingTypeId)
+        {
+            var meeting = new Meeting();
+            meeting.Name = meetingName;
+            meeting.MeetingTypeId = meetingTypeId;
+            _ctx.Meetings.Add(meeting);
+            return _ctx.SaveChanges() > 0;
+        }
     }
 }
