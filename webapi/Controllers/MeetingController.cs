@@ -37,5 +37,18 @@ namespace webapi.Controllers
             return meetingLogic.AddUserToMeeting(userId, meetingId);
         }
 
+        public IEnumerable<MeetingModel> GetMeetingsByUser(int userId)
+        {
+            return mapper.Map<IEnumerable<Meeting>, IEnumerable<MeetingModel>>(meetingLogic.GetMeetingsByUser(userId));
+        }
+
+        public IEnumerable<MeetingType> GetMeetingType()
+        {
+            return meetingLogic.GetMeetingType();
+        }
+        public bool SaveMeeting(string meetingName, int meetingTypeId)
+        {
+            return meetingLogic.SaveMeeting(meetingName, meetingTypeId);
+        }
     }
 }

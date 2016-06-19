@@ -73,7 +73,14 @@ namespace webapi.Controllers
             return mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(userLogic.GetMembersForUserAdd(id));
         }
 
+        public bool SaveMemberForMeeting(int userId, string firstName, string lastName, int meetingId)
+        {
+            return userLogic.SaveMemberForMeeting(ref userId, firstName, lastName, meetingId);
+        }
 
-
+        public IEnumerable<UserModel> GetMemberForUserAdd(int meetingId)
+        {
+            return mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(userLogic.GetMembersForUserAdd(meetingId));
+        }
     }
 }
