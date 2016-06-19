@@ -14,10 +14,13 @@ namespace webapi.Mappers
         {
             CreateMap<User, UserModel>();
             CreateMap<UserModel, User>();
+            
 
             CreateMap<ViewModels.MeetingModel, data.Meeting>();
             CreateMap<data.Meeting, ViewModels.MeetingModel>();
 
+            CreateMap<Attendance, AttendanceModel>();
+            CreateMap<AttendanceModel, Attendance>();
         }
     }
 }
