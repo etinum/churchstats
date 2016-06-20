@@ -2,14 +2,23 @@ namespace webapi.Hub
 {
     public class AttendHub : Microsoft.AspNet.SignalR.Hub
     {
-        public void Subscribe(string customerId)
+        public void TestAll(string value)
         {
-            Groups.Add(Context.ConnectionId, customerId);
+            Clients.All.ClientCall();
+        }
+        public void TestGroup(string groupName, string value)
+        {
+            Clients.Group(groupName, null).SendAlert(value);
         }
 
-        public void Unsubscribe(string customerId)
+        public void Subscribe(string meetingId)
         {
-            Groups.Remove(Context.ConnectionId, customerId);
+            Groups.Add(Context.ConnectionId, meetingId);
+        }
+
+        public void Unsubscribe(string meetingId)
+        {
+            Groups.Remove(Context.ConnectionId, meetingId);
         }
     }
 }
