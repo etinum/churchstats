@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using webapi.Hub;
+using webapi.Hubs;
 using webapi.Mappers;
 using webapi.ViewModels;
 

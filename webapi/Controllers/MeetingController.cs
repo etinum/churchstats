@@ -5,9 +5,9 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using data;
-using webapi.Hub;
 using webapi.ViewModels;
 using AutoMapper;
+using webapi.Hubs;
 using webapi.Mappers;
 
 namespace webapi.Controllers

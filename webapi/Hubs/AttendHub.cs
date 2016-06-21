@@ -1,4 +1,4 @@
-namespace webapi.Hub
+namespace webapi.Hubs
 {
     public class AttendHub : Microsoft.AspNet.SignalR.Hub
     {
