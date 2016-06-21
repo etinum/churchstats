@@ -14,21 +14,21 @@ namespace webapi.Controllers
 {
     public class AttendanceController : ApiControllerWithHub<AttendHub>
     {
-        IMapper mapper;
-        AttendanceLogic attendanceLogic;
+        readonly IMapper _mapper;
+        readonly AttendanceLogic _attendanceLogic;
         public AttendanceController()
         {
             var config = new MapperConfiguration(cfg => {
                 cfg.AddProfile<ModelMapper>();
             });
-            mapper = config.CreateMapper();
-            attendanceLogic = new AttendanceLogic();
+            _mapper = config.CreateMapper();
+            _attendanceLogic = new AttendanceLogic();
         }
 
         [HttpPost]
         public IEnumerable<AttendanceModel> GetMeetingUpdate(int meetingId, DateTime updatesSince)
         {
-            return mapper.Map<IEnumerable<Attendance>,IEnumerable<AttendanceModel>>( attendanceLogic.GetMeetingUpdate(meetingId, updatesSince));
+            return _mapper.Map<IEnumerable<Attendance>,IEnumerable<AttendanceModel>>( _attendanceLogic.GetMeetingUpdate(meetingId, updatesSince));
         }
 
         // Save attendance instance and alert all the subscribed clients
@@ -36,7 +36,7 @@ namespace webapi.Controllers
         public bool SaveAttendance(int userId, int meetingId, bool isAttend, int recorderId)
         {
             Hub.Clients.Group(meetingId.ToString(), null).ClientCall();
-            return attendanceLogic.SaveAttendance(userId, meetingId, isAttend, recorderId);
+            return _attendanceLogic.SaveAttendance(userId, meetingId, isAttend, recorderId);
         }
     }
 }
