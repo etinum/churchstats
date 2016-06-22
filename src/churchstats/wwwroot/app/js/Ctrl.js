@@ -11,12 +11,7 @@
         hub.client.ClientCall = function () {
             alert('hello value, world');
         };
-        $.connection.hub.start()
-            .done(function () {
-            if (!$scope.$$phase) {
-                $scope.$apply();
-            }
-        });
+        $.connection.hub.start();
         $scope.rf = {};
         $scope.haveRecorder = false;
         $scope.recorderFieldDisable = false;
@@ -70,7 +65,7 @@
                     $scope.haveMeeting = false;
                 }
                 else {
-                    $scope.rf.recorderName = $scope.userList[index].label;
+                    $scope.rf.meetingName = $scope.meetingNameOptions[index].label;
                     $scope.recorderFieldDisable = true;
                     $scope.meetingFieldDisable = true;
                     $scope.haveMeeting = true;

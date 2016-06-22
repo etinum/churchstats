@@ -41,13 +41,7 @@
             alert('hello value, world');
         };
 
-        $.connection.hub.start()
-            .done(() => {
-                if (!$scope.$$phase) {
-                    $scope.$apply();
-                }
-
-            });
+        $.connection.hub.start();
 
         $scope.rf = {};
         $scope.haveRecorder = false;
@@ -117,7 +111,7 @@
                     $scope.haveMeeting = false;
                 } else {
                     //alert('User exist');
-                    $scope.rf.recorderName = $scope.userList[index].label;
+                    $scope.rf.meetingName = $scope.meetingNameOptions[index].label;
                     $scope.recorderFieldDisable = true;
                     $scope.meetingFieldDisable = true;
                     $scope.haveMeeting = true;
