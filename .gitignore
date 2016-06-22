@@ -79,3 +79,4 @@ project.lock.json
 *.swp
 src/*/node_modules/*
 
+.vs/
