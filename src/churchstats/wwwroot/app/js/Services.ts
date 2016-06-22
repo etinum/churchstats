@@ -69,35 +69,18 @@
 
         // Testing service calls, can be removed later. 
         var getAllUsers = () => {
+            var url = baseWebApiUrl + 'api/User/Get';
+            var deferred = $q.defer();
 
-            return [
-                {
-                    'label': 'Eric Tran',
-                    'id': 1,
-                    'isAttend': null
-                },
-                {
-                    'label': 'Daniel Delamare',
-                    'id': 2,
-                    'isAttend': null
-                },
-                {
-                    'label': 'Milky Man',
-                    'id': 3,
-                    'isAttend': null
-                },
-                {
-                    'label': 'Chris Chang',
-                    'id': 4,
-                    'isAttend': null
-                },
-                {
-                    'label': 'Bill Franko',
-                    'id': 5,
-                    'isAttend': null
-                }
-
-            ];
+            $http.get(url)
+                .then(response => {
+                    trimObjectProperties(response.data);
+                    deferred.resolve(response.data);
+                }, (response) => {
+                    alertFailed(response);
+                    deferred.reject(response);
+                });
+            return deferred.promise;
         };
 
         var addPerson = (person) => {

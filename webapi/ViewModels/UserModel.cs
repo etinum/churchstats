@@ -17,5 +17,13 @@ namespace webapi.ViewModels
         public Nullable<bool> isBaptized { get; set; }
         public string MiddleName { get; set; }
         public string Notes { get; set; }
+
+        public string Label
+        {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+        }
     }
 }

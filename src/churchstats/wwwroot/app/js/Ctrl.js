@@ -73,7 +73,10 @@
                 }
             });
         };
-        $scope.userList = $dataService.getAllUsers();
+        $dataService.getAllUsers().then(function (data) {
+            $scope.userList = data;
+        });
+        ;
         $scope.meetingTypeOptions = [
             {
                 'label': 'Bible Study',

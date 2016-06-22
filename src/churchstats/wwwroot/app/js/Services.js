@@ -40,33 +40,17 @@
             alert("There was a problem with the back end call, here is your status code: " + response.status);
         };
         var getAllUsers = function () {
-            return [
-                {
-                    'label': 'Eric Tran',
-                    'id': 1,
-                    'isAttend': null
-                },
-                {
-                    'label': 'Daniel Delamare',
-                    'id': 2,
-                    'isAttend': null
-                },
-                {
-                    'label': 'Milky Man',
-                    'id': 3,
-                    'isAttend': null
-                },
-                {
-                    'label': 'Chris Chang',
-                    'id': 4,
-                    'isAttend': null
-                },
-                {
-                    'label': 'Bill Franko',
-                    'id': 5,
-                    'isAttend': null
-                }
-            ];
+            var url = baseWebApiUrl + 'api/User/Get';
+            var deferred = $q.defer();
+            $http.get(url)
+                .then(function (response) {
+                trimObjectProperties(response.data);
+                deferred.resolve(response.data);
+            }, function (response) {
+                alertFailed(response);
+                deferred.reject(response);
+            });
+            return deferred.promise;
         };
         var addPerson = function (person) {
             var url = baseWebApiUrl + 'api/values/post';

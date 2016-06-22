@@ -122,7 +122,9 @@
         };
 
         // dummy data for checkbox.
-        $scope.userList = $dataService.getAllUsers();
+        $dataService.getAllUsers().then(data => {
+            $scope.userList = data;
+        });;
 
         // dummy data for meeting type
         $scope.meetingTypeOptions = [
