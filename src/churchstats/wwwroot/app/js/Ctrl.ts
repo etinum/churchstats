@@ -121,61 +121,24 @@
 
         };
 
-        // dummy data for checkbox.
+        // data for checkbox.
         $dataService.getAllUsers().then(data => {
             $scope.userList = data;
         });;
 
-        // dummy data for meeting type
-        $scope.meetingTypeOptions = [
-            {
-                'label': 'Bible Study',
-                'id': 1
-            },
-            {
-                'label': '2s 3s',
-                'id': 2
-            },
-            {
-                'label': 'Cluster LT Meeting',
-                'id': 3
-            },
-            {
-                'label': 'Lord\'s Table',
-                'id': 4
-            },
-            {
-                'label': 'Small Group',
-                'id': 5
-            }
 
-        ];
+        //Data for meetings
+        $dataService.getAllMeetings().then(data => {
+            $scope.meetingNameOptions = data;
+        });;
 
-        $scope.meetingNameOptions = [
-            {
-                'label': 'Folsom Home Meeting',
-                'id': 1
-            },
-            {
-                'label': 'Fair Oaks Small Group',
-                'id': 2
-            },
-            {
-                'label': 'Sacrament Cluster LT Meeting',
-                'id': 3
-            },
-            {
-                'label': 'Sacramento Lord\'s Table',
-                'id': 4
-            },
-            {
-                'label': 'Chang\'s Natomas Friday Night',
-                'id': 5
-            }
 
-        ];
+        //Data for meeting types
+        $dataService.getAllMeetingTypes().then(data => {
+            $scope.meetingTypeOptions = data;
+        });;
 
-        //= ['Bible Study', '2s 3s', 'Cluster LT Meeting', 'Lord\'s Table', 'Small Group'];
+
 
 
         $scope.meetingTypeChanged = () => {

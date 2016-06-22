@@ -15,5 +15,8 @@ namespace webapi.ViewModels
         public Nullable<dayofweek> DayOfTheWeek { get; set; }
         public string Description { get; set; }
         public Nullable<System.DateTime> UsualTime { get; set; }
+
+        public string Label { get { return Name; } }
+
     }
 }

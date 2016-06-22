@@ -16,6 +16,16 @@
             }
             return a;
         };
+        var callAndDefer = function (url, deferObject) {
+            $http.get(url)
+                .then(function (response) {
+                trimObjectProperties(response.data);
+                deferObject.resolve(response.data);
+            }, function (response) {
+                alertFailed(response);
+                deferObject.reject(response);
+            });
+        };
         function arrayObjectIndexOf(myArray, searchTerm, property, caseSensitive) {
             caseSensitive = typeof caseSensitive !== 'undefined' ? caseSensitive : true;
             var len = myArray.length;
@@ -42,14 +52,19 @@
         var getAllUsers = function () {
             var url = baseWebApiUrl + 'api/User/Get';
             var deferred = $q.defer();
-            $http.get(url)
-                .then(function (response) {
-                trimObjectProperties(response.data);
-                deferred.resolve(response.data);
-            }, function (response) {
-                alertFailed(response);
-                deferred.reject(response);
-            });
+            callAndDefer(url, deferred);
+            return deferred.promise;
+        };
+        var getAllMeetings = function () {
+            var url = baseWebApiUrl + 'api/Meeting/Get';
+            var deferred = $q.defer();
+            callAndDefer(url, deferred);
+            return deferred.promise;
+        };
+        var getAllMeetingTypes = function () {
+            var url = baseWebApiUrl + 'api/Meeting/GetMeetingType';
+            var deferred = $q.defer();
+            callAndDefer(url, deferred);
             return deferred.promise;
         };
         var addPerson = function (person) {
@@ -141,6 +156,8 @@
         return {
             getUser: getUser,
             getAllUsers: getAllUsers,
+            getAllMeetings: getAllMeetings,
+            getAllMeetingTypes: getAllMeetingTypes,
             addPerson: addPerson,
             getLocation: getLocation,
             getForms: getForms,

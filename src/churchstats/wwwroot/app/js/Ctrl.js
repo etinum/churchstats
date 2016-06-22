@@ -77,50 +77,14 @@
             $scope.userList = data;
         });
         ;
-        $scope.meetingTypeOptions = [
-            {
-                'label': 'Bible Study',
-                'id': 1
-            },
-            {
-                'label': '2s 3s',
-                'id': 2
-            },
-            {
-                'label': 'Cluster LT Meeting',
-                'id': 3
-            },
-            {
-                'label': 'Lord\'s Table',
-                'id': 4
-            },
-            {
-                'label': 'Small Group',
-                'id': 5
-            }
-        ];
-        $scope.meetingNameOptions = [
-            {
-                'label': 'Folsom Home Meeting',
-                'id': 1
-            },
-            {
-                'label': 'Fair Oaks Small Group',
-                'id': 2
-            },
-            {
-                'label': 'Sacrament Cluster LT Meeting',
-                'id': 3
-            },
-            {
-                'label': 'Sacramento Lord\'s Table',
-                'id': 4
-            },
-            {
-                'label': 'Chang\'s Natomas Friday Night',
-                'id': 5
-            }
-        ];
+        $dataService.getAllMeetings().then(function (data) {
+            $scope.meetingNameOptions = data;
+        });
+        ;
+        $dataService.getAllMeetingTypes().then(function (data) {
+            $scope.meetingTypeOptions = data;
+        });
+        ;
         $scope.meetingTypeChanged = function () {
             alert('hi: ' + $scope.meetingTypeOptions.filter(function (item) { return item.id === parseInt($scope.rf.meetingTypeId); })[0].label);
         };

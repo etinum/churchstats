@@ -14,41 +14,41 @@ namespace webapi.Controllers
 {
     public class MeetingController : ApiControllerWithHub<AttendHub>
     {
-        MeetingLogic meetingLogic;
-        private IMapper mapper;
+        MeetingLogic _meetingLogic;
+        private IMapper _mapper;
 
         public MeetingController()
         {
             var config = new MapperConfiguration(cfg => {
                 cfg.AddProfile<ModelMapper>();
             });
-            mapper = config.CreateMapper();
-            meetingLogic = new MeetingLogic();
+            _mapper = config.CreateMapper();
+            _meetingLogic = new MeetingLogic();
         }
 
         public IEnumerable<MeetingModel> Get()
         {
             Hub.Clients.All.ClientCall();
-            return mapper.Map<List<MeetingModel>>(meetingLogic.GetAllMeetings());
+            return _mapper.Map<List<MeetingModel>>(_meetingLogic.GetAllMeetings());
         }
 
         public bool AddUserToMeeting(int userId, int meetingId)
         {
-            return meetingLogic.AddUserToMeeting(userId, meetingId);
+            return _meetingLogic.AddUserToMeeting(userId, meetingId);
         }
 
         public IEnumerable<MeetingModel> GetMeetingsByUser(int userId)
         {
-            return mapper.Map<IEnumerable<Meeting>, IEnumerable<MeetingModel>>(meetingLogic.GetMeetingsByUser(userId));
+            return _mapper.Map<IEnumerable<Meeting>, IEnumerable<MeetingModel>>(_meetingLogic.GetMeetingsByUser(userId));
         }
 
-        public IEnumerable<MeetingType> GetMeetingType()
+        public IEnumerable<MeetingTypeModel> GetMeetingType()
         {
-            return meetingLogic.GetMeetingType();
+            return _mapper.Map<IEnumerable<MeetingType>, IEnumerable<MeetingTypeModel>>(_meetingLogic.GetMeetingType());
         }
         public bool SaveMeeting(string meetingName, int meetingTypeId)
         {
-            return meetingLogic.SaveMeeting(meetingName, meetingTypeId);
+            return _meetingLogic.SaveMeeting(meetingName, meetingTypeId);
         }
     }
 }
