@@ -12,7 +12,7 @@ namespace webapi.ViewModels
         public int Id { get; set; }
         public string Name { get; set; }
         public int MeetingTypeId { get; set; }
-        public Nullable<dayofweek> DayOfTheWeek { get; set; }
+        public Nullable<DayOfWeek> DayOfTheWeek { get; set; }
         public string Description { get; set; }
         public Nullable<System.DateTime> UsualTime { get; set; }
 

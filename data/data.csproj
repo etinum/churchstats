@@ -69,12 +69,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ChurchStatsModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Day.cs">
-      <DependentUpon>ChurchStatsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="dayofweek.cs">
-      <DependentUpon>ChurchStatsModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Group.cs">
       <DependentUpon>ChurchStatsModel.tt</DependentUpon>
     </Compile>
