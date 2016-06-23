@@ -31,7 +31,7 @@ namespace data
 
             var attendencesForUserToday = _ctx.Attendances.Where(att => att.UserId == userId && att.MeetingId == meetingId && att.DateRecorded > DateTime.Today);
 
-            if (attendencesForUserToday.Count() == 0)
+            if (!attendencesForUserToday.Any())
             {
                 var attendance = new Attendance
                 {

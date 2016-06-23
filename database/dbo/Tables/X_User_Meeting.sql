@@ -3,9 +3,11 @@
     [MeetingId] INT NOT NULL,
     [Active]    BIT NOT NULL,
     CONSTRAINT [PK_X_User_Meeting] PRIMARY KEY CLUSTERED ([UserId] ASC, [MeetingId] ASC),
-    CONSTRAINT [FK_X_User_Meeting_Meeting] FOREIGN KEY ([MeetingId]) REFERENCES [dbo].[Meetings] ([Id]),
-    CONSTRAINT [FK_X_User_Meeting_User] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id])
+    CONSTRAINT [FK_X_User_Meeting_Meeting] FOREIGN KEY ([MeetingId]) REFERENCES [dbo].[Meeting] ([Id]),
+    CONSTRAINT [FK_X_User_Meeting_User] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id])
 );
+
+
 
 
 
