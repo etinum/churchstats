@@ -61,6 +61,12 @@
             callAndDefer(url, deferred);
             return deferred.promise;
         };
+        var getUsersForMeeting = function (index) {
+            var url = baseWebApiUrl + 'api/User/GetMembersForMeeting/' + index;
+            var deferred = $q.defer();
+            callAndDefer(url, deferred);
+            return deferred.promise;
+        };
         var getAllMeetingTypes = function () {
             var url = baseWebApiUrl + 'api/Meeting/GetMeetingType';
             var deferred = $q.defer();
@@ -158,6 +164,7 @@
             getAllUsers: getAllUsers,
             getAllMeetings: getAllMeetings,
             getAllMeetingTypes: getAllMeetingTypes,
+            getUsersForMeeting: getUsersForMeeting,
             addPerson: addPerson,
             getLocation: getLocation,
             getForms: getForms,

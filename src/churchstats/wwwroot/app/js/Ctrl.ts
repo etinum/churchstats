@@ -112,10 +112,15 @@
                 } else {
                     //alert('User exist');
                     $scope.rf.meetingName = $scope.meetingNameOptions[index].label;
-                    $scope.recorderFieldDisable = true;
-                    $scope.meetingFieldDisable = true;
-                    $scope.haveMeeting = true;
-                    $scope.isNewMeeting = false;
+
+                    $dataService.getUsersForMeeting($scope.meetingNameOptions[index].id).then(data => {
+                        $scope.meetingUsers = data;
+                        $scope.recorderFieldDisable = true;
+                        $scope.meetingFieldDisable = true;
+                        $scope.haveMeeting = true;
+                        $scope.isNewMeeting = false;
+                        //alert('|' + JSON.stringify(data) + '|');
+                    });
                 }
             });
 
@@ -124,19 +129,18 @@
         // data for checkbox.
         $dataService.getAllUsers().then(data => {
             $scope.userList = data;
-        });;
-
+        });
 
         //Data for meetings
         $dataService.getAllMeetings().then(data => {
             $scope.meetingNameOptions = data;
-        });;
+        });
 
 
         //Data for meeting types
         $dataService.getAllMeetingTypes().then(data => {
             $scope.meetingTypeOptions = data;
-        });;
+        });
 
 
 

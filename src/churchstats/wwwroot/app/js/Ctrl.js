@@ -66,25 +66,25 @@
                 }
                 else {
                     $scope.rf.meetingName = $scope.meetingNameOptions[index].label;
-                    $scope.recorderFieldDisable = true;
-                    $scope.meetingFieldDisable = true;
-                    $scope.haveMeeting = true;
-                    $scope.isNewMeeting = false;
+                    $dataService.getUsersForMeeting($scope.meetingNameOptions[index].id).then(function (data) {
+                        $scope.meetingUsers = data;
+                        $scope.recorderFieldDisable = true;
+                        $scope.meetingFieldDisable = true;
+                        $scope.haveMeeting = true;
+                        $scope.isNewMeeting = false;
+                    });
                 }
             });
         };
         $dataService.getAllUsers().then(function (data) {
             $scope.userList = data;
         });
-        ;
         $dataService.getAllMeetings().then(function (data) {
             $scope.meetingNameOptions = data;
         });
-        ;
         $dataService.getAllMeetingTypes().then(function (data) {
             $scope.meetingTypeOptions = data;
         });
-        ;
         $scope.meetingTypeChanged = function () {
             alert('hi: ' + $scope.meetingTypeOptions.filter(function (item) { return item.id === parseInt($scope.rf.meetingTypeId); })[0].label);
         };

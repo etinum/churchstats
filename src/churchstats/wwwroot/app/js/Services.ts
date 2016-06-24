@@ -96,6 +96,14 @@
             return deferred.promise;
         };
 
+        var getUsersForMeeting = (index) => {
+            var url = baseWebApiUrl + 'api/User/GetMembersForMeeting/' + index;
+            var deferred = $q.defer();
+
+            callAndDefer(url, deferred);
+            return deferred.promise;
+        };
+
         var getAllMeetingTypes = () => {
             var url = baseWebApiUrl + 'api/Meeting/GetMeetingType';
             var deferred = $q.defer();
@@ -214,6 +222,7 @@
             getAllUsers: getAllUsers,
             getAllMeetings: getAllMeetings,
             getAllMeetingTypes: getAllMeetingTypes,
+            getUsersForMeeting: getUsersForMeeting,
             addPerson: addPerson,
             getLocation: getLocation,
             getForms: getForms,

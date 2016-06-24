@@ -52,7 +52,7 @@
             <div class="panel-heading">Meeting Members (Present: X1, Not Present: X2, Unknown: X3, Total Possible: X4)</div>
             <div class="panel-body">
                 <!--<select ng-model="filterSelected" ng-change="filter()" class="form-control" ng-options="filter as filter.label for filter in filterOptions track by filter.id"></select>-->
-                <div ng-repeat="item in userList track by item.id">
+                <div ng-repeat="item in meetingUsers track by item.id">
                     <div class="form-group">
                         <label for="recorderName" class="col-sm-3 control-label">{{item.label}}</label>
                         <div class="col-sm-9">
