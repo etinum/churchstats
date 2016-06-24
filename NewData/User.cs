@@ -26,15 +26,15 @@ namespace NewData
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Gender { get; set; }
+        public Nullable<bool> Gender { get; set; }
         public Nullable<int> BirthYear { get; set; }
         public byte[] Picture { get; set; }
-        public Nullable<bool> isSaved { get; set; }
-        public Nullable<bool> isBaptized { get; set; }
+        public Nullable<bool> IsSaved { get; set; }
+        public Nullable<bool> IsBaptized { get; set; }
         public string MiddleName { get; set; }
         public string Notes { get; set; }
         public string Email { get; set; }
-        public Nullable<int> PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
         public Nullable<System.DateTime> BaptizedDate { get; set; }
         public Nullable<System.DateTime> SavedDate { get; set; }
         public string Locality { get; set; }

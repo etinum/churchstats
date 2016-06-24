@@ -1,4 +1,4 @@
-﻿using data;
+﻿using NewData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +12,8 @@ namespace webapi.Mappers
     {
         protected override void Configure()
         {
-            CreateMap<User, UserModel>();
-            CreateMap<UserModel, User>();
+            CreateMap<User, UserViewModel>();
+            CreateMap<UserViewModel, User>();
 
             CreateMap<MeetingModel, Meeting>();
             CreateMap<Meeting, MeetingModel>();

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="CstatsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CstatsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Attendance">
           <Key>
             <PropertyRef Name="Id" />
@@ -15,7 +15,7 @@
           <Property Name="RecorderId" Type="int" Nullable="false" />
           <Property Name="DateRecorded" Type="datetime" Nullable="false" />
           <Property Name="LastUpdated" Type="datetime" Nullable="false" />
-          <Property Name="isAttend" Type="bit" Nullable="false" />
+          <Property Name="IsAttend" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Group">
           <Key>
@@ -23,6 +23,9 @@
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="LastUpdated" Type="datetime" />
+          <Property Name="Active" Type="bit" />
         </EntityType>
         <EntityType Name="Meeting">
           <Key>
@@ -34,6 +37,8 @@
           <Property Name="DayOfTheWeek" Type="int" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="UsualTime" Type="datetime" />
+          <Property Name="DateCreated" Type="datetime" />
+          <Property Name="LastUpdated" Type="datetime" />
         </EntityType>
         <EntityType Name="MeetingType">
           <Key>
@@ -41,6 +46,7 @@
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Active" Type="bit" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -49,18 +55,18 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Gender" Type="nvarchar" MaxLength="10" />
+          <Property Name="Gender" Type="bit" />
           <Property Name="BirthYear" Type="int" />
           <Property Name="Picture" Type="varbinary(max)" />
-          <Property Name="isSaved" Type="bit" />
-          <Property Name="isBaptized" Type="bit" />
+          <Property Name="IsSaved" Type="bit" />
+          <Property Name="IsBaptized" Type="bit" />
           <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
           <Property Name="Notes" Type="nvarchar(max)" />
-          <Property Name="Email" Type="nvarchar(max)" />
-          <Property Name="PhoneNumber" Type="int" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="BaptizedDate" Type="datetime" />
           <Property Name="SavedDate" Type="datetime" />
-          <Property Name="Locality" Type="nvarchar(max)" />
+          <Property Name="Locality" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="X_User_Group">
           <Key>
@@ -216,11 +222,46 @@
             <End Role="X_User_Meeting" EntitySet="X_User_Meeting" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CstatsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="CStatsEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Attendances" EntityType="CstatsModel.Attendance" />
+          <EntitySet Name="Groups" EntityType="CstatsModel.Group" />
+          <EntitySet Name="Meetings" EntityType="CstatsModel.Meeting" />
+          <EntitySet Name="MeetingTypes" EntityType="CstatsModel.MeetingType" />
+          <EntitySet Name="Users" EntityType="CstatsModel.User" />
+          <EntitySet Name="X_User_Meeting" EntityType="CstatsModel.X_User_Meeting" />
+          <AssociationSet Name="FK_Attendance_Meeting" Association="CstatsModel.FK_Attendance_Meeting">
+            <End Role="Meeting" EntitySet="Meetings" />
+            <End Role="Attendance" EntitySet="Attendances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attendance_Recorder" Association="CstatsModel.FK_Attendance_Recorder">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Attendance" EntitySet="Attendances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attendance_User" Association="CstatsModel.FK_Attendance_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Attendance" EntitySet="Attendances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Meeting_MeetingType" Association="CstatsModel.FK_Meeting_MeetingType">
+            <End Role="MeetingType" EntitySet="MeetingTypes" />
+            <End Role="Meeting" EntitySet="Meetings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_X_User_Meeting_Meeting" Association="CstatsModel.FK_X_User_Meeting_Meeting">
+            <End Role="Meeting" EntitySet="Meetings" />
+            <End Role="X_User_Meeting" EntitySet="X_User_Meeting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_X_User_Meeting_User" Association="CstatsModel.FK_X_User_Meeting_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="X_User_Meeting" EntitySet="X_User_Meeting" />
+          </AssociationSet>
+          <AssociationSet Name="X_User_Group" Association="CstatsModel.X_User_Group">
+            <End Role="Group" EntitySet="Groups" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Attendance">
           <Key>
             <PropertyRef Name="Id" />
@@ -231,64 +272,70 @@
           <Property Name="RecorderId" Type="Int32" Nullable="false" />
           <Property Name="DateRecorded" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastUpdated" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="isAttend" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Meeting" Relationship="Self.FK_Attendance_Meeting" FromRole="Attendance" ToRole="Meeting" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Attendance_Recorder" FromRole="Attendance" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.FK_Attendance_User" FromRole="Attendance" ToRole="User" />
+          <Property Name="IsAttend" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Meeting" Relationship="CstatsModel.FK_Attendance_Meeting" FromRole="Attendance" ToRole="Meeting" />
+          <NavigationProperty Name="User" Relationship="CstatsModel.FK_Attendance_Recorder" FromRole="Attendance" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="CstatsModel.FK_Attendance_User" FromRole="Attendance" ToRole="User" />
         </EntityType>
         <EntityType Name="Group">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Users" Relationship="Self.X_User_Group" FromRole="Group" ToRole="User" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdated" Type="DateTime" Precision="3" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="Users" Relationship="CstatsModel.X_User_Group" FromRole="Group" ToRole="User" />
         </EntityType>
         <EntityType Name="Meeting">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="MeetingTypeId" Type="Int32" Nullable="false" />
           <Property Name="DayOfTheWeek" Type="Int32" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="UsualTime" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Attendances" Relationship="Self.FK_Attendance_Meeting" FromRole="Meeting" ToRole="Attendance" />
-          <NavigationProperty Name="MeetingType" Relationship="Self.FK_Meeting_MeetingType" FromRole="Meeting" ToRole="MeetingType" />
-          <NavigationProperty Name="X_User_Meeting" Relationship="Self.FK_X_User_Meeting_Meeting" FromRole="Meeting" ToRole="X_User_Meeting" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Attendances" Relationship="CstatsModel.FK_Attendance_Meeting" FromRole="Meeting" ToRole="Attendance" />
+          <NavigationProperty Name="MeetingType" Relationship="CstatsModel.FK_Meeting_MeetingType" FromRole="Meeting" ToRole="MeetingType" />
+          <NavigationProperty Name="X_User_Meeting" Relationship="CstatsModel.FK_X_User_Meeting_Meeting" FromRole="Meeting" ToRole="X_User_Meeting" />
         </EntityType>
         <EntityType Name="MeetingType">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Meetings" Relationship="Self.FK_Meeting_MeetingType" FromRole="MeetingType" ToRole="Meeting" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="Meetings" Relationship="CstatsModel.FK_Meeting_MeetingType" FromRole="MeetingType" ToRole="Meeting" />
         </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Gender" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="Boolean" />
           <Property Name="BirthYear" Type="Int32" />
           <Property Name="Picture" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="isSaved" Type="Boolean" />
-          <Property Name="isBaptized" Type="Boolean" />
+          <Property Name="IsSaved" Type="Boolean" />
+          <Property Name="IsBaptized" Type="Boolean" />
           <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PhoneNumber" Type="Int32" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="BaptizedDate" Type="DateTime" Precision="3" />
           <Property Name="SavedDate" Type="DateTime" Precision="3" />
-          <Property Name="Locality" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Attendances" Relationship="Self.FK_Attendance_Recorder" FromRole="User" ToRole="Attendance" />
-          <NavigationProperty Name="Attendances1" Relationship="Self.FK_Attendance_User" FromRole="User" ToRole="Attendance" />
-          <NavigationProperty Name="X_User_Meeting" Relationship="Self.FK_X_User_Meeting_User" FromRole="User" ToRole="X_User_Meeting" />
-          <NavigationProperty Name="Groups" Relationship="Self.X_User_Group" FromRole="User" ToRole="Group" />
+          <Property Name="Locality" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Attendances" Relationship="CstatsModel.FK_Attendance_Recorder" FromRole="User" ToRole="Attendance" />
+          <NavigationProperty Name="Attendances1" Relationship="CstatsModel.FK_Attendance_User" FromRole="User" ToRole="Attendance" />
+          <NavigationProperty Name="X_User_Meeting" Relationship="CstatsModel.FK_X_User_Meeting_User" FromRole="User" ToRole="X_User_Meeting" />
+          <NavigationProperty Name="Groups" Relationship="CstatsModel.X_User_Group" FromRole="User" ToRole="Group" />
         </EntityType>
         <EntityType Name="X_User_Meeting">
           <Key>
@@ -298,12 +345,12 @@
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="MeetingId" Type="Int32" Nullable="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Meeting" Relationship="Self.FK_X_User_Meeting_Meeting" FromRole="X_User_Meeting" ToRole="Meeting" />
-          <NavigationProperty Name="User" Relationship="Self.FK_X_User_Meeting_User" FromRole="X_User_Meeting" ToRole="User" />
+          <NavigationProperty Name="Meeting" Relationship="CstatsModel.FK_X_User_Meeting_Meeting" FromRole="X_User_Meeting" ToRole="Meeting" />
+          <NavigationProperty Name="User" Relationship="CstatsModel.FK_X_User_Meeting_User" FromRole="X_User_Meeting" ToRole="User" />
         </EntityType>
         <Association Name="FK_Attendance_Meeting">
-          <End Role="Meeting" Type="Self.Meeting" Multiplicity="1" />
-          <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
+          <End Type="CstatsModel.Meeting" Role="Meeting" Multiplicity="1" />
+          <End Type="CstatsModel.Attendance" Role="Attendance" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Meeting">
               <PropertyRef Name="Id" />
@@ -314,8 +361,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Attendance_Recorder">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
+          <End Type="CstatsModel.User" Role="User" Multiplicity="1" />
+          <End Type="CstatsModel.Attendance" Role="Attendance" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="Id" />
@@ -326,8 +373,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Attendance_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
+          <End Type="CstatsModel.User" Role="User" Multiplicity="1" />
+          <End Type="CstatsModel.Attendance" Role="Attendance" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="Id" />
@@ -338,8 +385,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Meeting_MeetingType">
-          <End Role="MeetingType" Type="Self.MeetingType" Multiplicity="1" />
-          <End Role="Meeting" Type="Self.Meeting" Multiplicity="*" />
+          <End Type="CstatsModel.MeetingType" Role="MeetingType" Multiplicity="1" />
+          <End Type="CstatsModel.Meeting" Role="Meeting" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="MeetingType">
               <PropertyRef Name="Id" />
@@ -350,8 +397,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_X_User_Meeting_Meeting">
-          <End Role="Meeting" Type="Self.Meeting" Multiplicity="1" />
-          <End Role="X_User_Meeting" Type="Self.X_User_Meeting" Multiplicity="*" />
+          <End Type="CstatsModel.Meeting" Role="Meeting" Multiplicity="1" />
+          <End Type="CstatsModel.X_User_Meeting" Role="X_User_Meeting" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Meeting">
               <PropertyRef Name="Id" />
@@ -362,8 +409,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_X_User_Meeting_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="X_User_Meeting" Type="Self.X_User_Meeting" Multiplicity="*" />
+          <End Type="CstatsModel.User" Role="User" Multiplicity="1" />
+          <End Type="CstatsModel.X_User_Meeting" Role="X_User_Meeting" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="Id" />
@@ -374,45 +421,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="X_User_Group">
-          <End Role="Group" Type="Self.Group" Multiplicity="*" />
-          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <End Type="CstatsModel.Group" Role="Group" Multiplicity="*" />
+          <End Type="CstatsModel.User" Role="User" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="CStatsEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Attendances" EntityType="Self.Attendance" />
-          <EntitySet Name="Groups" EntityType="Self.Group" />
-          <EntitySet Name="Meetings" EntityType="Self.Meeting" />
-          <EntitySet Name="MeetingTypes" EntityType="Self.MeetingType" />
-          <EntitySet Name="Users" EntityType="Self.User" />
-          <EntitySet Name="X_User_Meeting" EntityType="Self.X_User_Meeting" />
-          <AssociationSet Name="FK_Attendance_Meeting" Association="Self.FK_Attendance_Meeting">
-            <End Role="Meeting" EntitySet="Meetings" />
-            <End Role="Attendance" EntitySet="Attendances" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Attendance_Recorder" Association="Self.FK_Attendance_Recorder">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Attendance" EntitySet="Attendances" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Attendance_User" Association="Self.FK_Attendance_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Attendance" EntitySet="Attendances" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Meeting_MeetingType" Association="Self.FK_Meeting_MeetingType">
-            <End Role="MeetingType" EntitySet="MeetingTypes" />
-            <End Role="Meeting" EntitySet="Meetings" />
-          </AssociationSet>
-          <AssociationSet Name="FK_X_User_Meeting_Meeting" Association="Self.FK_X_User_Meeting_Meeting">
-            <End Role="Meeting" EntitySet="Meetings" />
-            <End Role="X_User_Meeting" EntitySet="X_User_Meeting" />
-          </AssociationSet>
-          <AssociationSet Name="FK_X_User_Meeting_User" Association="Self.FK_X_User_Meeting_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="X_User_Meeting" EntitySet="X_User_Meeting" />
-          </AssociationSet>
-          <AssociationSet Name="X_User_Group" Association="Self.X_User_Group">
-            <End Role="Group" EntitySet="Groups" />
-            <End Role="User" EntitySet="Users" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -422,80 +433,86 @@
           <EntitySetMapping Name="Attendances">
             <EntityTypeMapping TypeName="CstatsModel.Attendance">
               <MappingFragment StoreEntitySet="Attendance">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
-                <ScalarProperty Name="RecorderId" ColumnName="RecorderId" />
-                <ScalarProperty Name="DateRecorded" ColumnName="DateRecorded" />
+                <ScalarProperty Name="IsAttend" ColumnName="IsAttend" />
                 <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
-                <ScalarProperty Name="isAttend" ColumnName="isAttend" />
+                <ScalarProperty Name="DateRecorded" ColumnName="DateRecorded" />
+                <ScalarProperty Name="RecorderId" ColumnName="RecorderId" />
+                <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Groups">
             <EntityTypeMapping TypeName="CstatsModel.Group">
               <MappingFragment StoreEntitySet="Group">
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Meetings">
             <EntityTypeMapping TypeName="CstatsModel.Meeting">
               <MappingFragment StoreEntitySet="Meeting">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="MeetingTypeId" ColumnName="MeetingTypeId" />
-                <ScalarProperty Name="DayOfTheWeek" ColumnName="DayOfTheWeek" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
                 <ScalarProperty Name="UsualTime" ColumnName="UsualTime" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="DayOfTheWeek" ColumnName="DayOfTheWeek" />
+                <ScalarProperty Name="MeetingTypeId" ColumnName="MeetingTypeId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MeetingTypes">
             <EntityTypeMapping TypeName="CstatsModel.MeetingType">
               <MappingFragment StoreEntitySet="MeetingType">
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="CstatsModel.User">
               <MappingFragment StoreEntitySet="User">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
-                <ScalarProperty Name="BirthYear" ColumnName="BirthYear" />
-                <ScalarProperty Name="Picture" ColumnName="Picture" />
-                <ScalarProperty Name="isSaved" ColumnName="isSaved" />
-                <ScalarProperty Name="isBaptized" ColumnName="isBaptized" />
-                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="BaptizedDate" ColumnName="BaptizedDate" />
-                <ScalarProperty Name="SavedDate" ColumnName="SavedDate" />
                 <ScalarProperty Name="Locality" ColumnName="Locality" />
+                <ScalarProperty Name="SavedDate" ColumnName="SavedDate" />
+                <ScalarProperty Name="BaptizedDate" ColumnName="BaptizedDate" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="IsBaptized" ColumnName="IsBaptized" />
+                <ScalarProperty Name="IsSaved" ColumnName="IsSaved" />
+                <ScalarProperty Name="Picture" ColumnName="Picture" />
+                <ScalarProperty Name="BirthYear" ColumnName="BirthYear" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="X_User_Meeting">
             <EntityTypeMapping TypeName="CstatsModel.X_User_Meeting">
               <MappingFragment StoreEntitySet="X_User_Meeting">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <AssociationSetMapping Name="X_User_Group" TypeName="CstatsModel.X_User_Group" StoreEntitySet="X_User_Group">
-            <EndProperty Name="Group">
-              <ScalarProperty Name="Id" ColumnName="Groups_Id" />
-            </EndProperty>
             <EndProperty Name="User">
               <ScalarProperty Name="Id" ColumnName="Users_Id" />
+            </EndProperty>
+            <EndProperty Name="Group">
+              <ScalarProperty Name="Id" ColumnName="Groups_Id" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>
