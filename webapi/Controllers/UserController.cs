@@ -18,7 +18,7 @@ namespace webapi.Controllers
     public class UserController : ApiController
     {
         readonly IMapper _mapper;
-        private CStatsEntities _ctx;
+        private readonly CStatsEntities _ctx;
 
         public UserController()
         {
@@ -33,7 +33,7 @@ namespace webapi.Controllers
         public IEnumerable<UserViewModel> GetAllUsers()
         {
             var users = _ctx.Users.ToList();
-            return _mapper.Map<IEnumerable<User>, IEnumerable<UserViewModel>>(users);
+            return _mapper.Map<IEnumerable<UserViewModel>>(users);
         }
 
         //public UserViewModel Get(int id)

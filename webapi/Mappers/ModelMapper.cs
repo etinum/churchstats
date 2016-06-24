@@ -15,11 +15,11 @@ namespace webapi.Mappers
             CreateMap<User, UserViewModel>();
             CreateMap<UserViewModel, User>();
 
-            CreateMap<MeetingModel, Meeting>();
-            CreateMap<Meeting, MeetingModel>();
+            CreateMap<MeetingViewModel, Meeting>();
+            CreateMap<Meeting, MeetingViewModel>();
 
-            CreateMap<MeetingTypeModel, MeetingType>();
-            CreateMap<MeetingType, MeetingTypeModel>();
+            CreateMap<MeetingTypeViewModel, MeetingType>();
+            CreateMap<MeetingType, MeetingTypeViewModel>();
 
             CreateMap<Attendance, AttendanceModel>();
             CreateMap<AttendanceModel, Attendance>();
