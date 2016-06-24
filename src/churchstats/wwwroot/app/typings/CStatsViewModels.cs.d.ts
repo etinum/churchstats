@@ -15,6 +15,7 @@ declare module modeltypings {
         baptizedDate: Date;
         savedDate: Date;
         locality: string;
+        fullName: string;
     }
 
     interface MeetingViewModel {

@@ -285,6 +285,9 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="ViewModels\MeetingTypeViewModel.cs.d.ts">
+      <DependentUpon>MeetingTypeViewModel.cs</DependentUpon>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="ViewModels\MeetingViewModel.cs.d.ts">
       <DependentUpon>MeetingViewModel.cs</DependentUpon>
     </TypeScriptCompile>

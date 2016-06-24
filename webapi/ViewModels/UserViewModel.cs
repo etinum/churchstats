@@ -19,5 +19,6 @@ namespace webapi.ViewModels
         public DateTime? BaptizedDate { get; set; }
         public DateTime? SavedDate { get; set; }
         public string Locality { get; set; }
+        public string FullName => FirstName + " " + LastName;
     }
 }

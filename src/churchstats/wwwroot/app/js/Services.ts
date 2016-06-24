@@ -19,15 +19,6 @@
     var service = ($http, $q, $envService) => {
 
 
-        // Helper methods
-        var trimObjectProperties = (objectToTrim) => {
-            for (var key in objectToTrim) {
-                if (objectToTrim[key] !== null && objectToTrim[key].trim)
-                    objectToTrim[key] = objectToTrim[key].trim();
-            }
-        };
-
-
         var arrayUnique = (array) => {
             var a = array.concat();
             for (var i = 0; i < a.length; ++i) {
@@ -39,16 +30,21 @@
             return a;
         };
 
-        var callAndDefer = (url, deferObject) => {
-            $http.get(url)
-                .then(response => {
-                    trimObjectProperties(response.data);
-                    deferObject.resolve(response.data);
-                }, (response) => {
-                    alertFailed(response);
-                    deferObject.reject(response);
-                });
-        }
+
+        function isFalse(obj) {
+            if (obj === null || obj === false || obj === undefined) {
+                return false;
+            }
+            return true;
+        };
+
+        function isTrue(obj) {
+            if (obj === true) {
+                return true;
+            }
+            return false;
+        };
+
 
         function arrayObjectIndexOf(myArray, searchTerm, property, caseSensitive) {
 
@@ -70,6 +66,7 @@
         }
 
 
+
         var baseWebApiUrl = $envService.read('apiUrl');
 
         // Error messages
@@ -78,46 +75,47 @@
         };
 
 
-        // Testing service calls, can be removed later. 
         var getAllUsers = () => {
-            var url = baseWebApiUrl + 'api/User/Get';
+            var url = baseWebApiUrl + 'api/User/GetAllUsers';
             var deferred = $q.defer();
-
-            callAndDefer(url, deferred);
-
-            return deferred.promise;
-        };
-
-        var getAllMeetings = () => {
-            var url = baseWebApiUrl + 'api/Meeting/Get';
-            var deferred = $q.defer();
-
-            callAndDefer(url, deferred);
-            return deferred.promise;
-        };
-
-        var getAllMeetingTypes = () => {
-            var url = baseWebApiUrl + 'api/Meeting/GetMeetingType';
-            var deferred = $q.defer();
-
-            callAndDefer(url, deferred);
-            return deferred.promise;
-        };
-
-        var addPerson = (person) => {
-            var url = baseWebApiUrl + 'api/values/post';
-            var deferred = $q.defer();
-
-            $http.post(url, person)
-                .then(() => {
-                    alert("Successfully saved.");
-                    deferred.resolve();
+            $http.get(url)
+                .then(response => {
+                    deferred.resolve(response.data);
                 }, (response) => {
                     alertFailed(response);
                     deferred.reject(response);
                 });
             return deferred.promise;
         };
+
+
+        var getAllMeetings = () => {
+            var url = baseWebApiUrl + 'api/Meeting/GetAllMeetings';
+            var deferred = $q.defer();
+            $http.get(url)
+                .then(response => {
+                    deferred.resolve(response.data);
+                }, (response) => {
+                    alertFailed(response);
+                    deferred.reject(response);
+                });
+            return deferred.promise;
+        };
+
+        var getAllMeetingTypes = () => {
+            var url = baseWebApiUrl + 'api/Meeting/GetAllMeetingTypes';
+            var deferred = $q.defer();
+            $http.get(url)
+                .then(response => {
+                    deferred.resolve(response.data);
+                }, (response) => {
+                    alertFailed(response);
+                    deferred.reject(response);
+                });
+            return deferred.promise;
+        };
+
+
 
 
        // Google api 
@@ -141,90 +139,19 @@
             return deferred.promise;
         }
 
-        // TypeAhead data
-        var getTypeAheadData = () => {
-            var url = baseWebApiUrl + 'api/RepoForm/TypeAheadData';
-            var deferred = $q.defer();
-
-            $http.get(url)
-                .then(response => {
-                    trimObjectProperties(response.data);
-                    deferred.resolve(response.data);
-                }, (response) => {
-                    alertFailed(response);
-                    deferred.reject(response);
-                });
-            return deferred.promise;
-        };
-
-
-        // Misc
-        var getUser = () => {
-            var url = baseWebApiUrl + 'api/RepoForm/GetUser';
-            var deferred = $q.defer();
-
-            $http.get(url)
-                .then(response => {
-                    trimObjectProperties(response.data);
-                    deferred.resolve(response.data);
-                }, (response) => {
-                    alertFailed(response);
-                    deferred.reject(response);
-                });
-            return deferred.promise;
-        };
-
-        // Misc
-        var getForms = () => {
-            var url = baseWebApiUrl + 'api/RepoForm/GetForms';
-            var deferred = $q.defer();
-
-            $http.get(url)
-                .then(response => {
-                    trimObjectProperties(response.data);
-                    deferred.resolve(response.data);
-                }, (response) => {
-                    alertFailed(response);
-                    deferred.reject(response);
-                });
-            return deferred.promise;
-        };
-
-        var getForm = (id) => {
-            var url = baseWebApiUrl + 'api/RepoForm/GetForm';
-            var deferred = $q.defer();
-
-            $http.get(url, {
-                params: {
-                    id: id
-                }
-            })
-                .then(response => {
-                    trimObjectProperties(response.data);
-                    deferred.resolve(response.data);
-                }, (response) => {
-                    alertFailed(response);
-                    deferred.reject(response);
-                });
-            return deferred.promise;
-        };
+ 
 
         return {
-            getUser: getUser,
             getAllUsers: getAllUsers,
             getAllMeetings: getAllMeetings,
             getAllMeetingTypes: getAllMeetingTypes,
-            addPerson: addPerson,
             getLocation: getLocation,
-            getForms: getForms,
-            getForm: getForm,
             // Helper Methods
-            trimObjectProperties: trimObjectProperties,
             arrayUnique: arrayUnique,
             arrayObjectIndexOf: arrayObjectIndexOf,
+            isFalse: isFalse,
+            isTrue: isTrue,
             // Static list 
-            favColorOptions: ['Red', 'Blue', 'Orange', 'Black', 'White'],
-            favoriteIceCreamOptions: ['fudge', 'chocolate', 'vanila', 'almond fudge', 'rocky road'],
             states: ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Dakota', 'North Carolina', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming']
 
         };

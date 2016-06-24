@@ -30,8 +30,7 @@ namespace webapi.Controllers
             _ctx = new CStatsEntities();
         }
 
-
-
+        
         public IEnumerable<MeetingViewModel> GetAllMeetings()
         {
             var meetings = _ctx.Meetings.ToList();

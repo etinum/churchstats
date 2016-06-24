@@ -41,14 +41,14 @@
             if (!$scope.rf.recorderName) {
                 return;
             }
-            var index = $dataService.arrayObjectIndexOf($scope.userList, $scope.rf.recorderName, "label", false);
+            var index = $dataService.arrayObjectIndexOf($scope.userList, $scope.rf.recorderName, "fullName", false);
             $scope.$evalAsync(function () {
                 if (index === -1) {
                     $scope.haveRecorder = false;
                     $scope.isNewUser = true;
                 }
                 else {
-                    $scope.rf.recorderName = $scope.userList[index].label;
+                    $scope.rf.recorderName = $scope.userList[index].fullName;
                     $scope.haveRecorder = true;
                     $scope.isNewUser = false;
                 }
@@ -58,14 +58,14 @@
             if (!$scope.rf.meetingName) {
                 return;
             }
-            var index = $dataService.arrayObjectIndexOf($scope.meetingNameOptions, $scope.rf.meetingName, "label", false);
+            var index = $dataService.arrayObjectIndexOf($scope.meetingNameOptions, $scope.rf.meetingName, "name", false);
             $scope.$evalAsync(function () {
                 if (index === -1) {
                     $scope.isNewMeeting = true;
                     $scope.haveMeeting = false;
                 }
                 else {
-                    $scope.rf.meetingName = $scope.meetingNameOptions[index].label;
+                    $scope.rf.meetingName = $scope.meetingNameOptions[index].name;
                     $scope.recorderFieldDisable = true;
                     $scope.meetingFieldDisable = true;
                     $scope.haveMeeting = true;
@@ -73,8 +73,12 @@
                 }
             });
         };
+        var getCounts = function (data) {
+            $scope.totalPossible = data.length;
+        };
         $dataService.getAllUsers().then(function (data) {
             $scope.userList = data;
+            getCounts(data);
         });
         ;
         $dataService.getAllMeetings().then(function (data) {
@@ -89,29 +93,7 @@
             alert('hi: ' + $scope.meetingTypeOptions.filter(function (item) { return item.id === parseInt($scope.rf.meetingTypeId); })[0].label);
         };
         $scope.memberSelected = function (item) {
-            alert('Update database for: ' + item.label + ", present: " + item.isAttend);
-        };
-        $scope.GotoRepoForm = function () {
-            $location.path('/repoform');
-        };
-        $scope.ViewRepos = function () {
-            $location.path('/viewReports');
-        };
-        $scope.$watch(function () { return $window.userdata; }, function (n) {
-            if (n !== undefined) {
-                $scope.welcome = "Pick something sir, " + $window.userdata;
-            }
-        });
-        $scope.TestClick = function () {
-            $dataService.getPersons()
-                .then(function (data) {
-                var testlist = data;
-                $scope.tempPerson = testlist[0];
-                alert($scope.tempPerson.age);
-            });
-        };
-        $scope.SendClick = function () {
-            $dataService.addPerson($scope.tempPerson);
+            alert('Update database for: ' + item.fullName + ", present: " + item.isAttend);
         };
     };
     controller.$inject = ['$scope', '$location', 'dataService', '$window'];

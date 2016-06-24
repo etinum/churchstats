@@ -80,7 +80,7 @@
                 return;
             }
           
-            var index = $dataService.arrayObjectIndexOf($scope.userList, $scope.rf.recorderName, "label", false);
+            var index = $dataService.arrayObjectIndexOf($scope.userList, $scope.rf.recorderName, "fullName", false);
             $scope.$evalAsync(() => {
                 if (index === -1) {
                     //alert('Create new user');
@@ -88,7 +88,7 @@
                     $scope.isNewUser = true;
                 } else {
                     //alert('User exist');
-                    $scope.rf.recorderName = $scope.userList[index].label;
+                    $scope.rf.recorderName = $scope.userList[index].fullName;
                     $scope.haveRecorder = true;
                     $scope.isNewUser = false;
                 }
@@ -102,7 +102,7 @@
                 return;
             }
 
-            var index = $dataService.arrayObjectIndexOf($scope.meetingNameOptions, $scope.rf.meetingName, "label", false);
+            var index = $dataService.arrayObjectIndexOf($scope.meetingNameOptions, $scope.rf.meetingName, "name", false);
             $scope.$evalAsync(() => {
 
                 if (index === -1) {
@@ -111,7 +111,7 @@
                     $scope.haveMeeting = false;
                 } else {
                     //alert('User exist');
-                    $scope.rf.meetingName = $scope.meetingNameOptions[index].label;
+                    $scope.rf.meetingName = $scope.meetingNameOptions[index].name;
                     $scope.recorderFieldDisable = true;
                     $scope.meetingFieldDisable = true;
                     $scope.haveMeeting = true;
@@ -121,24 +121,29 @@
 
         };
 
+
+        var getCounts = (data) => {
+            $scope.totalPossible = data.length;
+        };
+
+
         // data for checkbox.
         $dataService.getAllUsers().then(data => {
-            $scope.userList = data;
+            $scope.userList = <modeltypings.UserViewModel[]>data;
+            getCounts(data);
         });;
 
 
         //Data for meetings
         $dataService.getAllMeetings().then(data => {
-            $scope.meetingNameOptions = data;
+            $scope.meetingNameOptions = <modeltypings.MeetingViewModel[]>data;
         });;
 
 
         //Data for meeting types
         $dataService.getAllMeetingTypes().then(data => {
-            $scope.meetingTypeOptions = data;
+            $scope.meetingTypeOptions = <modeltypings.MeetingTypeViewModel[]>data;
         });;
-
-
 
 
         $scope.meetingTypeChanged = () => {
@@ -147,39 +152,10 @@
         };
 
         $scope.memberSelected = (item) => {
-            alert('Update database for: ' + item.label + ", present: " + item.isAttend);
-        };
-
-        $scope.GotoRepoForm = () => {
-            $location.path('/repoform');
-        };
-
-        $scope.ViewRepos = () => {
-            $location.path('/viewReports');
+            alert('Update database for: ' + item.fullName + ", present: " + item.isAttend);
         };
 
 
-        // watch to see if global variable has been set from master control before using it in the current controller.
-        $scope.$watch(() => $window.userdata, (n) => {
-            if (n !== undefined) {
-                $scope.welcome = "Pick something sir, " + $window.userdata;
-            }
-        });
-
-
-        // TODO: Delete after you don't need this anymore. 
-        $scope.TestClick = () => {
-            $dataService.getPersons()
-                .then(data => {
-                    var testlist = <modeltypings.IPersonTest[]>data;
-                    $scope.tempPerson = testlist[0];
-                    alert($scope.tempPerson.age);
-                });
-        }
-
-        $scope.SendClick = () => {
-            $dataService.addPerson($scope.tempPerson);
-        }
     };
 
     controller.$inject = ['$scope', '$location', 'dataService', '$window'];
