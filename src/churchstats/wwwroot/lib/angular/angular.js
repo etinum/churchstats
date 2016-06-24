@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.5.6-build.4785+sha.707664a
+ * @license AngularJS v1.5.6-build.4766+sha.d2ec9d7
  * (c) 2010-2016 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -57,7 +57,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message += '\nhttp://errors.angularjs.org/1.5.6-build.4785+sha.707664a/' +
+    message += '\nhttp://errors.angularjs.org/1.5.6-build.4766+sha.d2ec9d7/' +
       (module ? module + '/' : '') + code;
 
     for (i = SKIP_INDEXES, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
@@ -514,22 +514,12 @@ noop.$inject = [];
  * functional style.
  *
    ```js
-   function transformer(transformationFn, value) {
-     return (transformationFn || angular.identity)(value);
-   };
-
-   // E.g.
-   function getResult(fn, input) {
-     return (fn || angular.identity)(input);
-   };
-
-   getResult(function(n) { return n * 2; }, 21);   // returns 42
-   getResult(null, 21);                            // returns 21
-   getResult(undefined, 21);                       // returns 21
+     function transformer(transformationFn, value) {
+       return (transformationFn || angular.identity)(value);
+     };
    ```
- *
- * @param {*} value to be returned.
- * @returns {*} the value passed in.
+  * @param {*} value to be returned.
+  * @returns {*} the value passed in.
  */
 function identity($) {return $;}
 identity.$inject = [];
@@ -2439,7 +2429,6 @@ function toDebugString(obj) {
   $ControllerProvider,
   $DateProvider,
   $DocumentProvider,
-  $$IsDocumentHiddenProvider,
   $ExceptionHandlerProvider,
   $FilterProvider,
   $$ForceReflowProvider,
@@ -2488,7 +2477,7 @@ function toDebugString(obj) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.5.6-build.4785+sha.707664a',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.5.6-build.4766+sha.d2ec9d7',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 5,
   dot: 6,
@@ -2602,7 +2591,6 @@ function publishExternalAPI(angular) {
         $cacheFactory: $CacheFactoryProvider,
         $controller: $ControllerProvider,
         $document: $DocumentProvider,
-        $$isDocumentHidden: $$IsDocumentHiddenProvider,
         $exceptionHandler: $ExceptionHandlerProvider,
         $filter: $FilterProvider,
         $$forceReflow: $$ForceReflowProvider,
@@ -3873,16 +3861,8 @@ var FN_ARG = /^\s*(_?)(\S+?)\1\s*$/;
 var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
 var $injectorMinErr = minErr('$injector');
 
-function stringifyFn(fn) {
-  // Support: Chrome 50-51 only
-  // Creating a new string by adding `' '` at the end, to hack around some bug in Chrome v50/51
-  // (See https://github.com/angular/angular.js/issues/14487.)
-  // TODO (gkalpak): Remove workaround when Chrome v52 is released
-  return Function.prototype.toString.call(fn) + ' ';
-}
-
 function extractArgs(fn) {
-  var fnText = stringifyFn(fn).replace(STRIP_COMMENTS, ''),
+  var fnText = Function.prototype.toString.call(fn).replace(STRIP_COMMENTS, ''),
       args = fnText.match(ARROW_ARG) || fnText.match(FN_ARGS);
   return args;
 }
@@ -4656,7 +4636,7 @@ function createInjector(modulesToLoad, strictDi) {
       if (!isBoolean(result)) {
         // Workaround for MS Edge.
         // Check https://connect.microsoft.com/IE/Feedback/Details/2211653
-        result = func.$$ngIsClass = /^(?:class\s|constructor\()/.test(stringifyFn(func));
+        result = func.$$ngIsClass = /^(?:class\s|constructor\()/.test(Function.prototype.toString.call(func));
       }
       return result;
     }
@@ -4749,7 +4729,7 @@ function $AnchorScrollProvider() {
    * When called, it scrolls to the element related to the specified `hash` or (if omitted) to the
    * current value of {@link ng.$location#hash $location.hash()}, according to the rules specified
    * in the
-   * [HTML5 spec](http://www.w3.org/html/wg/drafts/html/master/browsers.html#an-indicated-part-of-the-document).
+   * [HTML5 spec](http://www.w3.org/html/wg/drafts/html/master/browsers.html#the-indicated-part-of-the-document).
    *
    * It also watches the {@link ng.$location#hash $location.hash()} and automatically scrolls to
    * match any anchor whenever it changes. This can be disabled by calling
@@ -5605,8 +5585,8 @@ var $$AnimateAsyncRunFactoryProvider = function() {
 };
 
 var $$AnimateRunnerFactoryProvider = function() {
-  this.$get = ['$q', '$sniffer', '$$animateAsyncRun', '$$isDocumentHidden', '$timeout',
-       function($q,   $sniffer,   $$animateAsyncRun,   $$isDocumentHidden,   $timeout) {
+  this.$get = ['$q', '$sniffer', '$$animateAsyncRun', '$document', '$timeout',
+       function($q,   $sniffer,   $$animateAsyncRun,   $document,   $timeout) {
 
     var INITIAL_STATE = 0;
     var DONE_PENDING_STATE = 1;
@@ -5658,7 +5638,11 @@ var $$AnimateRunnerFactoryProvider = function() {
 
       this._doneCallbacks = [];
       this._tick = function(fn) {
-        if ($$isDocumentHidden()) {
+        var doc = $document[0];
+
+        // the document may not be ready or attached
+        // to the module for some internal tests
+        if (doc && doc.hidden) {
           timeoutTick(fn);
         } else {
           rafTick(fn);
@@ -6913,9 +6897,8 @@ function $TemplateCacheProvider() {
  * If the `require` property is an object and `bindToController` is truthy, then the required controllers are
  * bound to the controller using the keys of the `require` property. This binding occurs after all the controllers
  * have been constructed but before `$onInit` is called.
- * If the name of the required controller is the same as the local name (the key), the name can be
- * omitted. For example, `{parentDir: '^^'}` is equivalent to `{parentDir: '^^parentDir'}`.
  * See the {@link $compileProvider#component} helper for an example of how this can be used.
+ *
  * If no such required directive(s) can be found, or if the directive does not have a controller, then an error is
  * raised (unless no link function is specified and the required controllers are not being bound to the directive
  * controller, in which case error checking is skipped). The name can be prefixed with:
@@ -7544,20 +7527,6 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
     }
   }
 
-  function getDirectiveRequire(directive) {
-    var require = directive.require || (directive.controller && directive.name);
-
-    if (!isArray(require) && isObject(require)) {
-      forEach(require, function(value, key) {
-        var match = value.match(REQUIRE_PREFIX_REGEXP);
-        var name = value.substring(match[0].length);
-        if (!name) require[key] = match[0] + key;
-      });
-    }
-
-    return require;
-  }
-
   /**
    * @ngdoc method
    * @name $compileProvider#directive
@@ -7594,7 +7563,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
                 directive.priority = directive.priority || 0;
                 directive.index = index;
                 directive.name = directive.name || name;
-                directive.require = getDirectiveRequire(directive);
+                directive.require = directive.require || (directive.controller && directive.name);
                 directive.restrict = directive.restrict || 'EA';
                 directive.$$moduleName = directiveFactory.$$moduleName;
                 directives.push(directive);
@@ -8051,7 +8020,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
             (nodeName === 'img' && key === 'src')) {
           // sanitize a[href] and img[src] values
           this[key] = value = $$sanitizeUri(value, key === 'src');
-        } else if (nodeName === 'img' && key === 'srcset' && isDefined(value)) {
+        } else if (nodeName === 'img' && key === 'srcset') {
           // sanitize img[srcset] values
           var result = "";
 
@@ -10190,32 +10159,6 @@ function $DocumentProvider() {
   }];
 }
 
-
-/**
- * @private
- * Listens for document visibility change and makes the current status accessible.
- */
-function $$IsDocumentHiddenProvider() {
-  this.$get = ['$document', '$rootScope', function($document, $rootScope) {
-    var doc = $document[0];
-    var hidden = doc && doc.hidden;
-
-    $document.on('visibilitychange', changeListener);
-
-    $rootScope.$on('$destroy', function() {
-      $document.off('visibilitychange', changeListener);
-    });
-
-    function changeListener() {
-      hidden = doc.hidden;
-    }
-
-    return function() {
-      return hidden;
-    };
-  }];
-}
-
 /**
  * @ngdoc service
  * @name $exceptionHandler
@@ -10737,13 +10680,10 @@ function $HttpProvider() {
      *   - **config** – `{Object}` – The configuration object that was used to generate the request.
      *   - **statusText** – `{string}` – HTTP status text of the response.
      *
-     * A response status code between 200 and 299 is considered a success status and will result in
-     * the success callback being called. Any response status code outside of that range is
-     * considered an error status and will result in the error callback being called.
-     * Also, status codes less than -1 are normalized to zero. -1 usually means the request was
-     * aborted, e.g. using a `config.timeout`.
-     * Note that if the response is a redirect, XMLHttpRequest will transparently follow it, meaning
-     * that the outcome (success or error) will be determined by the final response status code.
+     * A response status code between 200 and 299 is considered a success status and
+     * will result in the success callback being called. Note that if the response is a redirect,
+     * XMLHttpRequest will transparently follow it, meaning that the error callback will not be
+     * called for such responses.
      *
      *
      * ## Shortcut methods
@@ -12072,11 +12012,6 @@ function $InterpolateProvider() {
      *    </div>
      *  </file>
      * </example>
-     *
-     * @knownIssue
-     * It is currently not possible for an interpolated expression to contain the interpolation end
-     * symbol. For example, `{{ '}}' }}` will be incorrectly interpreted as `{{ ' }}` + `' }}`, i.e.
-     * an interpolated expression consisting of a single-quote (`'`) and the `' }}` string.
      *
      * @param {string} text The text with markup to interpolate.
      * @param {boolean=} mustHaveExpression if set to true then the interpolation string must have
@@ -19123,7 +19058,7 @@ function $TemplateRequestProvider() {
       // are included in there. This also makes Angular accept any script
       // directive, no matter its name. However, we still need to unwrap trusted
       // types.
-      if (!isString(tpl) || isUndefined($templateCache.get(tpl))) {
+      if (!isString(tpl) || !$templateCache.get(tpl)) {
         tpl = $sce.getTrustedResourceUrl(tpl);
       }
 
@@ -20307,7 +20242,7 @@ function formatNumber(number, pattern, groupSep, decimalSep, fractionSize) {
 
     // extract decimals digits
     if (integerLen > 0) {
-      decimals = digits.splice(integerLen, digits.length);
+      decimals = digits.splice(integerLen);
     } else {
       decimals = digits;
       digits = [0];
@@ -20316,10 +20251,10 @@ function formatNumber(number, pattern, groupSep, decimalSep, fractionSize) {
     // format the integer digits with grouping separators
     var groups = [];
     if (digits.length >= pattern.lgSize) {
-      groups.unshift(digits.splice(-pattern.lgSize, digits.length).join(''));
+      groups.unshift(digits.splice(-pattern.lgSize).join(''));
     }
     while (digits.length > pattern.gSize) {
-      groups.unshift(digits.splice(-pattern.gSize, digits.length).join(''));
+      groups.unshift(digits.splice(-pattern.gSize).join(''));
     }
     if (digits.length) {
       groups.unshift(digits.join(''));
@@ -24143,9 +24078,8 @@ var ngBindHtmlDirective = ['$sce', '$parse', '$compile', function($sce, $parse, 
     restrict: 'A',
     compile: function ngBindHtmlCompile(tElement, tAttrs) {
       var ngBindHtmlGetter = $parse(tAttrs.ngBindHtml);
-      var ngBindHtmlWatch = $parse(tAttrs.ngBindHtml, function sceValueOf(val) {
-        // Unwrap the value to compare the actual inner safe value, not the wrapper object.
-        return $sce.valueOf(val);
+      var ngBindHtmlWatch = $parse(tAttrs.ngBindHtml, function getStringValue(value) {
+        return (value || '').toString();
       });
       $compile.$$addBindingClass(tElement);
 
@@ -24153,9 +24087,9 @@ var ngBindHtmlDirective = ['$sce', '$parse', '$compile', function($sce, $parse, 
         $compile.$$addBindingInfo(element, attr.ngBindHtml);
 
         scope.$watch(ngBindHtmlWatch, function ngBindHtmlWatchAction() {
-          // The watched value is the unwrapped value. To avoid re-escaping, use the direct getter.
-          var value = ngBindHtmlGetter(scope);
-          element.html($sce.getTrustedHtml(value) || '');
+          // we re-evaluate the expr because we want a TrustedValueHolderType
+          // for $sce, not a string
+          element.html($sce.getTrustedHtml(ngBindHtmlGetter(scope)) || '');
         });
       };
     }

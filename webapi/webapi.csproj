@@ -269,6 +269,10 @@
       <Project>{59F0A9BD-45AB-47BD-A695-D5E1FF874E7F}</Project>
       <Name>data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NewData\NewData.csproj">
+      <Project>{c6f312ce-dc25-4997-8f1b-3c346c2068d1}</Project>
+      <Name>NewData</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

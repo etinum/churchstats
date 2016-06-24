@@ -8,35 +8,44 @@ using data;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using AutoMapper;
+using NewData;
 using webapi.Mappers;
 using webapi.ViewModels;
+using User = data.User;
 
 namespace webapi.Controllers
 {
     public class UserController : ApiController
     {
-
-        IMapper mapper;
-        UserLogic userLogic;
+        readonly IMapper _mapper;
+        readonly UserLogic _userLogic;
 
         public UserController()
         {
             var config = new MapperConfiguration(cfg => {
                 cfg.AddProfile<ModelMapper>();
             });
-            mapper = config.CreateMapper();
-            userLogic = new UserLogic();
+            _mapper = config.CreateMapper();
+            _userLogic = new UserLogic();
         }
 
         #region CRUD
         public IEnumerable<UserModel> Get()
         {
-            return mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(userLogic.GetAllMembers());
+
+            var test = new TestEf();
+
+            test.HitMe();
+
+            return _mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(_userLogic.GetAllMembers());
         }
 
         public UserModel Get(int id)
         {
-            return mapper.Map<User, UserModel>(userLogic.GetUserById(id));
+
+
+
+            return _mapper.Map<User, UserModel>(_userLogic.GetUserById(id));
         }
 
         [HttpGet]
@@ -48,7 +57,7 @@ namespace webapi.Controllers
         public int AddUser(string firstName, string lastName)
         {
             int userId = 0;
-            userId = userLogic.AddUser(firstName, lastName);
+            userId = _userLogic.AddUser(firstName, lastName);
 
             return userId;
         }
@@ -56,31 +65,31 @@ namespace webapi.Controllers
         [HttpPost]
         public bool Update(UserModel um)
         {
-            var user = mapper.Map<UserModel, User>(um);
-            return userLogic.Update(user);
+            var user = _mapper.Map<UserModel, User>(um);
+            return _userLogic.Update(user);
         } 
         #endregion
 
         [HttpGet]
         public IEnumerable<UserModel> GetMembersForMeeting(int id)
         {
-            return mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(userLogic.GetMembersByMeeting(id));
+            return _mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(_userLogic.GetMembersByMeeting(id));
         }
 
         [HttpGet]
         public IEnumerable<UserModel> GetMembersForUserAdd(int id)
         {
-            return mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(userLogic.GetMembersForUserAdd(id));
+            return _mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(_userLogic.GetMembersForUserAdd(id));
         }
 
         public bool SaveMemberForMeeting(int userId, string firstName, string lastName, int meetingId)
         {
-            return userLogic.SaveMemberForMeeting(ref userId, firstName, lastName, meetingId);
+            return _userLogic.SaveMemberForMeeting(ref userId, firstName, lastName, meetingId);
         }
 
         public IEnumerable<UserModel> GetMemberForUserAdd(int meetingId)
         {
-            return mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(userLogic.GetMembersForUserAdd(meetingId));
+            return _mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(_userLogic.GetMembersForUserAdd(meetingId));
         }
     }
 }
