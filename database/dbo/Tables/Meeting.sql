@@ -5,9 +5,13 @@
     [DayOfTheWeek]  INT            NULL,
     [Description]   NVARCHAR (MAX) NULL,
     [UsualTime]     DATETIME       NULL,
+    [DateCreated]   DATETIME       NULL,
+    [LastUpdated]   DATETIME       NULL,
     CONSTRAINT [PK_Meetings] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_Meeting_MeetingType] FOREIGN KEY ([MeetingTypeId]) REFERENCES [dbo].[MeetingType] ([Id])
 );
+
+
 
 
 GO
