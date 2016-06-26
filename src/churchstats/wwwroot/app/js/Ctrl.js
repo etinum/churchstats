@@ -8,13 +8,14 @@
 (function (app) {
     var controller = function ($scope, $location, $dataService, $window) {
         $scope.rf = {};
-        $scope.haveRecorder = false;
+        $scope.haveRecorder = true;
         $scope.recorderFieldDisable = false;
         $scope.meetingFieldDisable = false;
         $scope.isNewUser = false;
         $scope.isNewMeeting = false;
-        $scope.haveMeeting = false;
+        $scope.haveMeeting = true;
         $scope.selectedUserId = 0;
+        $scope.globalSearchString = '';
         var recorderFieldTimeout;
         $('#recorderName')
             .keypress(function () {
@@ -73,6 +74,24 @@
         var getCounts = function (data) {
             $scope.totalPossible = data.length;
         };
+        var updateUserList = function (user) {
+            $scope.userList.push(user);
+            $scope.fullUserList.push(user);
+        };
+        var filterUserBySearch = function () {
+            $scope.$evalAsync(function () {
+                $scope.userList = $scope.fullUserList.filter(function (item) { return item.fullName.toLowerCase().indexOf($scope.globalSearchString.toLowerCase()) > -1; });
+            });
+        };
+        var searchFieldTimeout;
+        $('#globalSearch')
+            .keydown(function () {
+            if (searchFieldTimeout) {
+                clearTimeout(searchFieldTimeout);
+                searchFieldTimeout = null;
+            }
+            searchFieldTimeout = setTimeout(filterUserBySearch, 700);
+        });
         $scope.createNewUser = function () {
             var user = {};
             user.firstName = $scope.recorderName.split(' ')[0];
@@ -81,7 +100,7 @@
             $dataService.saveUser(user)
                 .then(function (data) {
                 user.id = data;
-                $scope.userList.push(user);
+                updateUserList(user);
                 $scope.onBlurRecorder();
             });
         };
@@ -107,6 +126,7 @@
             .done(function () {
             $scope.load = $dataService.getAllUsers().then(function (data) {
                 $scope.userList = data;
+                $scope.fullUserList = angular.copy($scope.userList);
                 getCounts(data);
             });
             ;

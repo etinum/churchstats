@@ -5,14 +5,14 @@
             <label for="recorderName" class="col-sm-3 control-label">Who are you?</label>
             <div class="col-sm-5">
                 <input type="text" ng-maxlength="ng_maxLength" maxlength={{maxLength}} id="recorderName" name="recorderName" class="form-control"
-                       ng-model="recorderName" ng-required="true" uib-typeahead="item.fullName for item in userList  | filter:$viewValue | limitTo:8" autocomplete="off" typeahead-on-select="onBlurRecorder()" ng-disabled="recorderFieldDisable"/>
+                       ng-model="recorderName" ng-required="true" uib-typeahead="item.fullName for item in userList  | filter:$viewValue | limitTo:8" autocomplete="off" typeahead-on-select="onBlurRecorder()" ng-disabled="recorderFieldDisable" />
                 <div class="help-block" ng-messages="myForm.recorderName.$error" ng-show="myForm.recorderName.$touched || submitted">
                     <div ng-messages-include="app/html/error-messages.html"></div>
                 </div>
             </div>
             <div class="col-sm-4" ng-hide="!isNewUser">
                 <input type="button" class="btn btn-primary" value="Create New User?"
-                       ng-click="createNewUser()"/>
+                       ng-click="createNewUser()" />
             </div>
         </div>
 
@@ -21,7 +21,7 @@
                 <label for="meetingName" class="col-sm-3 control-label">Meeting Name</label>
                 <div class="col-sm-9">
                     <input type="text" ng-maxlength="ng_maxLength" maxlength={{maxLength}} id="meetingName" name="meetingName" class="form-control"
-                           ng-model="meetingName" ng-required="true" uib-typeahead="item.name for item in meetingList  | filter:$viewValue | limitTo:8" autocomplete="off" typeahead-on-select="onBlurMeeting()" ng-disabled="meetingFieldDisable"/>
+                           ng-model="meetingName" ng-required="true" uib-typeahead="item.name for item in meetingList  | filter:$viewValue | limitTo:8" autocomplete="off" typeahead-on-select="onBlurMeeting()" ng-disabled="meetingFieldDisable" />
                     <div class="help-block" ng-messages="myForm.meetingName.$error" ng-show="myForm.meetingName.$touched || submitted">
                         <div ng-messages-include="app/html/error-messages.html"></div>
                     </div>
@@ -42,17 +42,46 @@
                 </div>
                 <div class="col-sm-4">
                     <input type="button" class="btn btn-primary" value="Create Meeting"
-                           ng-click="createMeeting()"/>
+                           ng-click="createMeeting()" />
                 </div>
 
             </div>
 
 
 
-            <div class="panel panel-default" ng-hide="!haveMeeting">
+            <div class="panel panel-default" ng-show="haveMeeting">
                 <div class="panel-heading">Meeting Members (Present: X1, Not Present: X2, Unknown: X3, Total Possible: {{totalPossible}})</div>
                 <div class="panel-body">
                     <!--<select ng-model="filterSelected" ng-change="filter()" class="form-control" ng-options="filter as filter.label for filter in filterOptions track by filter.id"></select>-->
+
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-xs-10 col-sm-5 col-lg-6" style="margin-bottom: 5px">
+                                    <input id="globalSearch" ng-model="globalSearchString" class="form-control" placeholder="global search ..." type="text" />
+                                </div>
+
+                                <div class="col-xs-3 col-sm-2 col-lg-1 ">
+                                    <input type="button" class="btn btn-default" value="Present"
+                                           ng-click="cancelForm()" />
+                                </div>
+                                <div class="col-xs-3 col-sm-2 col-lg-1">
+                                    <input type="button" class="btn btn-default" value="Unknown"
+                                           ng-click="submitForm()" />
+                                </div>
+                                <div class="col-xs-3 col-sm-2 col-lg-1 ">
+                                    <input type="reset" class="btn btn-default" value="Not Present"
+                                           ng-click="resetForm()" />
+                                </div>
+                            </div>
+                        </div>
+                    <br/><br/>
+
+                    <!--<input type="button" class="btn btn-primary form-control" value="Add Members"
+                       ng-click="AddMembers()" /><br /><br />-->
+
+
+
+
                     <div ng-repeat="item in userList track by item.id">
                         <div class="form-group">
                             <label for="recorderName" class="col-sm-3 control-label">{{item.fullName}}</label>
@@ -66,7 +95,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

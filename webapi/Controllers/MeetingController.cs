@@ -52,7 +52,7 @@ namespace webapi.Controllers
             if (meeting.Id == 0)
             {
                 meeting.DateCreated = DateTime.Now;
-                //meeting.DayOfTheWeek = DateTime.Now.DayOfWeek;
+                meeting.DayOfTheWeek = (int)DateTime.Now.DayOfWeek;
             }
             _ctx.Meetings.Add(meeting);
             _ctx.SaveChanges();

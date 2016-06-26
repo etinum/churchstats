@@ -35,14 +35,15 @@
 
         // controller variables
         $scope.rf = {};
-        $scope.haveRecorder = false;
+        $scope.haveRecorder = true;
         $scope.recorderFieldDisable = false;
         $scope.meetingFieldDisable = false;
         $scope.isNewUser = false;
         $scope.isNewMeeting = false;
-        $scope.haveMeeting = false;
+        $scope.haveMeeting = true;
 
         $scope.selectedUserId = 0;
+        $scope.globalSearchString = '';
 
 
 
@@ -122,10 +123,32 @@
             $scope.totalPossible = data.length;
         };
 
+        var updateUserList = (user) => {
+            $scope.userList.push(user);
+            $scope.fullUserList.push(user);
+        };
+
+        var filterUserBySearch = () => {
+            $scope.$evalAsync(() => {
+                $scope.userList = $scope.fullUserList.filter(item => item.fullName.toLowerCase().indexOf($scope.globalSearchString.toLowerCase()) > -1);
+            });
+        }
 
         // Event handler
+        var searchFieldTimeout;
+        $('#globalSearch')
+            .keydown(() => {
+                if (searchFieldTimeout) {
+                    clearTimeout(searchFieldTimeout);
+                    searchFieldTimeout = null;
+                }
+
+                searchFieldTimeout = setTimeout(filterUserBySearch, 700);
+            });
+
+
         $scope.createNewUser = () => {
-            
+
             var user = <modeltypings.UserViewModel>{};
             user.firstName = $scope.recorderName.split(' ')[0];
             user.lastName = $scope.recorderName.split(' ')[1];
@@ -134,7 +157,7 @@
             $dataService.saveUser(user)
                 .then((data) => {
                     user.id = data;
-                    $scope.userList.push(user);
+                    updateUserList(user);
                     $scope.onBlurRecorder();
                 });
         };
@@ -175,6 +198,7 @@
                 // data for checkbox.
                 $scope.load = $dataService.getAllUsers().then(data => {
                     $scope.userList = <modeltypings.UserViewModel[]>data;
+                    $scope.fullUserList = angular.copy($scope.userList);
                     getCounts(data);
                 });;
 
