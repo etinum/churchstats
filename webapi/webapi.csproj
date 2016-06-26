@@ -271,9 +271,9 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NewData\NewData.csproj">
+    <ProjectReference Include="..\NewData\newdata.csproj">
       <Project>{c6f312ce-dc25-4997-8f1b-3c346c2068d1}</Project>
-      <Name>NewData</Name>
+      <Name>newdata</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

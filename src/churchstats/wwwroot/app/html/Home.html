@@ -1,72 +1,75 @@
 <form class="form-horizontal" name="myForm" role="form" novalidate>
+    <div cg-busy="load">
 
-    <div class="form-group" show-errors>
-        <label for="recorderName" class="col-sm-3 control-label">Who are you?</label>
-        <div class="col-sm-5">
-            <input type="text" ng-maxlength="ng_maxLength" maxlength={{maxLength}} id="recorderName" name="recorderName" class="form-control"
-                   ng-model="recorderName" ng-required="true" uib-typeahead="item.fullName for item in userList  | filter:$viewValue | limitTo:8" autocomplete="off" typeahead-on-select="onBlurRecorder()" ng-disabled="recorderFieldDisable" />
-            <div class="help-block" ng-messages="myForm.recorderName.$error" ng-show="myForm.recorderName.$touched || submitted">
-                <div ng-messages-include="app/html/error-messages.html"></div>
-            </div>
-        </div>
-        <div class="col-sm-4" ng-hide="!isNewUser">
-            <input type="button" class="btn btn-primary" value="Create New User?"
-                   ng-click="createNewUser()" />
-        </div>
-    </div>
-
-    <div ng-hide="!haveRecorder">
         <div class="form-group" show-errors>
-            <label for="meetingName" class="col-sm-3 control-label">Meeting Name</label>
-            <div class="col-sm-9">
-                <input type="text" ng-maxlength="ng_maxLength" maxlength={{maxLength}} id="meetingName" name="meetingName" class="form-control"
-                       ng-model="meetingName" ng-required="true" uib-typeahead="item.name for item in meetingNameOptions  | filter:$viewValue | limitTo:8" autocomplete="off" typeahead-on-select="onBlurMeeting()" ng-disabled="meetingFieldDisable"/>
-                <div class="help-block" ng-messages="myForm.meetingName.$error" ng-show="myForm.meetingName.$touched || submitted">
-                    <div ng-messages-include="app/html/error-messages.html"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group" ng-hide="!isNewMeeting" show-errors>
-            <label for="meetingTypeId" class="col-sm-3 control-label">Choose Meeting Type</label>
+            <label for="recorderName" class="col-sm-3 control-label">Who are you?</label>
             <div class="col-sm-5">
-                <select id="meetingTypeId" name="meetingTypeId" class="form-control"
-                        data-ng-model="meetingTypeId" ng-required="true" ng-change="meetingTypeChanged()">
-                    <option value="">---Please select---</option>
-                    <option ng-repeat="item in meetingTypeOptions" value="{{item.id}}">{{item.name}}</option>
-                </select>
-                <div class="help-block" ng-messages="myForm.meetingTypeId.$error" ng-show="myForm.meetingTypeId.$touched || submitted">
+                <input type="text" ng-maxlength="ng_maxLength" maxlength={{maxLength}} id="recorderName" name="recorderName" class="form-control"
+                       ng-model="recorderName" ng-required="true" uib-typeahead="item.fullName for item in userList  | filter:$viewValue | limitTo:8" autocomplete="off" typeahead-on-select="onBlurRecorder()" ng-disabled="recorderFieldDisable"/>
+                <div class="help-block" ng-messages="myForm.recorderName.$error" ng-show="myForm.recorderName.$touched || submitted">
                     <div ng-messages-include="app/html/error-messages.html"></div>
                 </div>
             </div>
-            <div class="col-sm-4">
-                <input type="button" class="btn btn-primary" value="Create Meeting"
-                       ng-click="createMeeting()" />
+            <div class="col-sm-4" ng-hide="!isNewUser">
+                <input type="button" class="btn btn-primary" value="Create New User?"
+                       ng-click="createNewUser()"/>
             </div>
-
         </div>
 
-
-
-        <div class="panel panel-default" ng-hide="!haveMeeting">
-            <div class="panel-heading">Meeting Members (Present: X1, Not Present: X2, Unknown: X3, Total Possible: {{totalPossible}})</div>
-            <div class="panel-body">
-                <!--<select ng-model="filterSelected" ng-change="filter()" class="form-control" ng-options="filter as filter.label for filter in filterOptions track by filter.id"></select>-->
-                <div ng-repeat="item in userList track by item.id">
-                    <div class="form-group">
-                        <label for="recorderName" class="col-sm-3 control-label">{{item.fullName}}</label>
-                        <div class="col-sm-9">
-                            <div class="btn-group">
-                                <label class="btn btn-default" ng-model="item.isAttend" uib-btn-radio=true ng-change="memberSelected(item)">Present</label>
-                                <label class="btn btn-default" ng-model="item.isAttend" uib-btn-radio=null ng-change="memberSelected(item)">Unknown</label>
-                                <label class="btn btn-default" ng-model="item.isAttend" uib-btn-radio=false ng-change="memberSelected(item)">Not Present</label>
-                            </div>
-                            {{item.isAttend}}
-                        </div>
+        <div ng-hide="!haveRecorder">
+            <div class="form-group" show-errors>
+                <label for="meetingName" class="col-sm-3 control-label">Meeting Name</label>
+                <div class="col-sm-9">
+                    <input type="text" ng-maxlength="ng_maxLength" maxlength={{maxLength}} id="meetingName" name="meetingName" class="form-control"
+                           ng-model="meetingName" ng-required="true" uib-typeahead="item.name for item in meetingList  | filter:$viewValue | limitTo:8" autocomplete="off" typeahead-on-select="onBlurMeeting()" ng-disabled="meetingFieldDisable"/>
+                    <div class="help-block" ng-messages="myForm.meetingName.$error" ng-show="myForm.meetingName.$touched || submitted">
+                        <div ng-messages-include="app/html/error-messages.html"></div>
                     </div>
                 </div>
+            </div>
 
+            <div class="form-group" ng-hide="!isNewMeeting" show-errors>
+                <label for="meetingTypeId" class="col-sm-3 control-label">Choose Meeting Type</label>
+                <div class="col-sm-5">
+                    <select id="meetingTypeId" name="meetingTypeId" class="form-control"
+                            data-ng-model="meetingTypeId" ng-required="true" ng-change="meetingTypeChanged()">
+                        <option value="">---Please select---</option>
+                        <option ng-repeat="item in meetingTypeOptions" value="{{item.id}}">{{item.name}}</option>
+                    </select>
+                    <div class="help-block" ng-messages="myForm.meetingTypeId.$error" ng-show="myForm.meetingTypeId.$touched || submitted">
+                        <div ng-messages-include="app/html/error-messages.html"></div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <input type="button" class="btn btn-primary" value="Create Meeting"
+                           ng-click="createMeeting()"/>
+                </div>
+
+            </div>
+
+
+
+            <div class="panel panel-default" ng-hide="!haveMeeting">
+                <div class="panel-heading">Meeting Members (Present: X1, Not Present: X2, Unknown: X3, Total Possible: {{totalPossible}})</div>
+                <div class="panel-body">
+                    <!--<select ng-model="filterSelected" ng-change="filter()" class="form-control" ng-options="filter as filter.label for filter in filterOptions track by filter.id"></select>-->
+                    <div ng-repeat="item in userList track by item.id">
+                        <div class="form-group">
+                            <label for="recorderName" class="col-sm-3 control-label">{{item.fullName}}</label>
+                            <div class="col-sm-9">
+                                <div class="btn-group">
+                                    <label class="btn btn-default" ng-model="item.isAttend" uib-btn-radio=true ng-change="memberSelected(item)">Present</label>
+                                    <label class="btn btn-default" ng-model="item.isAttend" uib-btn-radio=null ng-change="memberSelected(item)">Unknown</label>
+                                    <label class="btn btn-default" ng-model="item.isAttend" uib-btn-radio=false ng-change="memberSelected(item)">Not Present</label>
+                                </div>
+                                {{item.isAttend}}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
+
 </form>

@@ -15,7 +15,7 @@
           <Property Name="RecorderId" Type="int" Nullable="false" />
           <Property Name="DateRecorded" Type="datetime" Nullable="false" />
           <Property Name="LastUpdated" Type="datetime" Nullable="false" />
-          <Property Name="IsAttend" Type="bit" Nullable="false" />
+          <Property Name="isAttend" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Group">
           <Key>
@@ -44,9 +44,9 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Active" Type="bit" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -67,6 +67,8 @@
           <Property Name="BaptizedDate" Type="datetime" />
           <Property Name="SavedDate" Type="datetime" />
           <Property Name="Locality" Type="nvarchar" MaxLength="100" />
+          <Property Name="DateCreated" Type="datetime" />
+          <Property Name="LastUpdated" Type="datetime" />
         </EntityType>
         <EntityType Name="X_User_Group">
           <Key>
@@ -272,7 +274,7 @@
           <Property Name="RecorderId" Type="Int32" Nullable="false" />
           <Property Name="DateRecorded" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastUpdated" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="IsAttend" Type="Boolean" Nullable="false" />
+          <Property Name="isAttend" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Meeting" Relationship="CstatsModel.FK_Attendance_Meeting" FromRole="Attendance" ToRole="Meeting" />
           <NavigationProperty Name="User" Relationship="CstatsModel.FK_Attendance_Recorder" FromRole="Attendance" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="CstatsModel.FK_Attendance_User" FromRole="Attendance" ToRole="User" />
@@ -308,9 +310,9 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Active" Type="Boolean" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Meetings" Relationship="CstatsModel.FK_Meeting_MeetingType" FromRole="MeetingType" ToRole="Meeting" />
         </EntityType>
         <EntityType Name="User">
@@ -332,6 +334,8 @@
           <Property Name="BaptizedDate" Type="DateTime" Precision="3" />
           <Property Name="SavedDate" Type="DateTime" Precision="3" />
           <Property Name="Locality" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdated" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Attendances" Relationship="CstatsModel.FK_Attendance_Recorder" FromRole="User" ToRole="Attendance" />
           <NavigationProperty Name="Attendances1" Relationship="CstatsModel.FK_Attendance_User" FromRole="User" ToRole="Attendance" />
           <NavigationProperty Name="X_User_Meeting" Relationship="CstatsModel.FK_X_User_Meeting_User" FromRole="User" ToRole="X_User_Meeting" />
@@ -424,7 +428,7 @@
           <End Type="CstatsModel.Group" Role="Group" Multiplicity="*" />
           <End Type="CstatsModel.User" Role="User" Multiplicity="*" />
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -433,7 +437,7 @@
           <EntitySetMapping Name="Attendances">
             <EntityTypeMapping TypeName="CstatsModel.Attendance">
               <MappingFragment StoreEntitySet="Attendance">
-                <ScalarProperty Name="IsAttend" ColumnName="IsAttend" />
+                <ScalarProperty Name="isAttend" ColumnName="isAttend" />
                 <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
                 <ScalarProperty Name="DateRecorded" ColumnName="DateRecorded" />
                 <ScalarProperty Name="RecorderId" ColumnName="RecorderId" />
@@ -480,6 +484,8 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="CstatsModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
                 <ScalarProperty Name="Locality" ColumnName="Locality" />
                 <ScalarProperty Name="SavedDate" ColumnName="SavedDate" />
                 <ScalarProperty Name="BaptizedDate" ColumnName="BaptizedDate" />

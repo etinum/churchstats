@@ -129,7 +129,19 @@
             return deferred.promise;
         };
 
+        var saveMeeting = (data) => {
+            var url = baseWebApiUrl + 'api/Meeting/SaveMeeting';
+            var deferred = $q.defer();
 
+            $http.post(url, data)
+                .then(response => {
+                    deferred.resolve(response);
+                }, (response) => {
+                    alertFailed(response);
+                    deferred.reject(response);
+                });
+            return deferred.promise;
+        }
 
 
        // Google api 
@@ -160,6 +172,7 @@
             saveUser: saveUser,
             getAllMeetings: getAllMeetings,
             getAllMeetingTypes: getAllMeetingTypes,
+            saveMeeting: saveMeeting,
             getLocation: getLocation,
             // Helper Methods
             arrayUnique: arrayUnique,

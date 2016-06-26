@@ -9,7 +9,7 @@
         <EntityTypeShape EntityType="CstatsModel.Group" Width="1.5" PointX="0.75" PointY="2.875" />
         <EntityTypeShape EntityType="CstatsModel.Meeting" Width="1.5" PointX="3" PointY="7.375" />
         <EntityTypeShape EntityType="CstatsModel.MeetingType" Width="1.5" PointX="0.75" PointY="8" />
-        <EntityTypeShape EntityType="CstatsModel.User" Width="1.5" PointX="3" PointY="1.625" />
+        <EntityTypeShape EntityType="CstatsModel.User" Width="1.5" PointX="3" PointY="1.375" />
         <EntityTypeShape EntityType="CstatsModel.X_User_Meeting" Width="1.5" PointX="8.25" PointY="3" />
         <AssociationConnector Association="CstatsModel.FK_Attendance_Meeting" />
         <AssociationConnector Association="CstatsModel.FK_Attendance_Recorder" />

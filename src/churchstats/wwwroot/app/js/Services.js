@@ -95,6 +95,18 @@
             });
             return deferred.promise;
         };
+        var saveMeeting = function (data) {
+            var url = baseWebApiUrl + 'api/Meeting/SaveMeeting';
+            var deferred = $q.defer();
+            $http.post(url, data)
+                .then(function (response) {
+                deferred.resolve(response);
+            }, function (response) {
+                alertFailed(response);
+                deferred.reject(response);
+            });
+            return deferred.promise;
+        };
         var getLocation = function (val) {
             var url = baseWebApiUrl + 'api/RepoForm/SaveForm';
             var deferred = $q.defer();
@@ -117,6 +129,7 @@
             saveUser: saveUser,
             getAllMeetings: getAllMeetings,
             getAllMeetingTypes: getAllMeetingTypes,
+            saveMeeting: saveMeeting,
             getLocation: getLocation,
             arrayUnique: arrayUnique,
             arrayObjectIndexOf: arrayObjectIndexOf,

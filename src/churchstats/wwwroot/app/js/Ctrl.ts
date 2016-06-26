@@ -97,7 +97,7 @@
                 return;
             }
 
-            var index = $dataService.arrayObjectIndexOf($scope.meetingNameOptions, $scope.meetingName, "name", false);
+            var index = $dataService.arrayObjectIndexOf($scope.meetingList, $scope.meetingName, "name", false);
             $scope.$evalAsync(() => {
 
                 if (index === -1) {
@@ -106,7 +106,7 @@
                     $scope.haveMeeting = false;
                 } else {
                     //alert('User exist');
-                    $scope.meetingName = $scope.meetingNameOptions[index].name;
+                    $scope.meetingName = $scope.meetingList[index].name;
                     $scope.recorderFieldDisable = true;
                     $scope.meetingFieldDisable = true;
                     $scope.haveMeeting = true;
@@ -139,10 +139,19 @@
                 });
         };
 
-        $scope.meetingTypeChanged = () => {
-            alert('hi: ' + $scope.meetingTypeOptions.filter(item => item.id === parseInt($scope.meetingTypeId))[0].label);
+        $scope.createMeeting = () => {
+            var meeting = <modeltypings.MeetingViewModel>{};
+            meeting.name = $scope.meetingName;
+            meeting.meetingTypeId = $scope.meetingTypeId;
 
+            $dataService.saveMeeting(meeting)
+                .then((data) => {
+                    meeting.id = data;
+                    $scope.meetingList.push(meeting);
+                    $scope.onBlurMeeting();
+                });
         };
+
 
         $scope.memberSelected = (item) => {
             alert('Update database for: ' + item.fullName + ", present: " + item.isAttend);
@@ -164,20 +173,20 @@
                 // Initiation... 
 
                 // data for checkbox.
-                $dataService.getAllUsers().then(data => {
+                $scope.load = $dataService.getAllUsers().then(data => {
                     $scope.userList = <modeltypings.UserViewModel[]>data;
                     getCounts(data);
                 });;
 
 
                 //Data for meetings
-                $dataService.getAllMeetings().then(data => {
-                    $scope.meetingNameOptions = <modeltypings.MeetingViewModel[]>data;
+                $scope.load = $dataService.getAllMeetings().then(data => {
+                    $scope.meetingList = <modeltypings.MeetingViewModel[]>data;
                 });;
 
 
                 //Data for meeting types
-                $dataService.getAllMeetingTypes().then(data => {
+                $scope.load = $dataService.getAllMeetingTypes().then(data => {
                     $scope.meetingTypeOptions = <modeltypings.MeetingTypeViewModel[]>data;
                 });;
             });

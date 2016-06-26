@@ -29,22 +29,26 @@ namespace webapi.Controllers
             _ctx = new CStatsEntities();
         }
 
-        //#region CRUD
         [HttpGet]
-        public IEnumerable<UserViewModel> GetAllUsers()
+        public IHttpActionResult GetAllUsers()
         {
             var users = _ctx.Users.ToList();
-            return _mapper.Map<IEnumerable<UserViewModel>>(users);
+            return Ok(_mapper.Map<IEnumerable<UserViewModel>>(users));
         }
 
 
         [HttpPost]
-        public int SaveUser(UserViewModel userViewModel)
+        public IHttpActionResult SaveUser(UserViewModel userViewModel)
         {
             var user = _mapper.Map<NewData.User>(userViewModel);
+            if (user.Id == 0)
+            {
+                user.DateCreated = DateTime.Now;
+            }
+
             _ctx.Users.Add(user);
             _ctx.SaveChanges();
-            return user.Id;
+            return Ok(user.Id);
 
         }
 

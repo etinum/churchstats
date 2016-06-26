@@ -28,23 +28,37 @@ namespace webapi.Controllers
             _ctx = new CStatsEntities();
         }
 
-        
-        public IEnumerable<MeetingViewModel> GetAllMeetings()
+        [HttpGet]
+        public IHttpActionResult GetAllMeetings()
         {
             var meetings = _ctx.Meetings.ToList();
 
-            return _mapper.Map<List<MeetingViewModel>>(meetings);
+            return Ok(_mapper.Map<List<MeetingViewModel>>(meetings));
         }
 
-
-        public IEnumerable<MeetingTypeViewModel> GetAllMeetingTypes()
+        [HttpGet]
+        public IHttpActionResult GetAllMeetingTypes()
         {
             var meetingTypes = _ctx.MeetingTypes.ToList();
 
-            return _mapper.Map<List<MeetingTypeViewModel>>(meetingTypes);
+            return Ok(_mapper.Map<List<MeetingTypeViewModel>>(meetingTypes));
         }
 
+        [HttpPost]
+        public IHttpActionResult SaveMeeting(MeetingViewModel meetingViewModel)
+        {
 
+            var meeting = _mapper.Map<Meeting>(meetingViewModel);
+            if (meeting.Id == 0)
+            {
+                meeting.DateCreated = DateTime.Now;
+                //meeting.DayOfTheWeek = DateTime.Now.DayOfWeek;
+            }
+            _ctx.Meetings.Add(meeting);
+            _ctx.SaveChanges();
+            return Ok(meeting.Id);
+
+        }
 
 
         //public bool AddUserToMeeting(int userId, int meetingId)

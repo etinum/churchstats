@@ -55,14 +55,14 @@
             if (!$scope.meetingName) {
                 return;
             }
-            var index = $dataService.arrayObjectIndexOf($scope.meetingNameOptions, $scope.meetingName, "name", false);
+            var index = $dataService.arrayObjectIndexOf($scope.meetingList, $scope.meetingName, "name", false);
             $scope.$evalAsync(function () {
                 if (index === -1) {
                     $scope.isNewMeeting = true;
                     $scope.haveMeeting = false;
                 }
                 else {
-                    $scope.meetingName = $scope.meetingNameOptions[index].name;
+                    $scope.meetingName = $scope.meetingList[index].name;
                     $scope.recorderFieldDisable = true;
                     $scope.meetingFieldDisable = true;
                     $scope.haveMeeting = true;
@@ -85,8 +85,16 @@
                 $scope.onBlurRecorder();
             });
         };
-        $scope.meetingTypeChanged = function () {
-            alert('hi: ' + $scope.meetingTypeOptions.filter(function (item) { return item.id === parseInt($scope.meetingTypeId); })[0].label);
+        $scope.createMeeting = function () {
+            var meeting = {};
+            meeting.name = $scope.meetingName;
+            meeting.meetingTypeId = $scope.meetingTypeId;
+            $dataService.saveMeeting(meeting)
+                .then(function (data) {
+                meeting.id = data;
+                $scope.meetingList.push(meeting);
+                $scope.onBlurMeeting();
+            });
         };
         $scope.memberSelected = function (item) {
             alert('Update database for: ' + item.fullName + ", present: " + item.isAttend);
@@ -97,16 +105,16 @@
         };
         $.connection.hub.start()
             .done(function () {
-            $dataService.getAllUsers().then(function (data) {
+            $scope.load = $dataService.getAllUsers().then(function (data) {
                 $scope.userList = data;
                 getCounts(data);
             });
             ;
-            $dataService.getAllMeetings().then(function (data) {
-                $scope.meetingNameOptions = data;
+            $scope.load = $dataService.getAllMeetings().then(function (data) {
+                $scope.meetingList = data;
             });
             ;
-            $dataService.getAllMeetingTypes().then(function (data) {
+            $scope.load = $dataService.getAllMeetingTypes().then(function (data) {
                 $scope.meetingTypeOptions = data;
             });
             ;
