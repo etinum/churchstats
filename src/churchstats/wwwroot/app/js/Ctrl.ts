@@ -147,6 +147,13 @@
             });
 
 
+        $scope.filterUserSelected = (type) => {
+
+            alert($scope.hidePresent);
+
+        };
+
+
         $scope.createNewUser = () => {
 
             var user = <modeltypings.UserViewModel>{};

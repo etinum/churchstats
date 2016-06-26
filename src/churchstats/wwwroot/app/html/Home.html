@@ -54,44 +54,47 @@
                 <div class="panel-body">
                     <!--<select ng-model="filterSelected" ng-change="filter()" class="form-control" ng-options="filter as filter.label for filter in filterOptions track by filter.id"></select>-->
 
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-xs-10 col-sm-5 col-lg-6" style="margin-bottom: 5px">
-                                    <input id="globalSearch" ng-model="globalSearchString" class="form-control" placeholder="global search ..." type="text" />
-                                </div>
-
-                                <div class="col-xs-3 col-sm-2 col-lg-1 ">
-                                    <input type="button" class="btn btn-default" value="Present"
-                                           ng-click="cancelForm()" />
-                                </div>
-                                <div class="col-xs-3 col-sm-2 col-lg-1">
-                                    <input type="button" class="btn btn-default" value="Unknown"
-                                           ng-click="submitForm()" />
-                                </div>
-                                <div class="col-xs-3 col-sm-2 col-lg-1 ">
-                                    <input type="reset" class="btn btn-default" value="Not Present"
-                                           ng-click="resetForm()" />
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-5 col-lg-6" style="margin-bottom: 5px">
+                                <input id="globalSearch" ng-model="globalSearchString" class="form-control" placeholder="global search ..." type="text" />
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-lg-6">
+                                <div class="row">
+                                    <label class="col-xs-4">
+                                        <input class="big-checkbox" type="checkbox"
+                                               ng-model="hidePresent" ng-change="filterUserSelected()"/>  Hide Present
+                                    </label>
+                                    <label class="col-xs-4">
+                                        <input class="big-checkbox" type="checkbox"
+                                               ng-model="hideUnknown" ng-change="filterUserSelected()"/>  Hide Unknown
+                                    </label>
+                                    <label class="col-xs-4" style="text-align:center">
+                                        <input class="big-checkbox" type="checkbox"
+                                               ng-model="hideAbsent" ng-change="filterUserSelected()"/>  Hide Absent
+                                    </label>
                                 </div>
                             </div>
+
                         </div>
-                    <br/><br/>
+                    </div>
+                </div>
+                <br /><br />
 
-                    <!--<input type="button" class="btn btn-primary form-control" value="Add Members"
-                       ng-click="AddMembers()" /><br /><br />-->
+                <!--<input type="button" class="btn btn-primary form-control" value="Add Members"
+                   ng-click="AddMembers()" /><br /><br />-->
 
 
 
 
-                    <div ng-repeat="item in userList track by item.id">
-                        <div class="form-group">
-                            <label for="recorderName" class="col-sm-3 control-label">{{item.fullName}}</label>
-                            <div class="col-sm-9">
-                                <div class="btn-group">
-                                    <label class="btn btn-default" ng-model="item.isAttend" uib-btn-radio=true ng-change="memberSelected(item)">Present</label>
-                                    <label class="btn btn-default" ng-model="item.isAttend" uib-btn-radio=null ng-change="memberSelected(item)">Unknown</label>
-                                    <label class="btn btn-default" ng-model="item.isAttend" uib-btn-radio=false ng-change="memberSelected(item)">Not Present</label>
-                                </div>
-                                {{item.isAttend}}
+                <div ng-repeat="item in userList track by item.id">
+                    <div class="form-group">
+                        <label for="recorderName" class="col-xs-12 col-sm-3 col-lg-3 control-label">{{item.fullName}}</label>
+                        <div class="col-xs-12 col-sm-9 col-lg-9">
+                            <div class="btn-group">
+                                <label class="btn btn-default" ng-model="item.isAttend" uib-btn-radio=true ng-change="memberSelected(item)">Present</label>
+                                <label class="btn btn-default" ng-model="item.isAttend" uib-btn-radio=null ng-change="memberSelected(item)">Unknown</label>
+                                <label class="btn btn-default" ng-model="item.isAttend" uib-btn-radio=false ng-change="memberSelected(item)">Absent</label>
                             </div>
                         </div>
                     </div>
@@ -99,5 +102,4 @@
             </div>
         </div>
     </div>
-
 </form>

@@ -92,6 +92,9 @@
             }
             searchFieldTimeout = setTimeout(filterUserBySearch, 700);
         });
+        $scope.filterUserSelected = function (type) {
+            alert($scope.hidePresent);
+        };
         $scope.createNewUser = function () {
             var user = {};
             user.firstName = $scope.recorderName.split(' ')[0];

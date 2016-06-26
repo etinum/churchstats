@@ -33,3 +33,11 @@
   .st-sort-descent:before{
     content: '\25BC';
   }
+
+   @media (max-width: 768px) {
+      .col-xs-12, .col-xs-12 {
+              text-align: center;
+       } 
+
+      .big-checkbox {width: 20px; height: 20px;}
+    }
