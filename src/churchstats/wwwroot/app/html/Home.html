@@ -50,7 +50,7 @@
 
 
             <div class="panel panel-default" ng-show="haveMeeting">
-                <div class="panel-heading">Meeting Members (Present: {{counts.present}}, Absent: {{counts.absent}}, Unknown: {{counts.unknown}}, Total Possible: {{counts.totalPossible}})</div>
+                <div class="panel-heading">Meeting stats (Present: {{counts.present}}, Absent: {{counts.absent}}, Unknown: {{counts.unknown}}, Total Possible: {{counts.totalPossible}})</div>
                 <div class="panel-body">
                     <!--<select ng-model="filterSelected" ng-change="filter()" class="form-control" ng-options="filter as filter.label for filter in filterOptions track by filter.id"></select>-->
 
@@ -104,10 +104,10 @@
                         <label class="col-xs-12 col-sm-3 col-lg-3 control-label">{{item.fullName}}</label>
                         <div class="col-xs-12 col-sm-9 col-lg-9">
                             <div class="btn-group">
-                                <label class="btn btn-default" ng-model="item.isAttend" uib-btn-radio=true ng-change="memberSelected(item)">Present</label>
-                                <label class="btn btn-default" ng-model="item.isAttend" uib-btn-radio=null ng-change="memberSelected(item)">Unknown</label>
-                                <label class="btn btn-default" ng-model="item.isAttend" uib-btn-radio=false ng-change="memberSelected(item)">Absent</label>
-                            </div>
+                                <label class="btn btn-info" ng-model="item.isAttend" uib-btn-radio=true ng-change="memberSelected(item)">Present</label>
+                                <label class="btn btn-info" ng-model="item.isAttend" uib-btn-radio=null ng-change="memberSelected(item)">Unknown</label>
+                                <label class="btn btn-info" ng-model="item.isAttend" uib-btn-radio=false ng-change="memberSelected(item)">Absent</label>
+                            </div>  {{item.RecorderName}}
                         </div>
                     </div>
                 </div>

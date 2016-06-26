@@ -41,4 +41,12 @@ declare module modeltypings {
         memberId: number;
         meetingId: number;
     }
+
+    interface AttendanceModel {
+        id: number;
+        userId: number;
+        meetingId: number;
+        recorderId: number;
+        isAttend: boolean;
+    }
 }

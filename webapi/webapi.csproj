@@ -206,7 +206,7 @@
     </Compile>
     <Compile Include="Hubs\AttendHub.cs" />
     <Compile Include="Mappers\ModelMapper.cs" />
-    <Compile Include="ViewModels\AttendanceModel.cs" />
+    <Compile Include="ViewModels\AttendanceViewModel.cs" />
     <Compile Include="ViewModels\MeetingViewModel.cs" />
     <Compile Include="ViewModels\MeetingTypeViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
@@ -286,6 +286,9 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="ViewModels\AttendanceModel.cs.d.ts">
+      <DependentUpon>AttendanceViewModel.cs</DependentUpon>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="ViewModels\MeetingTypeViewModel.cs.d.ts">
       <DependentUpon>MeetingTypeViewModel.cs</DependentUpon>
     </TypeScriptCompile>

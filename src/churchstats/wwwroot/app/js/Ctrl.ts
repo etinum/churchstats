@@ -48,6 +48,8 @@
         $scope.counts = {};
 
 
+        var hub = $.connection.attendHub;
+
         var recorderFieldTimeout;
         $('#recorderName')
             .keypress(() => {
@@ -118,13 +120,15 @@
                     $scope.haveMeeting = false;
                 } else {
 
-                        $scope.meetingName = $scope.meetingList[index].name;
-                        $scope.recorderFieldDisable = true;
-                        $scope.meetingFieldDisable = true;
-                        $scope.haveMeeting = true;
-                        $scope.isNewMeeting = false;
-                        $scope.selectedMeetingId = $scope.meetingList[index].id;
-                        getMeetingMembers();
+                    $scope.meetingName = $scope.meetingList[index].name;
+                    $scope.recorderFieldDisable = true;
+                    $scope.meetingFieldDisable = true;
+                    $scope.haveMeeting = true;
+                    $scope.isNewMeeting = false;
+                    $scope.selectedMeetingId = $scope.meetingList[index].id;
+                    getMeetingMembers();
+
+                    hub.server.subscribe($scope.selectedMeetingId);
                 }
             });
 
@@ -205,7 +209,7 @@
         $scope.filterUserSelected = (type) => {
 
             if ($scope.hideAbsent === true) {
-               // alert('yes');
+                // alert('yes');
             }
 
 
@@ -248,7 +252,7 @@
                 .then((data) => {
                     // reset fields
                     $scope.addMeetingMembers = '';
-                   updateMemberList(member);
+                    updateMemberList(member);
                 });
 
         };
@@ -277,6 +281,18 @@
 
         $scope.memberSelected = (item) => {
 
+
+            var attendance = <modeltypings.AttendanceModel>{};
+            attendance.meetingId = $scope.selectedMeetingId;
+            attendance.recorderId = $scope.selectedUserId;
+            attendance.userId = item.id;
+            attendance.isAttend = item.isAttend;
+
+            $dataService.saveAttendance(attendance)
+                .then((response) => {
+                    attendance.id = response.data;
+                });
+
             updateCounts($scope.memberList);
             //  alert('Update database for: ' + item.fullName + ", present: " + item.isAttend);
         };
@@ -284,12 +300,27 @@
 
         // Execution
 
-        var hub = $.connection.attendHub;
-
         // signalR server call handlers
         hub.client.ClientCall = () => {
             alert('hello value, world');
         };
+
+        hub.client.UpdateAttendance = (data) => {
+
+            var member = $scope.fullMemberList.filter(item => item.id === data.userId)[0];
+            var recorder = $scope.fullUserList.filter(item => item.id === data.recorderId)[0];
+
+            $scope.$evalAsync(() => {
+                member.isAttend = data.isAttend;
+                member.RecorderName = "Last updated by: " + recorder.fullName;
+                filterMembersBySearch();
+
+            });
+
+            //alert('update made: ' + member.fullName);
+
+        };
+
 
         $.connection.hub.start()
             .done(() => {

@@ -21,8 +21,8 @@ namespace webapi.Mappers
             CreateMap<MeetingTypeViewModel, MeetingType>();
             CreateMap<MeetingType, MeetingTypeViewModel>();
 
-            CreateMap<Attendance, AttendanceModel>();
-            CreateMap<AttendanceModel, Attendance>();
+            CreateMap<Attendance, AttendanceViewModel>();
+            CreateMap<AttendanceViewModel, Attendance>();
         }
     }
 }

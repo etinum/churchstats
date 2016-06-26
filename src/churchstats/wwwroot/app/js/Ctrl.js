@@ -18,6 +18,7 @@
         $scope.selectedMeetingId = 0;
         $scope.globalSearchString = '';
         $scope.counts = {};
+        var hub = $.connection.attendHub;
         var recorderFieldTimeout;
         $('#recorderName')
             .keypress(function () {
@@ -80,6 +81,7 @@
                     $scope.isNewMeeting = false;
                     $scope.selectedMeetingId = $scope.meetingList[index].id;
                     getMeetingMembers();
+                    hub.server.subscribe($scope.selectedMeetingId);
                 }
             });
         };
@@ -187,11 +189,28 @@
             });
         };
         $scope.memberSelected = function (item) {
+            var attendance = {};
+            attendance.meetingId = $scope.selectedMeetingId;
+            attendance.recorderId = $scope.selectedUserId;
+            attendance.userId = item.id;
+            attendance.isAttend = item.isAttend;
+            $dataService.saveAttendance(attendance)
+                .then(function (response) {
+                attendance.id = response.data;
+            });
             updateCounts($scope.memberList);
         };
-        var hub = $.connection.attendHub;
         hub.client.ClientCall = function () {
             alert('hello value, world');
+        };
+        hub.client.UpdateAttendance = function (data) {
+            var member = $scope.fullMemberList.filter(function (item) { return item.id === data.userId; })[0];
+            var recorder = $scope.fullUserList.filter(function (item) { return item.id === data.recorderId; })[0];
+            $scope.$evalAsync(function () {
+                member.isAttend = data.isAttend;
+                member.RecorderName = "Last updated by: " + recorder.fullName;
+                filterMembersBySearch();
+            });
         };
         $.connection.hub.start()
             .done(function () {

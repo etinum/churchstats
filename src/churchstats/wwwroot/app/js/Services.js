@@ -138,8 +138,19 @@
             });
             return deferred.promise;
         };
+        var saveAttendance = function (data) {
+            var url = baseWebApiUrl + 'api/Attendance/SaveAttendance';
+            var deferred = $q.defer();
+            $http.post(url, data)
+                .then(function (response) {
+                deferred.resolve(response);
+            }, function (response) {
+                alertFailed(response);
+                deferred.reject(response);
+            });
+            return deferred.promise;
+        };
         var getLocation = function (val) {
-            var url = baseWebApiUrl + 'api/RepoForm/SaveForm';
             var deferred = $q.defer();
             $http.get('//maps.googleapis.com/maps/api/geocode/json', {
                 params: {
@@ -163,6 +174,7 @@
             addMemberToMeeting: addMemberToMeeting,
             getAllMeetingTypes: getAllMeetingTypes,
             saveMeeting: saveMeeting,
+            saveAttendance: saveAttendance,
             getLocation: getLocation,
             arrayUnique: arrayUnique,
             arrayObjectIndexOf: arrayObjectIndexOf,
