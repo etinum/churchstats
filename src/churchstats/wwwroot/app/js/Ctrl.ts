@@ -168,6 +168,27 @@
         };
 
 
+        var createUser = (name) => {
+
+            if (name.split(' ').length !== 2) {
+                alert('Sorry, we need first and last name only');
+                return;
+            }
+
+            if ($dataService.arrayObjectIndexOf($scope.fullUserList, name, "fullName", false) > -1) {
+                alert('User already exist, please pick another one');
+            }
+
+            var user = <modeltypings.UserViewModel>{};
+            user.firstName = $dataService.capitalizeFirstLetter(name.split(' ')[0]);
+            user.lastName = $dataService.capitalizeFirstLetter(name.split(' ')[1]);;
+            user.fullName = name;
+            user.isAttend = null;
+
+            return user;
+
+        };
+
         // Event handler
         var searchFieldTimeout;
         $('#globalSearch')
@@ -193,16 +214,7 @@
 
         $scope.createNewUser = (name) => {
 
-            if (name.split(' ').length !== 2) {
-                alert('Sorry, we need first and last name only');
-                return;
-            }
-
-            var user = <modeltypings.UserViewModel>{};
-            user.firstName = $dataService.capitalizeFirstLetter(name.split(' ')[0]);
-            user.lastName = $dataService.capitalizeFirstLetter(name.split(' ')[1]);;
-            user.fullName = name;
-            user.isAttend = null;
+            var user = createUser(name);
 
 
             $dataService.saveUser(user)
@@ -219,8 +231,8 @@
             meeting.meetingTypeId = $scope.meetingTypeId;
 
             $dataService.saveMeeting(meeting)
-                .then((data) => {
-                    meeting.id = data;
+                .then((response) => {
+                    meeting.id = response.data;
                     $scope.meetingList.push(meeting);
                     $scope.onBlurMeeting();
                 });
@@ -243,17 +255,7 @@
 
         $scope.AddNewUserAsMember = (name) => {
 
-            if (name.split(' ').length !== 2) {
-                alert('Sorry, we need first and last name only');
-                return;
-            }
-
-            var user = <modeltypings.UserViewModel>{};
-            user.firstName = $dataService.capitalizeFirstLetter(name.split(' ')[0]);
-            user.lastName = $dataService.capitalizeFirstLetter(name.split(' ')[1]);;
-            user.fullName = name;
-            user.isAttend = null;
-
+            var user = createUser(name);
 
             $scope.load = $dataService.saveUser(user)
                 .then((response) => {

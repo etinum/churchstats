@@ -85,6 +85,7 @@ namespace webapi.Controllers
         {
 
             var meeting = _mapper.Map<Meeting>(meetingViewModel);
+
             if (meeting.Id == 0)
             {
                 meeting.DateCreated = DateTime.Now;

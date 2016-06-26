@@ -60,11 +60,11 @@
                             </i>
                         </button>
                         <div ng-show="showAddMember" class="row">
-                            <div class="col-xs-8 col-sm-5" style="margin-bottom: 5px">
+                            <div class="col-xs-6 col-sm-5" style="margin-bottom: 5px">
                                 <input type="text" ng-maxlength="ng_maxLength" maxlength={{maxLength}} id="addMeetingMembers" name="addMeetingMembers" class="form-control"
                                        ng-model="addMeetingMembers" ng-required="true" uib-typeahead="item.fullName for item in availableMemberList  | filter:$viewValue | limitTo:8" autocomplete="off" typeahead-on-select="AddMember($item)" placeholder="Type here to add members" />
                             </div>
-                            <div class="col-xs-4 col-sm-4" style="margin-bottom: 15px">
+                            <div class="col-xs-6 col-sm-4" style="margin-bottom: 15px">
                                 <input type="button" class="btn btn-success" value="Add New User"
                                        ng-click="AddNewUserAsMember(addMeetingMembers)" />
                             </div>

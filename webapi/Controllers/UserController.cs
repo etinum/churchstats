@@ -44,6 +44,7 @@ namespace webapi.Controllers
             if (user.Id == 0)
             {
                 user.DateCreated = DateTime.Now;
+                user.LastUpdated = DateTime.Now;
             }
 
             _ctx.Users.Add(user);

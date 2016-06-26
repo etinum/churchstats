@@ -112,6 +112,22 @@
             });
         }
         ;
+        var createUser = function (name) {
+            if (name.split(' ').length !== 2) {
+                alert('Sorry, we need first and last name only');
+                return;
+            }
+            if ($dataService.arrayObjectIndexOf($scope.fullUserList, name, "fullName", false) > -1) {
+                alert('User already exist, please pick another one');
+            }
+            var user = {};
+            user.firstName = $dataService.capitalizeFirstLetter(name.split(' ')[0]);
+            user.lastName = $dataService.capitalizeFirstLetter(name.split(' ')[1]);
+            ;
+            user.fullName = name;
+            user.isAttend = null;
+            return user;
+        };
         var searchFieldTimeout;
         $('#globalSearch')
             .keydown(function () {
@@ -126,16 +142,7 @@
             }
         };
         $scope.createNewUser = function (name) {
-            if (name.split(' ').length !== 2) {
-                alert('Sorry, we need first and last name only');
-                return;
-            }
-            var user = {};
-            user.firstName = $dataService.capitalizeFirstLetter(name.split(' ')[0]);
-            user.lastName = $dataService.capitalizeFirstLetter(name.split(' ')[1]);
-            ;
-            user.fullName = name;
-            user.isAttend = null;
+            var user = createUser(name);
             $dataService.saveUser(user)
                 .then(function (response) {
                 user.id = response.data;
@@ -148,8 +155,8 @@
             meeting.name = $scope.meetingName;
             meeting.meetingTypeId = $scope.meetingTypeId;
             $dataService.saveMeeting(meeting)
-                .then(function (data) {
-                meeting.id = data;
+                .then(function (response) {
+                meeting.id = response.data;
                 $scope.meetingList.push(meeting);
                 $scope.onBlurMeeting();
             });
@@ -165,16 +172,7 @@
             });
         };
         $scope.AddNewUserAsMember = function (name) {
-            if (name.split(' ').length !== 2) {
-                alert('Sorry, we need first and last name only');
-                return;
-            }
-            var user = {};
-            user.firstName = $dataService.capitalizeFirstLetter(name.split(' ')[0]);
-            user.lastName = $dataService.capitalizeFirstLetter(name.split(' ')[1]);
-            ;
-            user.fullName = name;
-            user.isAttend = null;
+            var user = createUser(name);
             $scope.load = $dataService.saveUser(user)
                 .then(function (response) {
                 user.id = response.data;
