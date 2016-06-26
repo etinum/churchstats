@@ -4,10 +4,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using data;
 using NewData;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using System.Text.RegularExpressions;
 using AutoMapper;
 using webapi.Mappers;
 using webapi.ViewModels;
@@ -30,11 +30,24 @@ namespace webapi.Controllers
         }
 
         //#region CRUD
+        [HttpGet]
         public IEnumerable<UserViewModel> GetAllUsers()
         {
             var users = _ctx.Users.ToList();
             return _mapper.Map<IEnumerable<UserViewModel>>(users);
         }
+
+
+        [HttpPost]
+        public int SaveUser(UserViewModel userViewModel)
+        {
+            var user = _mapper.Map<NewData.User>(userViewModel);
+            _ctx.Users.Add(user);
+            _ctx.SaveChanges();
+            return user.Id;
+
+        }
+
 
         //public UserViewModel Get(int id)
         //{

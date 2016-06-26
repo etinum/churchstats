@@ -75,6 +75,7 @@
         };
 
 
+        // Users
         var getAllUsers = () => {
             var url = baseWebApiUrl + 'api/User/GetAllUsers';
             var deferred = $q.defer();
@@ -88,6 +89,19 @@
             return deferred.promise;
         };
 
+        var saveUser = (data) => {
+            var url = baseWebApiUrl + 'api/User/SaveUser';
+            var deferred = $q.defer();
+
+            $http.post(url, data)
+                .then(response => {
+                    deferred.resolve(response);
+                }, (response) => {
+                    alertFailed(response);
+                    deferred.reject(response);
+                });
+            return deferred.promise;
+        }
 
         var getAllMeetings = () => {
             var url = baseWebApiUrl + 'api/Meeting/GetAllMeetings';
@@ -143,6 +157,7 @@
 
         return {
             getAllUsers: getAllUsers,
+            saveUser: saveUser,
             getAllMeetings: getAllMeetings,
             getAllMeetingTypes: getAllMeetingTypes,
             getLocation: getLocation,

@@ -4,14 +4,12 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using data;
 using webapi.ViewModels;
 using AutoMapper;
 using NewData;
 using webapi.Hubs;
 using webapi.Mappers;
-using Meeting = data.Meeting;
-using MeetingType = data.MeetingType;
+
 
 namespace webapi.Controllers
 {
