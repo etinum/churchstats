@@ -35,17 +35,17 @@
 
         // controller variables
         $scope.rf = {};
-        $scope.haveRecorder = true;
+        $scope.haveRecorder = false;
         $scope.recorderFieldDisable = false;
         $scope.meetingFieldDisable = false;
         $scope.isNewUser = false;
         $scope.isNewMeeting = false;
-        $scope.haveMeeting = true;
+        $scope.haveMeeting = false;
 
         $scope.selectedUserId = 0;
         $scope.selectedMeetingId = 0;
         $scope.globalSearchString = '';
-
+        $scope.counts = {};
 
 
         var recorderFieldTimeout;
@@ -132,8 +132,11 @@
 
 
         // Helper
-        var getCounts = (data) => {
-            $scope.totalPossible = data.length;
+        var updateCounts = (data) => {
+            $scope.counts.totalPossible = data.length;
+            $scope.counts.unknown = data.filter(item => item.isAttend === null).length;
+            $scope.counts.absent = data.filter(item => item.isAttend === false).length;
+            $scope.counts.present = data.filter(item => item.isAttend === true).length;
         };
 
         var updateUserList = (user) => {
@@ -150,6 +153,7 @@
         var filterMembersBySearch = () => {
             $scope.$evalAsync(() => {
                 $scope.memberList = $scope.fullMemberList.filter(item => item.fullName.toLowerCase().indexOf($scope.globalSearchString.toLowerCase()) > -1);
+                updateCounts($scope.memberList);
             });
         }
 
@@ -160,6 +164,7 @@
                     $scope.fullMemberList = angular.copy($scope.memberList);
                     // Update user list to not include existing members
                     $scope.availableMemberList = $scope.userList.filter(item => $dataService.arrayObjectIndexOf($scope.memberList, item.fullName, "fullName", false) === -1);
+                    updateCounts(data);
 
                 });
         };
@@ -180,7 +185,10 @@
 
         $scope.filterUserSelected = (type) => {
 
-            alert($scope.hidePresent);
+            if ($scope.hideAbsent === true) {
+               // alert('yes');
+            }
+
 
         };
 
@@ -263,19 +271,14 @@
                             $scope.addMeetingMembers = '';
                             updateMemberList(user);
                         });
-
-
                 });
-
-
-
-
-
         };
 
 
         $scope.memberSelected = (item) => {
-            alert('Update database for: ' + item.fullName + ", present: " + item.isAttend);
+
+            updateCounts($scope.memberList);
+            //  alert('Update database for: ' + item.fullName + ", present: " + item.isAttend);
         };
 
 
@@ -297,7 +300,6 @@
                 $scope.load = $dataService.getAllUsers().then(data => {
                     $scope.userList = <modeltypings.UserViewModel[]>data;
                     $scope.fullUserList = angular.copy($scope.userList);
-                    getCounts(data);
                 });;
 
 

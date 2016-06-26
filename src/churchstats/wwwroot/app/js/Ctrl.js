@@ -8,15 +8,16 @@
 (function (app) {
     var controller = function ($scope, $location, $dataService, $window) {
         $scope.rf = {};
-        $scope.haveRecorder = true;
+        $scope.haveRecorder = false;
         $scope.recorderFieldDisable = false;
         $scope.meetingFieldDisable = false;
         $scope.isNewUser = false;
         $scope.isNewMeeting = false;
-        $scope.haveMeeting = true;
+        $scope.haveMeeting = false;
         $scope.selectedUserId = 0;
         $scope.selectedMeetingId = 0;
         $scope.globalSearchString = '';
+        $scope.counts = {};
         var recorderFieldTimeout;
         $('#recorderName')
             .keypress(function () {
@@ -82,8 +83,11 @@
                 }
             });
         };
-        var getCounts = function (data) {
-            $scope.totalPossible = data.length;
+        var updateCounts = function (data) {
+            $scope.counts.totalPossible = data.length;
+            $scope.counts.unknown = data.filter(function (item) { return item.isAttend === null; }).length;
+            $scope.counts.absent = data.filter(function (item) { return item.isAttend === false; }).length;
+            $scope.counts.present = data.filter(function (item) { return item.isAttend === true; }).length;
         };
         var updateUserList = function (user) {
             $scope.userList.push(user);
@@ -96,6 +100,7 @@
         var filterMembersBySearch = function () {
             $scope.$evalAsync(function () {
                 $scope.memberList = $scope.fullMemberList.filter(function (item) { return item.fullName.toLowerCase().indexOf($scope.globalSearchString.toLowerCase()) > -1; });
+                updateCounts($scope.memberList);
             });
         };
         function getMeetingMembers() {
@@ -104,6 +109,7 @@
                 $scope.memberList = data;
                 $scope.fullMemberList = angular.copy($scope.memberList);
                 $scope.availableMemberList = $scope.userList.filter(function (item) { return $dataService.arrayObjectIndexOf($scope.memberList, item.fullName, "fullName", false) === -1; });
+                updateCounts(data);
             });
         }
         ;
@@ -117,7 +123,8 @@
             searchFieldTimeout = setTimeout(filterMembersBySearch, 700);
         });
         $scope.filterUserSelected = function (type) {
-            alert($scope.hidePresent);
+            if ($scope.hideAbsent === true) {
+            }
         };
         $scope.createNewUser = function (name) {
             if (name.split(' ').length !== 2) {
@@ -181,7 +188,7 @@
             });
         };
         $scope.memberSelected = function (item) {
-            alert('Update database for: ' + item.fullName + ", present: " + item.isAttend);
+            updateCounts($scope.memberList);
         };
         var hub = $.connection.attendHub;
         hub.client.ClientCall = function () {
@@ -192,7 +199,6 @@
             $scope.load = $dataService.getAllUsers().then(function (data) {
                 $scope.userList = data;
                 $scope.fullUserList = angular.copy($scope.userList);
-                getCounts(data);
             });
             ;
             $scope.load = $dataService.getAllMeetings().then(function (data) {
