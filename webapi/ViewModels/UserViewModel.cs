@@ -20,5 +20,7 @@ namespace webapi.ViewModels
         public DateTime? SavedDate { get; set; }
         public string Locality { get; set; }
         public string FullName => FirstName + " " + LastName;
+        public bool? IsAttend { get; set; }
+
     }
 }

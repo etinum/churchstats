@@ -16,6 +16,8 @@ declare module modeltypings {
         savedDate: Date;
         locality: string;
         fullName: string;
+        isAttend: boolean;
+
     }
 
     interface MeetingViewModel {
@@ -33,5 +35,10 @@ declare module modeltypings {
         id: number;
         name: string;
         active: boolean;
+    }
+
+    interface XMeetingMemberModel {
+        memberId: number;
+        meetingId: number;
     }
 }

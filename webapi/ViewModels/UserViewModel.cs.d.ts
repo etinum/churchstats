@@ -15,5 +15,6 @@
 		baptizedDate: Date;
 		savedDate: Date;
 		locality: string;
+		isAttend: boolean;
 	}
 }

@@ -44,6 +44,42 @@ namespace webapi.Controllers
             return Ok(_mapper.Map<List<MeetingTypeViewModel>>(meetingTypes));
         }
 
+        [HttpGet]
+        public IHttpActionResult GetMeetingMembers(int meetingId)
+        {
+
+            // TODO: We have to intelligently get the list of members based on existing meetings that are going on right now.
+
+            var users =
+                (from u in _ctx.Users
+                 join x in _ctx.X_User_Meeting on u.Id equals x.UserId
+                 where x.MeetingId == meetingId
+                 select u);
+
+            var userViewModels = _mapper.Map<List<UserViewModel>>(users);
+
+            foreach (var userViewModel in userViewModels)
+            {
+                userViewModel.IsAttend = null;
+            }
+
+            return Ok(userViewModels);
+        }
+
+        [HttpPost]
+        public IHttpActionResult AddMemberToMeeting(XMeetingMemberModel data)
+        {
+            var xref = _ctx.X_User_Meeting.Create();
+            xref.UserId = data.MemberId;
+            xref.MeetingId = data.MeetingId;
+            xref.Active = true;
+
+            _ctx.X_User_Meeting.Add(xref);
+            _ctx.SaveChanges();
+
+            return Ok();
+        }
+
         [HttpPost]
         public IHttpActionResult SaveMeeting(MeetingViewModel meetingViewModel)
         {

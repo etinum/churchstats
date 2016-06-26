@@ -71,6 +71,22 @@
             });
             return deferred.promise;
         };
+        var getMeetingMembers = function (id) {
+            var url = baseWebApiUrl + 'api/meeting/GetMeetingMembers';
+            var deferred = $q.defer();
+            $http.get(url, {
+                params: {
+                    meetingId: id
+                }
+            })
+                .then(function (response) {
+                deferred.resolve(response.data);
+            }, function (response) {
+                alertFailed(response);
+                deferred.reject(response);
+            });
+            return deferred.promise;
+        };
         var getAllMeetings = function () {
             var url = baseWebApiUrl + 'api/Meeting/GetAllMeetings';
             var deferred = $q.defer();
@@ -89,6 +105,18 @@
             $http.get(url)
                 .then(function (response) {
                 deferred.resolve(response.data);
+            }, function (response) {
+                alertFailed(response);
+                deferred.reject(response);
+            });
+            return deferred.promise;
+        };
+        var addMemberToMeeting = function (data) {
+            var url = baseWebApiUrl + 'api/Meeting/AddMemberToMeeting';
+            var deferred = $q.defer();
+            $http.post(url, data)
+                .then(function (response) {
+                deferred.resolve(response);
             }, function (response) {
                 alertFailed(response);
                 deferred.reject(response);
@@ -127,7 +155,9 @@
         return {
             getAllUsers: getAllUsers,
             saveUser: saveUser,
+            getMeetingMembers: getMeetingMembers,
             getAllMeetings: getAllMeetings,
+            addMemberToMeeting: addMemberToMeeting,
             getAllMeetingTypes: getAllMeetingTypes,
             saveMeeting: saveMeeting,
             getLocation: getLocation,

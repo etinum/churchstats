@@ -75,7 +75,12 @@
             if (!$scope.recorderName) {
                 return;
             }
-          
+
+            if (recorderFieldTimeout) {
+                clearTimeout(recorderFieldTimeout);
+                recorderFieldTimeout = null;
+            }
+
             var index = $dataService.arrayObjectIndexOf($scope.userList, $scope.recorderName, "fullName", false);
             $scope.$evalAsync(() => {
                 if (index === -1) {
@@ -99,6 +104,11 @@
                 return;
             }
 
+            if (meetingFieldTimeout) {
+                clearTimeout(meetingFieldTimeout);
+                meetingFieldTimeout = null;
+            }
+
             var index = $dataService.arrayObjectIndexOf($scope.meetingList, $scope.meetingName, "name", false);
             $scope.$evalAsync(() => {
 
@@ -107,12 +117,14 @@
                     $scope.isNewMeeting = true;
                     $scope.haveMeeting = false;
                 } else {
-                    $scope.meetingName = $scope.meetingList[index].name;
-                    $scope.recorderFieldDisable = true;
-                    $scope.meetingFieldDisable = true;
-                    $scope.haveMeeting = true;
-                    $scope.isNewMeeting = false;
-                    $scope.selectedMeetingId = $scope.meetingList[index].id;
+
+                        $scope.meetingName = $scope.meetingList[index].name;
+                        $scope.recorderFieldDisable = true;
+                        $scope.meetingFieldDisable = true;
+                        $scope.haveMeeting = true;
+                        $scope.isNewMeeting = false;
+                        $scope.selectedMeetingId = $scope.meetingList[index].id;
+                        getMeetingMembers();
                 }
             });
 
@@ -129,11 +141,29 @@
             $scope.fullUserList.push(user);
         };
 
-        var filterUserBySearch = () => {
+
+        var updateMemberList = (member) => {
+            $scope.memberList.push(member);
+            $scope.fullMemberList.push(member);
+        };
+
+        var filterMembersBySearch = () => {
             $scope.$evalAsync(() => {
-                $scope.userList = $scope.fullUserList.filter(item => item.fullName.toLowerCase().indexOf($scope.globalSearchString.toLowerCase()) > -1);
+                $scope.memberList = $scope.fullMemberList.filter(item => item.fullName.toLowerCase().indexOf($scope.globalSearchString.toLowerCase()) > -1);
             });
         }
+
+        function getMeetingMembers() {
+            $scope.load = $dataService.getMeetingMembers($scope.selectedMeetingId)
+                .then(data => {
+                    $scope.memberList = <modeltypings.UserViewModel>data;
+                    $scope.fullMemberList = angular.copy($scope.memberList);
+                    // Update user list to not include existing members
+                    $scope.availableMemberList = $scope.userList.filter(item => $dataService.arrayObjectIndexOf($scope.memberList, item.fullName, "fullName", false) === -1);
+
+                });
+        };
+
 
         // Event handler
         var searchFieldTimeout;
@@ -144,7 +174,7 @@
                     searchFieldTimeout = null;
                 }
 
-                searchFieldTimeout = setTimeout(filterUserBySearch, 700);
+                searchFieldTimeout = setTimeout(filterMembersBySearch, 700);
             });
 
 
@@ -155,16 +185,23 @@
         };
 
 
-        $scope.createNewUser = () => {
+        $scope.createNewUser = (name) => {
+
+            if (name.split(' ').length !== 2) {
+                alert('Sorry, we need first and last name only');
+                return;
+            }
 
             var user = <modeltypings.UserViewModel>{};
-            user.firstName = $scope.recorderName.split(' ')[0];
-            user.lastName = $scope.recorderName.split(' ')[1];
-            user.fullName = $scope.recorderName;
+            user.firstName = name.split(' ')[0];
+            user.lastName = name.split(' ')[1];
+            user.fullName = name;
+            user.isAttend = null;
+
 
             $dataService.saveUser(user)
-                .then((data) => {
-                    user.id = data;
+                .then((response) => {
+                    user.id = response.data;
                     updateUserList(user);
                     $scope.onBlurRecorder();
                 });
@@ -181,6 +218,59 @@
                     $scope.meetingList.push(meeting);
                     $scope.onBlurMeeting();
                 });
+        };
+
+        $scope.AddMember = (member) => {
+
+            var data = <modeltypings.XMeetingMemberModel>{};
+            data.meetingId = $scope.selectedMeetingId;
+            data.memberId = member.id;
+
+            $scope.load = $dataService.addMemberToMeeting(data)
+                .then((data) => {
+                    // reset fields
+                    $scope.addMeetingMembers = '';
+                   updateMemberList(member);
+                });
+
+        };
+
+        $scope.AddNewUserAsMember = (name) => {
+
+            if (name.split(' ').length !== 2) {
+                alert('Sorry, we need first and last name only');
+                return;
+            }
+
+            var user = <modeltypings.UserViewModel>{};
+            user.firstName = name.split(' ')[0];
+            user.lastName = name.split(' ')[1];
+            user.fullName = name;
+            user.isAttend = null;
+
+
+            $scope.load = $dataService.saveUser(user)
+                .then((response) => {
+                    user.id = response.data;
+
+                    var xref = <modeltypings.XMeetingMemberModel>{};
+                    xref.meetingId = $scope.selectedMeetingId;
+                    xref.memberId = user.id;
+
+                    $scope.load = $dataService.addMemberToMeeting(xref)
+                        .then((data) => {
+                            // reset fields
+                            $scope.addMeetingMembers = '';
+                            updateMemberList(user);
+                        });
+
+
+                });
+
+
+
+
+
         };
 
 
