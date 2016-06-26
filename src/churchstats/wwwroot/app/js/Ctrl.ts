@@ -43,6 +43,7 @@
         $scope.haveMeeting = true;
 
         $scope.selectedUserId = 0;
+        $scope.selectedMeetingId = 0;
         $scope.globalSearchString = '';
 
 
@@ -106,12 +107,12 @@
                     $scope.isNewMeeting = true;
                     $scope.haveMeeting = false;
                 } else {
-                    //alert('User exist');
                     $scope.meetingName = $scope.meetingList[index].name;
                     $scope.recorderFieldDisable = true;
                     $scope.meetingFieldDisable = true;
                     $scope.haveMeeting = true;
                     $scope.isNewMeeting = false;
+                    $scope.selectedMeetingId = $scope.meetingList[index].id;
                 }
             });
 

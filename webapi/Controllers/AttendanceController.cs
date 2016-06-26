@@ -37,5 +37,12 @@ namespace webapi.Controllers
         //    Hub.Clients.Group(meetingId.ToString(), null).ClientCall();
         //    return _attendanceLogic.SaveAttendance(userId, meetingId, isAttend, recorderId);
         //}
+
+        [HttpGet]
+        public void TestHub()
+        {
+            Hub.Clients.All.ClientCall();
+
+        }
     }
 }

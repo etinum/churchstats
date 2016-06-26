@@ -15,6 +15,7 @@
         $scope.isNewMeeting = false;
         $scope.haveMeeting = true;
         $scope.selectedUserId = 0;
+        $scope.selectedMeetingId = 0;
         $scope.globalSearchString = '';
         var recorderFieldTimeout;
         $('#recorderName')
@@ -68,6 +69,7 @@
                     $scope.meetingFieldDisable = true;
                     $scope.haveMeeting = true;
                     $scope.isNewMeeting = false;
+                    $scope.selectedMeetingId = $scope.meetingList[index].id;
                 }
             });
         };
