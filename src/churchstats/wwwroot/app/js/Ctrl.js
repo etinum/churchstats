@@ -94,22 +94,21 @@
             $scope.fullUserList.push(user);
         };
         var updateMemberList = function (member) {
-            $scope.memberList.push(member);
             $scope.fullMemberList.push(member);
+            filterMembersBySearch();
         };
-        var filterMembersBySearch = function () {
+        function filterMembersBySearch() {
             $scope.$evalAsync(function () {
                 $scope.memberList = $scope.fullMemberList.filter(function (item) { return item.fullName.toLowerCase().indexOf($scope.globalSearchString.toLowerCase()) > -1; });
+                $scope.availableMemberList = $scope.fullUserList.filter(function (item) { return $dataService.arrayObjectIndexOf($scope.fullMemberList, item.fullName, "fullName", false) === -1; });
                 updateCounts($scope.memberList);
             });
-        };
+        }
         function getMeetingMembers() {
             $scope.load = $dataService.getMeetingMembers($scope.selectedMeetingId)
                 .then(function (data) {
-                $scope.memberList = data;
-                $scope.fullMemberList = angular.copy($scope.memberList);
-                $scope.availableMemberList = $scope.userList.filter(function (item) { return $dataService.arrayObjectIndexOf($scope.memberList, item.fullName, "fullName", false) === -1; });
-                updateCounts(data);
+                $scope.fullMemberList = data;
+                filterMembersBySearch();
             });
         }
         ;
@@ -132,8 +131,9 @@
                 return;
             }
             var user = {};
-            user.firstName = name.split(' ')[0];
-            user.lastName = name.split(' ')[1];
+            user.firstName = $dataService.capitalizeFirstLetter(name.split(' ')[0]);
+            user.lastName = $dataService.capitalizeFirstLetter(name.split(' ')[1]);
+            ;
             user.fullName = name;
             user.isAttend = null;
             $dataService.saveUser(user)
@@ -170,8 +170,9 @@
                 return;
             }
             var user = {};
-            user.firstName = name.split(' ')[0];
-            user.lastName = name.split(' ')[1];
+            user.firstName = $dataService.capitalizeFirstLetter(name.split(' ')[0]);
+            user.lastName = $dataService.capitalizeFirstLetter(name.split(' ')[1]);
+            ;
             user.fullName = name;
             user.isAttend = null;
             $scope.load = $dataService.saveUser(user)

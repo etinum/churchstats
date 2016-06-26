@@ -146,13 +146,15 @@
 
 
         var updateMemberList = (member) => {
-            $scope.memberList.push(member);
             $scope.fullMemberList.push(member);
+            filterMembersBySearch();
+
         };
 
-        var filterMembersBySearch = () => {
+        function filterMembersBySearch() {
             $scope.$evalAsync(() => {
                 $scope.memberList = $scope.fullMemberList.filter(item => item.fullName.toLowerCase().indexOf($scope.globalSearchString.toLowerCase()) > -1);
+                $scope.availableMemberList = $scope.fullUserList.filter(item => $dataService.arrayObjectIndexOf($scope.fullMemberList, item.fullName, "fullName", false) === -1);
                 updateCounts($scope.memberList);
             });
         }
@@ -160,12 +162,8 @@
         function getMeetingMembers() {
             $scope.load = $dataService.getMeetingMembers($scope.selectedMeetingId)
                 .then(data => {
-                    $scope.memberList = <modeltypings.UserViewModel>data;
-                    $scope.fullMemberList = angular.copy($scope.memberList);
-                    // Update user list to not include existing members
-                    $scope.availableMemberList = $scope.userList.filter(item => $dataService.arrayObjectIndexOf($scope.memberList, item.fullName, "fullName", false) === -1);
-                    updateCounts(data);
-
+                    $scope.fullMemberList = <modeltypings.UserViewModel>data;
+                    filterMembersBySearch();
                 });
         };
 
@@ -201,8 +199,8 @@
             }
 
             var user = <modeltypings.UserViewModel>{};
-            user.firstName = name.split(' ')[0];
-            user.lastName = name.split(' ')[1];
+            user.firstName = $dataService.capitalizeFirstLetter(name.split(' ')[0]);
+            user.lastName = $dataService.capitalizeFirstLetter(name.split(' ')[1]);;
             user.fullName = name;
             user.isAttend = null;
 
@@ -251,8 +249,8 @@
             }
 
             var user = <modeltypings.UserViewModel>{};
-            user.firstName = name.split(' ')[0];
-            user.lastName = name.split(' ')[1];
+            user.firstName = $dataService.capitalizeFirstLetter(name.split(' ')[0]);
+            user.lastName = $dataService.capitalizeFirstLetter(name.split(' ')[1]);;
             user.fullName = name;
             user.isAttend = null;
 

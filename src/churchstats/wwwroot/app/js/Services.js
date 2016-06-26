@@ -43,6 +43,9 @@
                 return -1;
             }
         }
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
         var baseWebApiUrl = $envService.read('apiUrl');
         var alertFailed = function (response) {
             alert("There was a problem with the back end call, here is your status code: " + response.status);
@@ -165,6 +168,7 @@
             arrayObjectIndexOf: arrayObjectIndexOf,
             isFalse: isFalse,
             isTrue: isTrue,
+            capitalizeFirstLetter: capitalizeFirstLetter,
             states: ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Dakota', 'North Carolina', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming']
         };
     };
