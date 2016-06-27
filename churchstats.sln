@@ -17,6 +17,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "data", "data\data.csproj", "{59F0A9BD-45AB-47BD-A695-D5E1FF874E7F}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ChurchStats", "src\churchstats\ChurchStats.xproj", "{75FC4EFC-23C5-4445-BB70-426C8D2A9DBF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{999AF0BC-4EC0-4783-B976-425C5EF24E34} = {999AF0BC-4EC0-4783-B976-425C5EF24E34}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicTest", "LogicTest\LogicTest.csproj", "{3615AE2C-8249-4C90-AACE-6A2085453958}"
 EndProject

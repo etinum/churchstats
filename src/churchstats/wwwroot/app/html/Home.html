@@ -1,5 +1,11 @@
 <form class="form-horizontal" name="myForm" role="form" novalidate>
     <div cg-busy="load">
+        
+            <button type="button" class="btn btn-sm btn-warning " style="margin-bottom: 10px" ng-click="reload()">
+                <i class="glyphicon glyphicon-refresh">
+                </i>  Restart
+            </button>
+        
 
         <div class="form-group" show-errors>
             <label for="recorderName" class="col-sm-3 control-label">Who are you?</label>
@@ -73,20 +79,26 @@
 
 
                         <div class="row" ng-show="fullMemberList.length > 0">
-                            <div class="col-xs-12 col-sm-5 col-lg-6" style="margin-bottom: 5px">
-                                <input id="globalSearch" ng-model="globalSearchString" class="form-control" placeholder="global search ..." type="text" />
+                            <div class="col-xs-10 col-sm-5 col-lg-6" style="margin-bottom: 5px">
+                                <input id="globalSearch" ng-model="globalSearchString" class="form-control" placeholder="global search ..." type="text"/>
                             </div>
-                            <div class="col-xs-12 col-sm-6 col-lg-6">
+                            <div class="col-xs-2 col-sm-1 col-lg-1">
+                                <button type="button" class="btn btn-sm btn-success" style="margin-bottom: 10px" ng-click="globalSearchString='';filterMembersBySearch()">
+                                    <i class="glyphicon glyphicon-remove-sign">
+                                    </i>
+                                </button>
+                            </div>
+                            <div class="col-xs-12 col-sm-5 col-lg-5">
                                 <div class="row">
-                                    <label class="col-xs-4">
+                                    <label class="col-xs-4 col-sm-3">
                                         <input class="big-checkbox" type="checkbox"
                                                ng-model="hidePresent" ng-change="filterUserSelected()" /> Hide Present
                                     </label>
-                                    <label class="col-xs-4">
+                                    <label class="col-xs-4 col-sm-3">
                                         <input class="big-checkbox" type="checkbox"
                                                ng-model="hideUnknown" ng-change="filterUserSelected()" /> Hide Unknown
                                     </label>
-                                    <label class="col-xs-4" style="text-align: center">
+                                    <label class="col-xs-4 col-sm-3" style="text-align: center">
                                         <input class="big-checkbox" type="checkbox"
                                                ng-model="hideAbsent" ng-change="filterUserSelected()" /> Hide Absent
                                     </label>

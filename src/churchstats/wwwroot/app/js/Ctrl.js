@@ -53,6 +53,7 @@
                 }
                 else {
                     $scope.recorderName = $scope.userList[index].fullName;
+                    $scope.recorderFieldDisable = true;
                     $scope.haveRecorder = true;
                     $scope.isNewUser = false;
                     $scope.selectedUserId = $scope.userList[index].id;
@@ -75,7 +76,6 @@
                 }
                 else {
                     $scope.meetingName = $scope.meetingList[index].name;
-                    $scope.recorderFieldDisable = true;
                     $scope.meetingFieldDisable = true;
                     $scope.haveMeeting = true;
                     $scope.isNewMeeting = false;
@@ -99,6 +99,7 @@
             $scope.fullMemberList.push(member);
             filterMembersBySearch();
         };
+        $scope.filterMembersBySearch = filterMembersBySearch;
         function filterMembersBySearch() {
             $scope.$evalAsync(function () {
                 $scope.memberList = $scope.fullMemberList.filter(function (item) { return item.fullName.toLowerCase().indexOf($scope.globalSearchString.toLowerCase()) > -1; });
@@ -139,10 +140,6 @@
             }
             searchFieldTimeout = setTimeout(filterMembersBySearch, 700);
         });
-        $scope.filterUserSelected = function (type) {
-            if ($scope.hideAbsent === true) {
-            }
-        };
         $scope.createNewUser = function (name) {
             var user = createUser(name);
             $dataService.saveUser(user)
@@ -168,7 +165,7 @@
             data.meetingId = $scope.selectedMeetingId;
             data.memberId = member.id;
             $scope.load = $dataService.addMemberToMeeting(data)
-                .then(function (data) {
+                .then(function () {
                 $scope.addMeetingMembers = '';
                 updateMemberList(member);
             });
@@ -193,13 +190,16 @@
             attendance.meetingId = $scope.selectedMeetingId;
             attendance.recorderId = $scope.selectedUserId;
             attendance.userId = item.id;
-            if (item.isAttend != null)
-                attendance.isAttend = item.isAttend;
+            attendance.isAttend = item.isAttend;
+            attendance.meetingDate = new Date();
             $dataService.saveAttendance(attendance)
                 .then(function (response) {
                 attendance.id = response.data;
             });
             updateCounts($scope.memberList);
+        };
+        $scope.reload = function () {
+            location.reload();
         };
         hub.client.ClientCall = function () {
             alert('hello value, world');

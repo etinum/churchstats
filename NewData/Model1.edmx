@@ -15,7 +15,9 @@
           <Property Name="RecorderId" Type="int" Nullable="false" />
           <Property Name="DateRecorded" Type="datetime" Nullable="false" />
           <Property Name="LastUpdated" Type="datetime" Nullable="false" />
-          <Property Name="isAttend" Type="bit" Nullable="false" />
+          <Property Name="MeetingDate" Type="datetime" />
+          <Property Name="IsAttend" Type="bit" />
+          <Property Name="Notes" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Group">
           <Key>
@@ -274,7 +276,9 @@
           <Property Name="RecorderId" Type="Int32" Nullable="false" />
           <Property Name="DateRecorded" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastUpdated" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="isAttend" Type="Boolean" Nullable="false" />
+          <Property Name="MeetingDate" Type="DateTime" Precision="3" />
+          <Property Name="IsAttend" Type="Boolean" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Meeting" Relationship="CstatsModel.FK_Attendance_Meeting" FromRole="Attendance" ToRole="Meeting" />
           <NavigationProperty Name="User" Relationship="CstatsModel.FK_Attendance_Recorder" FromRole="Attendance" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="CstatsModel.FK_Attendance_User" FromRole="Attendance" ToRole="User" />
@@ -437,7 +441,9 @@
           <EntitySetMapping Name="Attendances">
             <EntityTypeMapping TypeName="CstatsModel.Attendance">
               <MappingFragment StoreEntitySet="Attendance">
-                <ScalarProperty Name="isAttend" ColumnName="isAttend" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="IsAttend" ColumnName="IsAttend" />
+                <ScalarProperty Name="MeetingDate" ColumnName="MeetingDate" />
                 <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
                 <ScalarProperty Name="DateRecorded" ColumnName="DateRecorded" />
                 <ScalarProperty Name="RecorderId" ColumnName="RecorderId" />

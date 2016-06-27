@@ -92,6 +92,7 @@
                 } else {
                     //alert('User exist');
                     $scope.recorderName = $scope.userList[index].fullName;
+                    $scope.recorderFieldDisable = true;
                     $scope.haveRecorder = true;
                     $scope.isNewUser = false;
                     $scope.selectedUserId = $scope.userList[index].id;
@@ -121,7 +122,6 @@
                 } else {
 
                     $scope.meetingName = $scope.meetingList[index].name;
-                    $scope.recorderFieldDisable = true;
                     $scope.meetingFieldDisable = true;
                     $scope.haveMeeting = true;
                     $scope.isNewMeeting = false;
@@ -154,6 +154,9 @@
             filterMembersBySearch();
 
         };
+
+
+        $scope.filterMembersBySearch = filterMembersBySearch;
 
         function filterMembersBySearch() {
             $scope.$evalAsync(() => {
@@ -205,17 +208,6 @@
                 searchFieldTimeout = setTimeout(filterMembersBySearch, 700);
             });
 
-
-        $scope.filterUserSelected = (type) => {
-
-            if ($scope.hideAbsent === true) {
-                // alert('yes');
-            }
-
-
-        };
-
-
         $scope.createNewUser = (name) => {
 
             var user = createUser(name);
@@ -249,7 +241,7 @@
             data.memberId = member.id;
 
             $scope.load = $dataService.addMemberToMeeting(data)
-                .then((data) => {
+                .then(() => {
                     // reset fields
                     $scope.addMeetingMembers = '';
                     updateMemberList(member);
@@ -282,12 +274,12 @@
         $scope.memberSelected = (item) => {
 
 
-            var attendance = <modeltypings.AttendanceModel>{};
+            var attendance = <modeltypings.AttendanceViewModel>{};
             attendance.meetingId = $scope.selectedMeetingId;
             attendance.recorderId = $scope.selectedUserId;
             attendance.userId = item.id;
-            if (item.isAttend != null)
-                attendance.isAttend = item.isAttend;
+            attendance.isAttend = item.isAttend;
+            attendance.meetingDate = new Date();
 
             $dataService.saveAttendance(attendance)
                 .then((response) => {
@@ -296,6 +288,11 @@
 
             updateCounts($scope.memberList);
             //  alert('Update database for: ' + item.fullName + ", present: " + item.isAttend);
+        };
+
+
+        $scope.reload = () => {
+            location.reload();
         };
 
 

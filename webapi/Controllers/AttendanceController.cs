@@ -40,7 +40,6 @@ namespace webapi.Controllers
         [HttpPost]
         public IHttpActionResult SaveAttendance(AttendanceViewModel attendanceViewModel)
         {
-            //Hub.Clients.Group(meetingId.ToString(), null).ClientCall();
 
             var attendance = _mapper.Map<Attendance>(attendanceViewModel);
             attendance.LastUpdated = DateTime.Now;

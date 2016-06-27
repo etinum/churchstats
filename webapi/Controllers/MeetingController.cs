@@ -48,7 +48,12 @@ namespace webapi.Controllers
         public IHttpActionResult GetMeetingMembers(int meetingId)
         {
 
-            // TODO: We have to intelligently get the list of members based on existing meetings that are going on right now.
+            //var todayMeetingAttendances = from a in _ctx.Attendances
+            //    where a.MeetingId == meetingId
+            //    && a.DateRecorded 
+            //    select a;
+
+
 
             var users =
                 (from u in _ctx.Users

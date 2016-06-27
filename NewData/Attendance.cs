@@ -20,7 +20,9 @@ namespace NewData
         public int RecorderId { get; set; }
         public System.DateTime DateRecorded { get; set; }
         public System.DateTime LastUpdated { get; set; }
-        public bool isAttend { get; set; }
+        public Nullable<System.DateTime> MeetingDate { get; set; }
+        public Nullable<bool> IsAttend { get; set; }
+        public string Notes { get; set; }
     
         public virtual Meeting Meeting { get; set; }
         public virtual User User { get; set; }
