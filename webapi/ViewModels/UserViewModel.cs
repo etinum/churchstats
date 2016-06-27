@@ -24,6 +24,7 @@ namespace webapi.ViewModels
         public bool? IsAttend { get; set; }
         public int RecorderId { get; set; }
         public string RecorderName { get; set; }
+        public int AttendanceId { get; set; }
 
     }
 }

@@ -64,6 +64,7 @@ namespace webapi.Controllers
                       && (DbFunctions.TruncateTime(a.MeetingDate.Value) == DbFunctions.TruncateTime(DateTime.Today))
                 select new
                     {
+                        a.Id,
                         a.UserId,
                         a.IsAttend,
                         a.RecorderId
@@ -78,6 +79,7 @@ namespace webapi.Controllers
                 if (match == null) continue;
                 userViewModel.IsAttend = match.IsAttend;
                 userViewModel.RecorderId = match.RecorderId;
+                userViewModel.AttendanceId = match.Id;
                 var usermatch = userList.FirstOrDefault(r => r.Id == match.RecorderId);
                 if (usermatch != null) userViewModel.RecorderName = usermatch.FirstName + ' ' + usermatch.LastName;
             }

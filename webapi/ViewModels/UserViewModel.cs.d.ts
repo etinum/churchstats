@@ -17,5 +17,7 @@
 		locality: string;
 		isAttend: boolean;
 		recorderId: number;
+		recorderName: string;
+		attendanceId: number;
 	}
 }

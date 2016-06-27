@@ -19,6 +19,8 @@ declare module modeltypings {
         isAttend: boolean;
         recorderId: number;
         recorderName: string;
+        attendanceId: number;
+
     }
 
     interface MeetingViewModel {

@@ -41,28 +41,42 @@ namespace webapi.Controllers
         public IHttpActionResult SaveAttendance(AttendanceViewModel attendanceViewModel)
         {
 
-            var attendance = _mapper.Map<Attendance>(attendanceViewModel);
-            attendance.LastUpdated = DateTime.Now;
 
-            if (attendance.Id == 0)
+            Attendance attendance;
+
+            if (attendanceViewModel.Id == 0)
             {
+                attendance = _mapper.Map<Attendance>(attendanceViewModel);
+                attendance.LastUpdated = DateTime.Now;
                 attendance.DateRecorded = DateTime.Now;
                 _ctx.Attendances.Add(attendance);
+
 
             }
             else
             {
-                _ctx.Entry(attendance).State = EntityState.Modified;
+                attendance = _ctx.Attendances.FirstOrDefault(r => r.Id == attendanceViewModel.Id);
+
+
+                if (attendance != null)
+                {
+                    attendance.LastUpdated = DateTime.Today;
+                    attendance.IsAttend = attendanceViewModel.IsAttend;
+                    attendance.RecorderId = attendanceViewModel.RecorderId;
+                }
             }
 
             _ctx.SaveChanges();
 
 
-            var subscribed = Hub.Clients.Group(attendance.MeetingId.ToString());
-            subscribed.UpdateAttendance(attendance);
+            if (attendance != null)
+            {
+                var subscribed = Hub.Clients.Group(attendance.MeetingId.ToString());
+                subscribed.UpdateAttendance(_mapper.Map<AttendanceViewModel>(attendance));
+                return Ok(attendance.Id);
 
-            return Ok(attendance.Id);
-
+            }
+            return NotFound();
         }
 
 

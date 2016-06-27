@@ -191,6 +191,7 @@
             attendance.meetingId = $scope.selectedMeetingId;
             attendance.recorderId = $scope.selectedUserId;
             attendance.userId = item.id;
+            attendance.id = item.attendanceId;
             attendance.isAttend = item.isAttend;
             attendance.meetingDate = new Date();
             $dataService.saveAttendance(attendance)
@@ -212,6 +213,7 @@
                 member.isAttend = data.isAttend;
                 member.recorderId = data.recorderId;
                 member.recorderName = recorder.fullName;
+                member.attendanceId = data.id;
                 filterMembersBySearch();
             });
         };
