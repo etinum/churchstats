@@ -113,19 +113,22 @@
 
                 <div ng-repeat="item in memberList track by item.id">
                     <div class="form-group" ng-hide="item.isAttend === hidePresent || (item.isAttend === false && hideAbsent) || (item.isAttend === null) && hideUnknown ">
-                        <label class="col-xs-12 col-sm-3 col-lg-3 control-label">{{item.fullName}}</label>
-                        <div class="col-xs-12 col-sm-6 col-lg-6">
-                            <div class="btn-group">
-                                <label class="btn" ng-class="{'btn-success': item.isAttend === true, 'btn-info': item.isAttend !== true}" ng-model="item.isAttend" uib-btn-radio=true ng-change="memberSelected(item)">Present</label>
-                                <label class="btn" ng-class="{'btn-warning': item.isAttend === null, 'btn-info': item.isAttend !== null}" ng-model="item.isAttend" uib-btn-radio=null ng-change="memberSelected(item)">Unknown</label>
-                                <label class="btn" ng-class="{'btn-danger': item.isAttend === false, 'btn-info': item.isAttend !== false}" ng-model="item.isAttend" uib-btn-radio=false ng-change="memberSelected(item)">Absent</label>
+                        <div class="row">
+                            <label class="col-xs-12 col-sm-4  control-label">{{item.fullName}}</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="btn-group">
+                                    <div>
+                                        <label class="btn" ng-class="{'btn-success': item.isAttend === true, 'btn-info': item.isAttend !== true}" ng-model="item.isAttend" uib-btn-radio=true ng-change="memberSelected(item)">Present</label>
+                                        <label class="btn" ng-class="{'btn-warning': item.isAttend === null, 'btn-info': item.isAttend !== null}" ng-model="item.isAttend" uib-btn-radio=null ng-change="memberSelected(item)">Unknown</label>
+                                        <label class="btn" ng-class="{'btn-danger': item.isAttend === false, 'btn-info': item.isAttend !== false}" ng-model="item.isAttend" uib-btn-radio=false ng-change="memberSelected(item)">Absent</label>
+                                    </div>
+                                    <button class="btn btn-sm btn-default" disabled="disabled" style="border: none">
+                                        <i class="glyphicon" ng-class="{'glyphicon-alert': item.recorderName == null, 'glyphicon-fire': item.recorderName != null}">
+                                        </i> {{item.recorderName}}
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <button  class="btn btn-sm btn-default col-xs-12" disabled="disabled" style="border: none">
-                            <i class="glyphicon" ng-class="{'glyphicon-alert': item.recorderName == null, 'glyphicon-fire': item.recorderName != null}">
-                            </i> {{item.recorderName}}
-                        </button>
-
                     </div>
                 </div>
             </div>
