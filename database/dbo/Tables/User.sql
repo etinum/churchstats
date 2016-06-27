@@ -14,8 +14,12 @@
     [BaptizedDate] DATETIME        NULL,
     [SavedDate]    DATETIME        NULL,
     [Locality]     NVARCHAR (100)  NULL,
+    [DateCreated]  DATETIME        NULL,
+    [LastUpdated]  DATETIME        NULL,
     CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+
+
 
 
 
