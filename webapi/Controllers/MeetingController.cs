@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -44,16 +45,10 @@ namespace webapi.Controllers
             return Ok(_mapper.Map<List<MeetingTypeViewModel>>(meetingTypes));
         }
 
+
         [HttpGet]
         public IHttpActionResult GetMeetingMembers(int meetingId)
         {
-
-            //var todayMeetingAttendances = from a in _ctx.Attendances
-            //    where a.MeetingId == meetingId
-            //    && a.DateRecorded 
-            //    select a;
-
-
 
             var users =
                 (from u in _ctx.Users
@@ -63,13 +58,33 @@ namespace webapi.Controllers
 
             var userViewModels = _mapper.Map<List<UserViewModel>>(users);
 
+            var attendances = (from a in _ctx.Attendances
+                join u in _ctx.Users on a.UserId equals u.Id
+                where a.MeetingId == meetingId
+                      && (DbFunctions.TruncateTime(a.MeetingDate.Value) == DbFunctions.TruncateTime(DateTime.Today))
+                select new
+                    {
+                        a.UserId,
+                        a.IsAttend,
+                        a.RecorderId
+                    }).ToList();
+
+
+
+            var userList = _ctx.Users.ToList();
             foreach (var userViewModel in userViewModels)
             {
-                userViewModel.IsAttend = null;
+                var match = attendances.FirstOrDefault(r => r.UserId == userViewModel.Id);
+                if (match == null) continue;
+                userViewModel.IsAttend = match.IsAttend;
+                userViewModel.RecorderId = match.RecorderId;
+                var usermatch = userList.FirstOrDefault(r => r.Id == match.RecorderId);
+                if (usermatch != null) userViewModel.RecorderName = usermatch.FirstName + ' ' + usermatch.LastName;
             }
 
             return Ok(userViewModels);
         }
+
 
         [HttpPost]
         public IHttpActionResult AddMemberToMeeting(XMeetingMemberModel data)

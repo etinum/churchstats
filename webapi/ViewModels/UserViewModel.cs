@@ -4,6 +4,7 @@ namespace webapi.ViewModels
 {
     public class UserViewModel
     {
+
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -21,6 +22,8 @@ namespace webapi.ViewModels
         public string Locality { get; set; }
         public string FullName => FirstName + " " + LastName;
         public bool? IsAttend { get; set; }
+        public int RecorderId { get; set; }
+        public string RecorderName { get; set; }
 
     }
 }

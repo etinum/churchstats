@@ -122,12 +122,13 @@
             }
             if ($dataService.arrayObjectIndexOf($scope.fullUserList, name, "fullName", false) > -1) {
                 alert('User already exist, please pick another one');
+                return;
             }
             var user = {};
             user.firstName = $dataService.capitalizeFirstLetter(name.split(' ')[0]);
             user.lastName = $dataService.capitalizeFirstLetter(name.split(' ')[1]);
             ;
-            user.fullName = name;
+            user.fullName = user.firstName + ' ' + user.lastName;
             user.isAttend = null;
             return user;
         };
@@ -209,7 +210,8 @@
             var recorder = $scope.fullUserList.filter(function (item) { return item.id === data.recorderId; })[0];
             $scope.$evalAsync(function () {
                 member.isAttend = data.isAttend;
-                member.RecorderName = "Last updated by: " + recorder.fullName;
+                member.recorderId = data.recorderId;
+                member.recorderName = recorder.fullName;
                 filterMembersBySearch();
             });
         };

@@ -16,5 +16,6 @@
 		savedDate: Date;
 		locality: string;
 		isAttend: boolean;
+		recorderId: number;
 	}
 }

@@ -17,7 +17,8 @@ declare module modeltypings {
         locality: string;
         fullName: string;
         isAttend: boolean;
-
+        recorderId: number;
+        recorderName: string;
     }
 
     interface MeetingViewModel {
