@@ -286,7 +286,8 @@
             attendance.meetingId = $scope.selectedMeetingId;
             attendance.recorderId = $scope.selectedUserId;
             attendance.userId = item.id;
-            attendance.isAttend = item.isAttend;
+            if (item.isAttend != null)
+                attendance.isAttend = item.isAttend;
 
             $dataService.saveAttendance(attendance)
                 .then((response) => {
