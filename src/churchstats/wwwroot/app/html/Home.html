@@ -121,7 +121,7 @@
                                 <label class="btn" ng-class="{'btn-danger': item.isAttend === false, 'btn-info': item.isAttend !== false}" ng-model="item.isAttend" uib-btn-radio=false ng-change="memberSelected(item)">Absent</label>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-sm btn-default col-xs-12" disabled="disabled">
+                        <button  class="btn btn-sm btn-default col-xs-12" disabled="disabled" style="border: none">
                             <i class="glyphicon" ng-class="{'glyphicon-alert': item.recorderName == null, 'glyphicon-fire': item.recorderName != null}">
                             </i> {{item.recorderName}}
                         </button>
