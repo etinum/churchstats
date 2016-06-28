@@ -43,6 +43,10 @@
           float: right;
       }
 
+      .xs-float-left {
+          float: left;
+      }
+
       .big-checkbox {width: 20px; height: 20px;}
     }
 
