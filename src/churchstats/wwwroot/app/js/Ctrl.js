@@ -118,11 +118,11 @@
         var createUser = function (name) {
             if (name.split(' ').length !== 2) {
                 alert('Sorry, we need first and last name only');
-                return;
+                return null;
             }
             if ($dataService.arrayObjectIndexOf($scope.fullUserList, name, "fullName", false) > -1) {
                 alert('User already exist, please pick another one');
-                return;
+                return null;
             }
             var user = {};
             user.firstName = $dataService.capitalizeFirstLetter(name.split(' ')[0]);
@@ -143,6 +143,9 @@
         });
         $scope.createNewUser = function (name) {
             var user = createUser(name);
+            if (user == null) {
+                return;
+            }
             $dataService.saveUser(user)
                 .then(function (response) {
                 user.id = response.data;
@@ -173,6 +176,9 @@
         };
         $scope.AddNewUserAsMember = function (name) {
             var user = createUser(name);
+            if (user == null) {
+                return;
+            }
             $scope.load = $dataService.saveUser(user)
                 .then(function (response) {
                 user.id = response.data;
@@ -214,6 +220,7 @@
                 member.recorderId = data.recorderId;
                 member.recorderName = recorder.fullName;
                 member.attendanceId = data.id;
+                member.lastRecorded = data.lastUpdated;
                 filterMembersBySearch();
             });
         };
@@ -224,11 +231,11 @@
                 $scope.fullUserList = angular.copy($scope.userList);
             });
             ;
-            $scope.load = $dataService.getAllMeetings().then(function (data) {
+            $dataService.getAllMeetings().then(function (data) {
                 $scope.meetingList = data;
             });
             ;
-            $scope.load = $dataService.getAllMeetingTypes().then(function (data) {
+            $dataService.getAllMeetingTypes().then(function (data) {
                 $scope.meetingTypeOptions = data;
             });
             ;

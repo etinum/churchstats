@@ -25,6 +25,8 @@ namespace webapi.ViewModels
         public int RecorderId { get; set; }
         public string RecorderName { get; set; }
         public int AttendanceId { get; set; }
+        public DateTime? LastRecorded { get; set; }
+
 
     }
 }

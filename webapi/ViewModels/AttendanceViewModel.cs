@@ -10,6 +10,7 @@ namespace webapi.ViewModels
         public int RecorderId { get; set; }
         public bool? IsAttend { get; set; }
         public DateTime? MeetingDate { get; set; }
+        public DateTime LastUpdated { get; set; }
         public string Notes { get; set; }
 
 

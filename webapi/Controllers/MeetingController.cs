@@ -67,10 +67,9 @@ namespace webapi.Controllers
                         a.Id,
                         a.UserId,
                         a.IsAttend,
-                        a.RecorderId
+                        a.RecorderId,
+                        a.LastUpdated
                     }).ToList();
-
-
 
             var userList = _ctx.Users.ToList();
             foreach (var userViewModel in userViewModels)
@@ -80,6 +79,7 @@ namespace webapi.Controllers
                 userViewModel.IsAttend = match.IsAttend;
                 userViewModel.RecorderId = match.RecorderId;
                 userViewModel.AttendanceId = match.Id;
+                userViewModel.LastRecorded = match.LastUpdated;
                 var usermatch = userList.FirstOrDefault(r => r.Id == match.RecorderId);
                 if (usermatch != null) userViewModel.RecorderName = usermatch.FirstName + ' ' + usermatch.LastName;
             }

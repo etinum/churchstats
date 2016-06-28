@@ -6,6 +6,7 @@
 		recorderId: number;
 		isAttend: boolean;
 		meetingDate: Date;
+		lastUpdated: Date;
 		notes: string;
 	}
 }

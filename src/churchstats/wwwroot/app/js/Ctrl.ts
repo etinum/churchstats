@@ -179,12 +179,12 @@
 
             if (name.split(' ').length !== 2) {
                 alert('Sorry, we need first and last name only');
-                return;
+                return null;
             }
 
             if ($dataService.arrayObjectIndexOf($scope.fullUserList, name, "fullName", false) > -1) {
                 alert('User already exist, please pick another one');
-                return;
+                return null;
             }
 
             var user = <modeltypings.UserViewModel>{};
@@ -212,6 +212,9 @@
         $scope.createNewUser = (name) => {
 
             var user = createUser(name);
+            if (user == null) {
+                return;
+            }
 
 
             $dataService.saveUser(user)
@@ -253,6 +256,9 @@
         $scope.AddNewUserAsMember = (name) => {
 
             var user = createUser(name);
+            if (user == null) {
+                return;
+            }
 
             $scope.load = $dataService.saveUser(user)
                 .then((response) => {
@@ -315,6 +321,7 @@
                 member.recorderId = data.recorderId;
                 member.recorderName = recorder.fullName;
                 member.attendanceId = data.id;
+                member.lastRecorded = data.lastUpdated;
                 filterMembersBySearch();
 
             });
@@ -337,13 +344,13 @@
 
 
                 //Data for meetings
-                $scope.load = $dataService.getAllMeetings().then(data => {
+                $dataService.getAllMeetings().then(data => {
                     $scope.meetingList = <modeltypings.MeetingViewModel[]>data;
                 });;
 
 
                 //Data for meeting types
-                $scope.load = $dataService.getAllMeetingTypes().then(data => {
+                $dataService.getAllMeetingTypes().then(data => {
                     $scope.meetingTypeOptions = <modeltypings.MeetingTypeViewModel[]>data;
                 });;
             });

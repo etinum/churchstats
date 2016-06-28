@@ -60,7 +60,7 @@ namespace webapi.Controllers
 
                 if (attendance != null)
                 {
-                    attendance.LastUpdated = DateTime.Today;
+                    attendance.LastUpdated = DateTime.Now;
                     attendance.IsAttend = attendanceViewModel.IsAttend;
                     attendance.RecorderId = attendanceViewModel.RecorderId;
                 }

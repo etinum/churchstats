@@ -56,37 +56,37 @@
 
 
             <div class="panel panel-default" ng-show="haveMeeting">
-                <div class="panel-heading">Meeting stats (Present: {{counts.present}}, Absent: {{counts.absent}}, Unknown: {{counts.unknown}}, Total Possible: {{counts.totalPossible}})</div>
+                <div class="panel-heading">Meeting stats --> Accounted: {{(100*(counts.present + counts.absent)/counts.totalPossible)| number:0}}%, Present: {{counts.present}} ({{(100*counts.present/counts.totalPossible)| number:0}}%) , Absent: {{counts.absent}}, Unknown: {{counts.unknown}}, Total Possible: {{counts.totalPossible}}</div>
                 <div class="panel-body">
                     <!--<select ng-model="filterSelected" ng-change="filter()" class="form-control" ng-options="filter as filter.label for filter in filterOptions track by filter.id"></select>-->
 
                     <div class="container">
-                        <button type="button" class="btn btn-sm btn-success" style="margin-bottom: 10px" ng-model="showAddMember" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
+                        <button type="button" class="btn btn-sm btn-primary" style="margin-bottom: 10px" ng-model="showAddMember" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
                             <i class="glyphicon glyphicon-plus">
                             </i>
                         </button>
-                        <div ng-show="showAddMember" class="row">
-                            <div class="col-xs-6 col-sm-5" style="margin-bottom: 5px">
-                                <input type="text" ng-maxlength="ng_maxLength" maxlength={{maxLength}} id="addMeetingMembers" name="addMeetingMembers" class="form-control"
-                                       ng-model="addMeetingMembers" ng-required="true" uib-typeahead="item.fullName for item in availableMemberList  | filter:$viewValue | limitTo:8" autocomplete="off" typeahead-on-select="AddMember($item)" placeholder="Type here to add members" />
-                            </div>
-                            <div class="col-xs-6 col-sm-4" style="margin-bottom: 15px">
-                                <input type="button" class="btn btn-success" value="Add New User"
+                        <div ng-show="showAddMember" class="input-group col-sm-9" style="margin-bottom: 15px">
+                            <input type="text" ng-maxlength="ng_maxLength" maxlength={{maxLength}} id="addMeetingMembers" name="addMeetingMembers" class="form-control"
+                                   ng-model="addMeetingMembers" ng-required="true" uib-typeahead="item.fullName for item in availableMemberList  | filter:$viewValue | limitTo:8" autocomplete="off" typeahead-on-select="AddMember($item)" placeholder="Type here to add members" />
+                            <span class="input-group-btn">
+                                <input type="button" class="btn btn-primary" value="Add New User"
                                        ng-click="AddNewUserAsMember(addMeetingMembers)" />
-                            </div>
+                            </span>
                         </div>
 
 
 
                         <div class="row" ng-show="fullMemberList.length > 0">
-                            <div class="col-xs-10 col-sm-5 col-lg-6" style="margin-bottom: 5px">
-                                <input id="globalSearch" ng-model="globalSearchString" class="form-control" placeholder="global search ..." type="text" />
-                            </div>
-                            <div class="col-xs-2 col-sm-1 col-lg-1">
-                                <button type="button" class="btn btn-sm btn-success" style="margin-bottom: 10px" ng-click="globalSearchString='';filterMembersBySearch()">
-                                    <i class="glyphicon glyphicon-remove-sign">
-                                    </i>
-                                </button>
+                            <div class="col-xs-12 col-sm-7 col-lg-7" style="margin-bottom: 5px">
+                                <div class="input-group">
+                                    <input id="globalSearch" ng-model="globalSearchString" class="form-control" placeholder="global search ..." type="text" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-primary" style="margin-bottom: 10px" ng-click="globalSearchString='';filterMembersBySearch()">
+                                            <i class="glyphicon glyphicon-remove-sign">
+                                            </i>
+                                        </button>
+                                    </span>
+                                </div>
                             </div>
                             <div class="col-xs-12 col-sm-5 col-lg-5">
                                 <div class="row">
@@ -124,7 +124,7 @@
                                     </div>
                                     <button class="btn btn-sm btn-default" disabled="disabled" style="border: none">
                                         <i class="glyphicon" ng-class="{'glyphicon-alert': item.recorderName == null, 'glyphicon-fire': item.recorderName != null}">
-                                        </i> {{item.recorderName}}
+                                        </i> {{item.recorderName}} @ {{item.lastRecorded | date:'MM/dd, h:mma'}}
                                     </button>
                                 </div>
                             </div>

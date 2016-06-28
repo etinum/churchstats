@@ -20,6 +20,7 @@ declare module modeltypings {
         recorderId: number;
         recorderName: string;
         attendanceId: number;
+        lastRecorded: Date;
 
     }
 
@@ -52,6 +53,7 @@ declare module modeltypings {
         recorderId: number;
         isAttend: boolean;
         meetingDate: Date;
+        lastUpdated: Date;
         notes: string;
     }
 }
