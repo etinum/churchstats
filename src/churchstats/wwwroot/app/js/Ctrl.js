@@ -18,6 +18,7 @@
         $scope.selectedMeetingId = 0;
         $scope.globalSearchString = '';
         $scope.counts = {};
+        $scope.sortNameType = 'FA';
         var hub = $.connection.attendHub;
         var recorderFieldTimeout;
         $('#recorderName')
@@ -100,7 +101,49 @@
             filterMembersBySearch();
         };
         $scope.filterMembersBySearch = filterMembersBySearch;
+        function sortName() {
+            switch ($scope.sortNameType) {
+                case 'FA':
+                    $scope.fullMemberList.sort(function (a, b) {
+                        if (a.firstName < b.firstName)
+                            return -1;
+                        if (a.firstName > b.firstName)
+                            return 1;
+                        return 0;
+                    });
+                    break;
+                case 'FD':
+                    $scope.fullMemberList.sort(function (a, b) {
+                        if (a.firstName > b.firstName)
+                            return -1;
+                        if (a.firstName < b.firstName)
+                            return 1;
+                        return 0;
+                    });
+                    break;
+                case 'LA':
+                    $scope.fullMemberList.sort(function (a, b) {
+                        if (a.lastName < b.lastName)
+                            return -1;
+                        if (a.lastName > b.lastName)
+                            return 1;
+                        return 0;
+                    });
+                    break;
+                case 'LD':
+                    $scope.fullMemberList.sort(function (a, b) {
+                        if (a.lastName > b.lastName)
+                            return -1;
+                        if (a.lastName < b.lastName)
+                            return 1;
+                        return 0;
+                    });
+                    break;
+                default:
+            }
+        }
         function filterMembersBySearch() {
+            sortName();
             $scope.$evalAsync(function () {
                 $scope.memberList = $scope.fullMemberList.filter(function (item) { return item.fullName.toLowerCase().indexOf($scope.globalSearchString.toLowerCase()) > -1; });
                 $scope.availableMemberList = $scope.fullUserList.filter(function (item) { return $dataService.arrayObjectIndexOf($scope.fullMemberList, item.fullName, "fullName", false) === -1; });
@@ -132,49 +175,9 @@
             user.isAttend = null;
             return user;
         };
-        $scope.sortAlphaFirstAsc = function () {
-            $scope.$evalAsync(function () {
-                $scope.memberList = $scope.fullMemberList.sort(function (a, b) {
-                    if (a.firstName < b.firstName)
-                        return -1;
-                    if (a.firstName > b.firstName)
-                        return 1;
-                    return 0;
-                });
-            });
-        };
-        $scope.sortAlphaFirstDesc = function () {
-            $scope.$evalAsync(function () {
-                $scope.memberList = $scope.fullMemberList.sort(function (a, b) {
-                    if (a.firstName > b.firstName)
-                        return -1;
-                    if (a.firstName < b.firstName)
-                        return 1;
-                    return 0;
-                });
-            });
-        };
-        $scope.sortAlphaLastAsc = function () {
-            $scope.$evalAsync(function () {
-                $scope.memberList = $scope.fullMemberList.sort(function (a, b) {
-                    if (a.lastName < b.lastName)
-                        return -1;
-                    if (a.lastName > b.lastName)
-                        return 1;
-                    return 0;
-                });
-            });
-        };
-        $scope.sortAlphaLastDesc = function () {
-            $scope.$evalAsync(function () {
-                $scope.memberList = $scope.fullMemberList.sort(function (a, b) {
-                    if (a.lastName > b.lastName)
-                        return -1;
-                    if (a.lastName < b.lastName)
-                        return 1;
-                    return 0;
-                });
-            });
+        $scope.sortNameAlpha = function (type) {
+            $scope.sortNameType = type;
+            filterMembersBySearch();
         };
         var searchFieldTimeout;
         $('#globalSearch')

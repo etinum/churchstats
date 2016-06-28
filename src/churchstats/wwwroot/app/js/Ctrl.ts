@@ -46,7 +46,7 @@
         $scope.selectedMeetingId = 0;
         $scope.globalSearchString = '';
         $scope.counts = {};
-
+        $scope.sortNameType = 'FA';
 
         var hub = $.connection.attendHub;
 
@@ -158,7 +158,44 @@
 
         $scope.filterMembersBySearch = filterMembersBySearch;
 
+
+        function sortName() {
+            switch ($scope.sortNameType) {
+                case 'FA':
+                    $scope.fullMemberList.sort((a, b) => {
+                        if (a.firstName < b.firstName) return -1;
+                        if (a.firstName > b.firstName) return 1;
+                        return 0;
+                    });
+                    break;
+                case 'FD':
+                    $scope.fullMemberList.sort((a, b) => {
+                        if (a.firstName > b.firstName) return -1;
+                        if (a.firstName < b.firstName) return 1;
+                        return 0;
+                    });
+                    break;
+                case 'LA':
+                    $scope.fullMemberList.sort((a, b) => {
+                        if (a.lastName < b.lastName) return -1;
+                        if (a.lastName > b.lastName) return 1;
+                        return 0;
+                    });
+                    break;
+                case 'LD':
+                    $scope.fullMemberList.sort((a, b) => {
+                        if (a.lastName > b.lastName) return -1;
+                        if (a.lastName < b.lastName) return 1;
+                        return 0;
+                    });
+                    break;
+                default:
+            }
+        }
+
         function filterMembersBySearch() {
+
+            sortName();
             $scope.$evalAsync(() => {
                 $scope.memberList = $scope.fullMemberList.filter(item => item.fullName.toLowerCase().indexOf($scope.globalSearchString.toLowerCase()) > -1);
                 $scope.availableMemberList = $scope.fullUserList.filter(item => $dataService.arrayObjectIndexOf($scope.fullMemberList, item.fullName, "fullName", false) === -1);
@@ -200,53 +237,11 @@
 
 
         // Event handler
+        $scope.sortNameAlpha = (type) => {
 
-        $scope.sortAlphaFirstAsc = () => {
-            $scope.$evalAsync(() => {
-                $scope.memberList = $scope.fullMemberList.sort((a, b) => {
-                    if (a.firstName < b.firstName) return -1;
-                    if (a.firstName > b.firstName) return 1;
-                    return 0;
-                });
-                //.sort(srt({ key: 'firstName', string: true }, true));
-            });
+            $scope.sortNameType = type;
+            filterMembersBySearch();
 
-        };
-
-
-        $scope.sortAlphaFirstDesc = () => {
-            $scope.$evalAsync(() => {
-                $scope.memberList = $scope.fullMemberList.sort((a, b) => {
-                    if (a.firstName > b.firstName) return -1;
-                    if (a.firstName < b.firstName) return 1;
-                    return 0;
-                });
-                //.sort(srt({ key: 'firstName', string: true }, true));
-            });
-        };
-
-        $scope.sortAlphaLastAsc = () => {
-            $scope.$evalAsync(() => {
-                $scope.memberList = $scope.fullMemberList.sort((a, b) => {
-                    if (a.lastName < b.lastName) return -1;
-                    if (a.lastName > b.lastName) return 1;
-                    return 0;
-                });
-                //.sort(srt({ key: 'lastName', string: true }, true));
-            });
-
-        };
-
-
-        $scope.sortAlphaLastDesc = () => {
-            $scope.$evalAsync(() => {
-                $scope.memberList = $scope.fullMemberList.sort((a, b) => {
-                    if (a.lastName > b.lastName) return -1;
-                    if (a.lastName < b.lastName) return 1;
-                    return 0;
-                });
-                //.sort(srt({ key: 'lastName', string: true }, true));
-            });
         };
 
 
