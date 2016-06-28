@@ -132,6 +132,50 @@
             user.isAttend = null;
             return user;
         };
+        $scope.sortAlphaFirstAsc = function () {
+            $scope.$evalAsync(function () {
+                $scope.memberList = $scope.fullMemberList.sort(function (a, b) {
+                    if (a.firstName < b.firstName)
+                        return -1;
+                    if (a.firstName > b.firstName)
+                        return 1;
+                    return 0;
+                });
+            });
+        };
+        $scope.sortAlphaFirstDesc = function () {
+            $scope.$evalAsync(function () {
+                $scope.memberList = $scope.fullMemberList.sort(function (a, b) {
+                    if (a.firstName > b.firstName)
+                        return -1;
+                    if (a.firstName < b.firstName)
+                        return 1;
+                    return 0;
+                });
+            });
+        };
+        $scope.sortAlphaLastAsc = function () {
+            $scope.$evalAsync(function () {
+                $scope.memberList = $scope.fullMemberList.sort(function (a, b) {
+                    if (a.lastName < b.lastName)
+                        return -1;
+                    if (a.lastName > b.lastName)
+                        return 1;
+                    return 0;
+                });
+            });
+        };
+        $scope.sortAlphaLastDesc = function () {
+            $scope.$evalAsync(function () {
+                $scope.memberList = $scope.fullMemberList.sort(function (a, b) {
+                    if (a.lastName > b.lastName)
+                        return -1;
+                    if (a.lastName < b.lastName)
+                        return 1;
+                    return 0;
+                });
+            });
+        };
         var searchFieldTimeout;
         $('#globalSearch')
             .keydown(function () {

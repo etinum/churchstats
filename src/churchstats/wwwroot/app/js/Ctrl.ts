@@ -197,7 +197,61 @@
 
         };
 
+
+
         // Event handler
+
+        $scope.sortAlphaFirstAsc = () => {
+            $scope.$evalAsync(() => {
+                $scope.memberList = $scope.fullMemberList.sort((a, b) => {
+                    if (a.firstName < b.firstName) return -1;
+                    if (a.firstName > b.firstName) return 1;
+                    return 0;
+                });
+                //.sort(srt({ key: 'firstName', string: true }, true));
+            });
+
+        };
+
+
+        $scope.sortAlphaFirstDesc = () => {
+            $scope.$evalAsync(() => {
+                $scope.memberList = $scope.fullMemberList.sort((a, b) => {
+                    if (a.firstName > b.firstName) return -1;
+                    if (a.firstName < b.firstName) return 1;
+                    return 0;
+                });
+                //.sort(srt({ key: 'firstName', string: true }, true));
+            });
+        };
+
+        $scope.sortAlphaLastAsc = () => {
+            $scope.$evalAsync(() => {
+                $scope.memberList = $scope.fullMemberList.sort((a, b) => {
+                    if (a.lastName < b.lastName) return -1;
+                    if (a.lastName > b.lastName) return 1;
+                    return 0;
+                });
+                //.sort(srt({ key: 'lastName', string: true }, true));
+            });
+
+        };
+
+
+        $scope.sortAlphaLastDesc = () => {
+            $scope.$evalAsync(() => {
+                $scope.memberList = $scope.fullMemberList.sort((a, b) => {
+                    if (a.lastName > b.lastName) return -1;
+                    if (a.lastName < b.lastName) return 1;
+                    return 0;
+                });
+                //.sort(srt({ key: 'lastName', string: true }, true));
+            });
+        };
+
+
+
+
         var searchFieldTimeout;
         $('#globalSearch')
             .keydown(() => {
