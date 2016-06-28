@@ -11,13 +11,21 @@
     [Notes]        NVARCHAR (MAX)  NULL,
     [Email]        NVARCHAR (50)   NULL,
     [PhoneNumber]  NVARCHAR (50)   NULL,
+    [OtherNumber]  NVARCHAR (50)   NULL,
+    [Address]      NVARCHAR (50)   NULL,
+    [City]         NVARCHAR (50)   NULL,
+    [ZipCode]      NVARCHAR (50)   NULL,
     [BaptizedDate] DATETIME        NULL,
     [SavedDate]    DATETIME        NULL,
     [Locality]     NVARCHAR (100)  NULL,
     [DateCreated]  DATETIME        NULL,
     [LastUpdated]  DATETIME        NULL,
-    CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED ([Id] ASC)
+    [LastEditedBy] INT             NULL,
+    CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_User_User] FOREIGN KEY ([LastEditedBy]) REFERENCES [dbo].[User] ([Id])
 );
+
+
 
 
 
