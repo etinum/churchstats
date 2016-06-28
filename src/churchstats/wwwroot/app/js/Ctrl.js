@@ -175,7 +175,10 @@
             user.isAttend = null;
             return user;
         };
-        $scope.forceRefreshList = getMeetingMembers;
+        $scope.forceRefreshList = function () {
+            $.connection.hub.start();
+            getMeetingMembers();
+        };
         $scope.sortNameAlpha = function (type) {
             $scope.sortNameType = type;
             filterMembersBySearch();
@@ -216,10 +219,10 @@
             var data = {};
             data.meetingId = $scope.selectedMeetingId;
             data.memberId = member.id;
+            updateMemberList(member);
             $scope.load = $dataService.addMemberToMeeting(data)
                 .then(function () {
                 $scope.addMeetingMembers = '';
-                updateMemberList(member);
             });
         };
         $scope.AddNewUserAsMember = function (name) {
@@ -264,11 +267,15 @@
             var member = $scope.fullMemberList.filter(function (item) { return item.id === data.userId; })[0];
             var recorder = $scope.fullUserList.filter(function (item) { return item.id === data.recorderId; })[0];
             $scope.$evalAsync(function () {
-                member.isAttend = data.isAttend;
-                member.recorderId = data.recorderId;
-                member.recorderName = recorder.fullName;
+                if (data.isAttend != null) {
+                    member.isAttend = data.isAttend;
+                }
+                if (recorder != null) {
+                    member.recorderId = data.recorderId;
+                    member.recorderName = recorder.fullName;
+                    member.lastRecorded = data.lastUpdated;
+                }
                 member.attendanceId = data.id;
-                member.lastRecorded = data.lastUpdated;
                 filterMembersBySearch();
             });
         };

@@ -100,6 +100,20 @@ namespace webapi.Controllers
             _ctx.X_User_Meeting.Add(xref);
             _ctx.SaveChanges();
 
+
+            var attendanceVm = new AttendanceViewModel()
+            {
+                Id = 0,
+                IsAttend = null,
+                UserId = data.MemberId,
+                MeetingDate = DateTime.Now,
+                MeetingId = data.MeetingId
+                
+            };
+
+            var subscribed = Hub.Clients.Group(data.MeetingId.ToString());
+            subscribed.UpdateAttendance(attendanceVm);
+
             return Ok();
         }
 

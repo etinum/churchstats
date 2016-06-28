@@ -238,7 +238,11 @@
 
         // Event handler
 
-        $scope.forceRefreshList = getMeetingMembers;
+        $scope.forceRefreshList = () => {
+            $.connection.hub.start();
+            getMeetingMembers();
+        }
+            
 
 
         $scope.sortNameAlpha = (type) => {
@@ -294,12 +298,12 @@
             var data = <modeltypings.XMeetingMemberModel>{};
             data.meetingId = $scope.selectedMeetingId;
             data.memberId = member.id;
+            updateMemberList(member);
 
             $scope.load = $dataService.addMemberToMeeting(data)
                 .then(() => {
                     // reset fields
                     $scope.addMeetingMembers = '';
-                    updateMemberList(member);
                 });
 
         };
@@ -368,11 +372,15 @@
             var recorder = $scope.fullUserList.filter(item => item.id === data.recorderId)[0];
 
             $scope.$evalAsync(() => {
-                member.isAttend = data.isAttend;
-                member.recorderId = data.recorderId;
-                member.recorderName = recorder.fullName;
+                if (data.isAttend != null) {
+                    member.isAttend = data.isAttend;
+                }
+                if (recorder != null) {
+                    member.recorderId = data.recorderId;
+                    member.recorderName = recorder.fullName;
+                    member.lastRecorded = data.lastUpdated;
+                }
                 member.attendanceId = data.id;
-                member.lastRecorded = data.lastUpdated;
                 filterMembersBySearch();
 
             });
