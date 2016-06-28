@@ -175,6 +175,7 @@
             user.isAttend = null;
             return user;
         };
+        $scope.forceRefreshList = getMeetingMembers;
         $scope.sortNameAlpha = function (type) {
             $scope.sortNameType = type;
             filterMembersBySearch();

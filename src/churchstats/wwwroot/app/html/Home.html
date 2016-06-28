@@ -2,7 +2,7 @@
     <div cg-busy="load">
 
         <button type="button" class="btn btn-sm btn-warning " style="margin-bottom: 10px" ng-click="reload()">
-            <i class="glyphicon glyphicon-refresh">
+            <i class="glyphicon glyphicon-repeat">
             </i>  Restart
         </button>
 
@@ -61,14 +61,25 @@
                     <!--<select ng-model="filterSelected" ng-change="filter()" class="form-control" ng-options="filter as filter.label for filter in filterOptions track by filter.id"></select>-->
 
                     <div class="container">
-                        <button type="button" class="btn btn-primary" style="margin-bottom: 10px" ng-model="showAddMember" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
-                            <i class="glyphicon glyphicon-plus">
-                            </i>
-                        </button>
-                        <button type="button" class="btn btn-warning col-sm-offset-8 xs-float-right" style="margin-bottom: 10px"  ng-click="open()">
-                            <i class="glyphicon glyphicon-remove"> Reset
-                            </i>
-                        </button>
+
+                        <div class="btn-toolbar">
+                            <button type="button" class="btn btn-primary" style="margin-bottom: 10px" ng-model="showAddMember" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
+                                <i class="glyphicon glyphicon-plus">
+                                </i>
+                            </button>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-success" style="margin-bottom: 10px" ng-click="forceRefreshList()">
+                                    <i class="glyphicon glyphicon-refresh"> Refresh
+                                    </i>
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-warning" style="margin-bottom: 10px" ng-click="open()">
+                                    <i class="glyphicon glyphicon-remove"> Reset
+                                    </i>
+                                </button>
+                            </div>
+                        </div>
 
                         <div ng-show="showAddMember" class="input-group col-sm-10" style="margin-bottom: 15px">
                             <input type="text" ng-maxlength="ng_maxLength" maxlength={{maxLength}} id="addMeetingMembers" name="addMeetingMembers" class="form-control"

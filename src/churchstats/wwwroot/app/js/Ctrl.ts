@@ -237,14 +237,16 @@
 
 
         // Event handler
+
+        $scope.forceRefreshList = getMeetingMembers;
+
+
         $scope.sortNameAlpha = (type) => {
 
             $scope.sortNameType = type;
             filterMembersBySearch();
 
         };
-
-
 
 
         var searchFieldTimeout;
