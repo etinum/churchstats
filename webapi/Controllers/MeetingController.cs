@@ -106,7 +106,6 @@ namespace webapi.Controllers
                 Id = 0,
                 IsAttend = null,
                 UserId = data.MemberId,
-                MeetingDate = DateTime.Now,
                 MeetingId = data.MeetingId
                 
             };
