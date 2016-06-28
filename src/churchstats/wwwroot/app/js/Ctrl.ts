@@ -239,7 +239,10 @@
         // Event handler
 
         $scope.forceRefreshList = () => {
-            $.connection.hub.start();
+            $.connection.hub.start()
+                .done(() => {
+                    hub.server.subscribe($scope.selectedMeetingId);
+                });
             getMeetingMembers();
         }
             
@@ -368,19 +371,29 @@
 
         hub.client.UpdateAttendance = (data) => {
 
-            var member = $scope.fullMemberList.filter(item => item.id === data.userId)[0];
-            var recorder = $scope.fullUserList.filter(item => item.id === data.recorderId)[0];
+            var member = <modeltypings.UserViewModel>{};
+            var recorder = <modeltypings.UserViewModel>{};
+
+            if (data.recorderId === 0) {
+                member = $scope.fullUserList.filter(item => item.id === data.userId)[0];
+            } else {
+                member = $scope.fullMemberList.filter(item => item.id === data.userId)[0];
+                recorder = $scope.fullUserList.filter(item => item.id === data.recorderId)[0];
+            }
 
             $scope.$evalAsync(() => {
-                if (data.isAttend != null) {
-                    member.isAttend = data.isAttend;
-                }
-                if (recorder != null) {
+                member.isAttend = data.isAttend;
+                if (recorder.id != null) {
                     member.recorderId = data.recorderId;
                     member.recorderName = recorder.fullName;
                     member.lastRecorded = data.lastUpdated;
-                }
-                member.attendanceId = data.id;
+                    member.attendanceId = data.id;
+
+                } else {
+                    member.attendanceId = 0;
+                    if ($scope.fullMemberList.filter(item => item.id === data.userId)[0] == null) {
+                        updateMemberList(member);
+                    }                }
                 filterMembersBySearch();
 
             });

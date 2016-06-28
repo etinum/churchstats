@@ -176,7 +176,10 @@
             return user;
         };
         $scope.forceRefreshList = function () {
-            $.connection.hub.start();
+            $.connection.hub.start()
+                .done(function () {
+                hub.server.subscribe($scope.selectedMeetingId);
+            });
             getMeetingMembers();
         };
         $scope.sortNameAlpha = function (type) {
@@ -264,18 +267,29 @@
             alert('hello value, world');
         };
         hub.client.UpdateAttendance = function (data) {
-            var member = $scope.fullMemberList.filter(function (item) { return item.id === data.userId; })[0];
-            var recorder = $scope.fullUserList.filter(function (item) { return item.id === data.recorderId; })[0];
+            var member = {};
+            var recorder = {};
+            if (data.recorderId === 0) {
+                member = $scope.fullUserList.filter(function (item) { return item.id === data.userId; })[0];
+            }
+            else {
+                member = $scope.fullMemberList.filter(function (item) { return item.id === data.userId; })[0];
+                recorder = $scope.fullUserList.filter(function (item) { return item.id === data.recorderId; })[0];
+            }
             $scope.$evalAsync(function () {
-                if (data.isAttend != null) {
-                    member.isAttend = data.isAttend;
-                }
-                if (recorder != null) {
+                member.isAttend = data.isAttend;
+                if (recorder.id != null) {
                     member.recorderId = data.recorderId;
                     member.recorderName = recorder.fullName;
                     member.lastRecorded = data.lastUpdated;
+                    member.attendanceId = data.id;
                 }
-                member.attendanceId = data.id;
+                else {
+                    member.attendanceId = 0;
+                    if ($scope.fullMemberList.filter(function (item) { return item.id === data.userId; })[0] == null) {
+                        updateMemberList(member);
+                    }
+                }
                 filterMembersBySearch();
             });
         };
