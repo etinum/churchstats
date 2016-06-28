@@ -6,7 +6,7 @@
     app.controller('masterCtrl', controller);
 })(angular.module("repoFormsApp"));
 (function (app) {
-    var controller = function ($scope, $location, $dataService, $window) {
+    var controller = function ($scope, $location, $dataService, $window, $uibModal) {
         $scope.rf = {};
         $scope.haveRecorder = false;
         $scope.recorderFieldDisable = false;
@@ -240,8 +240,34 @@
             });
             ;
         });
+        $scope.open = function () {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'confirmReset.html',
+                controller: 'confirmResetCtrl',
+                size: 'sm'
+            });
+            modalInstance.result.then(function () {
+            }, function () {
+            });
+        };
     };
-    controller.$inject = ['$scope', '$location', 'dataService', '$window'];
+    controller.$inject = ['$scope', '$location', 'dataService', '$window', '$uibModal'];
     app.controller('homeCtrl', controller);
+})(angular.module("repoFormsApp"));
+(function (app) {
+    var controller = function ($scope, $uibModalInstance, $timeout, $window, $location) {
+        $scope.close = function () {
+            if ($scope.inputString != null && $scope.inputString.toLowerCase() === 'yes') {
+                alert('What are you doing!?? Sorry, not yet implemented.');
+            }
+            else {
+                alert('Wheww.... that was a close one');
+            }
+            $uibModalInstance.dismiss();
+        };
+    };
+    controller.$inject = ['$scope', '$uibModalInstance', '$timeout', '$window', '$location'];
+    app.controller('confirmResetCtrl', controller);
 })(angular.module("repoFormsApp"));
 //# sourceMappingURL=Ctrl.js.map

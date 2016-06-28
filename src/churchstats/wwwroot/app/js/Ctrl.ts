@@ -31,7 +31,7 @@
 
 (app => {
 
-    var controller = ($scope, $location, $dataService, $window) => {
+    var controller = ($scope, $location, $dataService, $window, $uibModal) => {
 
         // controller variables
         $scope.rf = {};
@@ -356,11 +356,49 @@
             });
 
 
+        // Modal Activities
+        $scope.open = () => {
+
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'confirmReset.html',
+                controller: 'confirmResetCtrl',
+                size: 'sm'
+            });
+
+            modalInstance.result.then(() => {
+                // handing when close, you can get the parameter...
+            }, () => {
+                // handling when cancel, you can get the value... 
+            });
+        };
+
+
     };
 
-    controller.$inject = ['$scope', '$location', 'dataService', '$window'];
+    controller.$inject = ['$scope', '$location', 'dataService', '$window', '$uibModal'];
     app.controller('homeCtrl', controller);
 })(angular.module("repoFormsApp"));
 
 
 
+(app => {
+    var controller = ($scope, $uibModalInstance, $timeout, $window, $location) => {
+
+
+
+
+        $scope.close = () => {
+
+            if ($scope.inputString != null && $scope.inputString.toLowerCase() === 'yes') {
+                alert('What are you doing!?? Sorry, not yet implemented.');
+            } else {
+                alert('Wheww.... that was a close one');
+            }
+            $uibModalInstance.dismiss();
+        };
+
+    };
+    controller.$inject = ['$scope', '$uibModalInstance', '$timeout', '$window', '$location'];
+    app.controller('confirmResetCtrl', controller);
+})(angular.module("repoFormsApp"));

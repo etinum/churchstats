@@ -19,8 +19,9 @@ namespace NewData
         {
             this.Attendances = new HashSet<Attendance>();
             this.Attendances1 = new HashSet<Attendance>();
+            this.User1 = new HashSet<User>();
+            this.X_User_Group = new HashSet<X_User_Group>();
             this.X_User_Meeting = new HashSet<X_User_Meeting>();
-            this.Groups = new HashSet<Group>();
         }
     
         public int Id { get; set; }
@@ -35,19 +36,27 @@ namespace NewData
         public string Notes { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
+        public string OtherNumber { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string ZipCode { get; set; }
         public Nullable<System.DateTime> BaptizedDate { get; set; }
         public Nullable<System.DateTime> SavedDate { get; set; }
         public string Locality { get; set; }
         public Nullable<System.DateTime> DateCreated { get; set; }
         public Nullable<System.DateTime> LastUpdated { get; set; }
+        public Nullable<int> LastEditedBy { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Attendance> Attendances { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Attendance> Attendances1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<X_User_Meeting> X_User_Meeting { get; set; }
+        public virtual ICollection<User> User1 { get; set; }
+        public virtual User User2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Group> Groups { get; set; }
+        public virtual ICollection<X_User_Group> X_User_Group { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<X_User_Meeting> X_User_Meeting { get; set; }
     }
 }

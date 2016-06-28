@@ -61,13 +61,18 @@
                     <!--<select ng-model="filterSelected" ng-change="filter()" class="form-control" ng-options="filter as filter.label for filter in filterOptions track by filter.id"></select>-->
 
                     <div class="container">
-                        <button type="button" class="btn btn-sm btn-primary" style="margin-bottom: 10px" ng-model="showAddMember" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
+                        <button type="button" class="btn btn-primary" style="margin-bottom: 10px" ng-model="showAddMember" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
                             <i class="glyphicon glyphicon-plus">
                             </i>
                         </button>
-                        <div ng-show="showAddMember" class="input-group col-sm-9" style="margin-bottom: 15px">
+                        <button type="button" class="btn btn-warning col-sm-offset-8 xs-float-right" style="margin-bottom: 10px"  ng-click="open()">
+                            <i class="glyphicon glyphicon-remove"> Reset
+                            </i>
+                        </button>
+
+                        <div ng-show="showAddMember" class="input-group col-sm-10" style="margin-bottom: 15px">
                             <input type="text" ng-maxlength="ng_maxLength" maxlength={{maxLength}} id="addMeetingMembers" name="addMeetingMembers" class="form-control"
-                                   ng-model="addMeetingMembers" ng-required="true" uib-typeahead="item.fullName for item in availableMemberList  | filter:$viewValue | limitTo:8" autocomplete="off" typeahead-on-select="AddMember($item)" placeholder="Type here to add members" />
+                                   ng-model="addMeetingMembers" ng-required="true" uib-typeahead="item.fullName for item in availableMemberList  | filter:$viewValue | limitTo:8" autocomplete="off" typeahead-on-select="AddMember($item)" placeholder="names?" />
                             <span class="input-group-btn">
                                 <input type="button" class="btn btn-primary" value="Add New User"
                                        ng-click="AddNewUserAsMember(addMeetingMembers)" />
@@ -104,6 +109,15 @@
                                     </label>
                                 </div>
                             </div>
+
+                            <button type="button" class="btn btn-primary btn-lg" style="margin-bottom: 10px" ng-model="sortAlpha" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0" ng-click="open()">
+                                <i class="glyphicon glyphicon-sort-by-alphabet">
+                                </i>
+                            </button>
+                            <button type="button" class="btn btn-primary btn-lg col-sm-offset-8 xs-float-right" style="margin-bottom: 10px" ng-click="none()">
+                                <i class="glyphicon glyphicon-sort-by-alphabet-alt">
+                                </i>
+                            </button>
 
                         </div>
                     </div>

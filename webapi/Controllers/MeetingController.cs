@@ -94,6 +94,7 @@ namespace webapi.Controllers
             var xref = _ctx.X_User_Meeting.Create();
             xref.UserId = data.MemberId;
             xref.MeetingId = data.MeetingId;
+            xref.DateAdded = DateTime.Now;
             xref.Active = true;
 
             _ctx.X_User_Meeting.Add(xref);

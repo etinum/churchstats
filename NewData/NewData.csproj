@@ -83,6 +83,9 @@
     <Compile Include="User.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="X_User_Group.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="X_User_Meeting.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

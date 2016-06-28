@@ -22,14 +22,14 @@
     <script src="lib/jquery.signalr-2.2.0.min.js"></script>
     <script src="WebApi/signalr/hubs"></script>
 
-    <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="lib/angular-busy/dist/angular-busy.css" rel="stylesheet" />
-    <link href="app/css/app.css" rel="stylesheet"/>
+    <link href="app/css/app.css" rel="stylesheet" />
 
 </head>
 
 <body ng-controller="masterCtrl" class="container">
-    
+
     <div class="form-group">
         <h1>Sac Attendance Project</h1>
     </div>
@@ -42,3 +42,41 @@
 
 </body>
 </html>
+
+
+<!-- This is where all our wonderful modals will be places -->
+
+<script type="text/ng-template" id="confirmReset.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Notice</h3>
+    </div>
+    <div class="modal-body">
+        Are you sure you want to reset this meeting attendance record?  If so, please type: "yes":
+    </div>
+    <div class="modal-footer">
+        <div class="input-group">
+            <input ng-model="inputString" class="form-control" placeholder="are you sure... " type="text" />
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-danger" ng-click="close()">
+                    <i class="glyphicon glyphicon-thunbs-up"> Just DO IT!
+                    </i>
+                </button>
+            </span>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="modalConfirmDeleteCtrl.html">
+    <div class="modal-header bg-primary">
+        <h3 class="modal-title">Notice</h3>
+    </div>
+    <div class="modal-body  bg-primary">
+        Are you sure you want to delete account# {{row.accountNumber}} for investigator: {{row.investigator}}?
+    </div>
+    <div class="modal-footer  bg-primary">
+        <button class="btn btn-danger" type="button" ng-click="delete()">Delete</button>
+        <button class="btn btn-primary" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+

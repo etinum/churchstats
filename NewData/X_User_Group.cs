@@ -12,14 +12,13 @@ namespace NewData
     using System;
     using System.Collections.Generic;
     
-    public partial class X_User_Meeting
+    public partial class X_User_Group
     {
-        public int UserId { get; set; }
-        public int MeetingId { get; set; }
-        public bool Active { get; set; }
+        public int Groups_Id { get; set; }
+        public int Users_Id { get; set; }
         public Nullable<System.DateTime> DateAdded { get; set; }
     
-        public virtual Meeting Meeting { get; set; }
+        public virtual Group Group { get; set; }
         public virtual User User { get; set; }
     }
 }

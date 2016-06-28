@@ -17,7 +17,7 @@ namespace NewData
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Group()
         {
-            this.Users = new HashSet<User>();
+            this.X_User_Group = new HashSet<X_User_Group>();
         }
     
         public int Id { get; set; }
@@ -27,6 +27,6 @@ namespace NewData
         public Nullable<bool> Active { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<X_User_Group> X_User_Group { get; set; }
     }
 }

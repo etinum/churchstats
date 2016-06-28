@@ -35,11 +35,18 @@
   }
 
    @media (max-width: 768px) {
-      .col-xs-12, .col-xs-12 {
+      .col-xs-12, .col-xs-12, .xs-center {
               text-align: center;
        } 
 
-      .center-for-xs
+      .xs-float-right {
+          float: right;
+      }
 
       .big-checkbox {width: 20px; height: 20px;}
     }
+
+   /* This is here to fix ui bootsrap modal from shifting content to the left on modal pop up*/
+body {
+    overflow-y: auto;
+}
