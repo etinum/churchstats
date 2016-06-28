@@ -212,7 +212,7 @@
         };
 
 
-        var createUser = (name) => {
+        var createUserViewModel = (name) => {
 
             if (name.split(' ').length !== 2) {
                 alert('Sorry, we need first and last name only');
@@ -267,9 +267,9 @@
                 searchFieldTimeout = setTimeout(filterMembersBySearch, 700);
             });
 
-        $scope.createNewUser = (name) => {
+        $scope.createNewUserForRecorder = (name) => {
 
-            var user = createUser(name);
+            var user = createUserViewModel(name);
             if (user == null) {
                 return;
             }
@@ -313,7 +313,7 @@
 
         $scope.AddNewUserAsMember = (name) => {
 
-            var user = createUser(name);
+            var user = createUserViewModel(name);
             if (user == null) {
                 return;
             }
@@ -325,12 +325,13 @@
                     var xref = <modeltypings.XMeetingMemberModel>{};
                     xref.meetingId = $scope.selectedMeetingId;
                     xref.memberId = user.id;
+                    updateMemberList(user);
+                    updateUserList(user);
 
                     $scope.load = $dataService.addMemberToMeeting(xref)
-                        .then((data) => {
+                        .then(() => {
                             // reset fields
                             $scope.addMeetingMembers = '';
-                            updateMemberList(user);
                         });
                 });
         };
