@@ -155,7 +155,7 @@
 
 
                 <div ng-repeat="item in memberList track by item.id">
-                    <div class="form-group" ng-hide="item.isAttend === hidePresent || (item.isAttend === false && hideAbsent) || (item.isAttend === null) && hideUnknown ">
+                    <div class="form-group" ng-hide="(item.isAttend === true && item.isAttend === hidePresent) || (item.isAttend === false && hideAbsent) || (item.isAttend === null) && hideUnknown ">
                         <div class="row">
                             <label class="col-xs-12 col-sm-4  control-label">{{item.fullName}}</label>
                             <div class="col-xs-12 col-sm-8">
