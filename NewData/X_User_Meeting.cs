@@ -18,6 +18,8 @@ namespace NewData
         public int MeetingId { get; set; }
         public bool Active { get; set; }
         public Nullable<System.DateTime> DateAdded { get; set; }
+        public Nullable<System.DateTime> LastDeactivatedDate { get; set; }
+        public Nullable<System.DateTime> LastReactivatedDate { get; set; }
     
         public virtual Meeting Meeting { get; set; }
         public virtual User User { get; set; }

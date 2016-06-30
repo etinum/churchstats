@@ -150,6 +150,18 @@
             });
             return deferred.promise;
         };
+        var removeMemberFromMeeting = function (data) {
+            var url = baseWebApiUrl + 'api/Meeting/RemoveMemberFromMeeting';
+            var deferred = $q.defer();
+            $http.post(url, data)
+                .then(function (response) {
+                deferred.resolve(response);
+            }, function (response) {
+                alertFailed(response);
+                deferred.reject(response);
+            });
+            return deferred.promise;
+        };
         var getLocation = function (val) {
             var deferred = $q.defer();
             $http.get('//maps.googleapis.com/maps/api/geocode/json', {
@@ -175,6 +187,7 @@
             getAllMeetingTypes: getAllMeetingTypes,
             saveMeeting: saveMeeting,
             saveAttendance: saveAttendance,
+            removeMemberFromMeeting: removeMemberFromMeeting,
             getLocation: getLocation,
             arrayUnique: arrayUnique,
             arrayObjectIndexOf: arrayObjectIndexOf,

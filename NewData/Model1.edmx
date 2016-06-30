@@ -95,6 +95,8 @@
           <Property Name="MeetingId" Type="int" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
           <Property Name="DateAdded" Type="datetime" />
+          <Property Name="LastDeactivatedDate" Type="datetime" />
+          <Property Name="LastReactivatedDate" Type="datetime" />
         </EntityType>
         <Association Name="FK_Attendance_Meeting">
           <End Role="Meeting" Type="Self.Meeting" Multiplicity="1" />
@@ -404,6 +406,8 @@
           <Property Name="MeetingId" Type="Int32" Nullable="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <Property Name="DateAdded" Type="DateTime" Precision="3" />
+          <Property Name="LastDeactivatedDate" Type="DateTime" Precision="3" />
+          <Property Name="LastReactivatedDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Meeting" Relationship="CstatsModel.FK_X_User_Meeting_Meeting" FromRole="X_User_Meeting" ToRole="Meeting" />
           <NavigationProperty Name="User" Relationship="CstatsModel.FK_X_User_Meeting_User" FromRole="X_User_Meeting" ToRole="User" />
         </EntityType>
@@ -610,6 +614,8 @@
           <EntitySetMapping Name="X_User_Meeting">
             <EntityTypeMapping TypeName="CstatsModel.X_User_Meeting">
               <MappingFragment StoreEntitySet="X_User_Meeting">
+                <ScalarProperty Name="LastReactivatedDate" ColumnName="LastReactivatedDate" />
+                <ScalarProperty Name="LastDeactivatedDate" ColumnName="LastDeactivatedDate" />
                 <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />

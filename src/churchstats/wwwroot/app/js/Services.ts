@@ -190,6 +190,20 @@
             return deferred.promise;
         }
 
+        var removeMemberFromMeeting = (data: modeltypings.XMeetingMemberModel) => {
+            var url = baseWebApiUrl + 'api/Meeting/RemoveMemberFromMeeting';
+            var deferred = $q.defer();
+
+            $http.post(url, data)
+                .then(response => {
+                    deferred.resolve(response);
+                }, (response) => {
+                    alertFailed(response);
+                    deferred.reject(response);
+                });
+            return deferred.promise;
+        }
+        
 
        // Google api 
         var getLocation = (val) => {
@@ -222,6 +236,7 @@
             getAllMeetingTypes: getAllMeetingTypes,
             saveMeeting: saveMeeting,
             saveAttendance: saveAttendance,
+            removeMemberFromMeeting: removeMemberFromMeeting,
             getLocation: getLocation,
             // Helper Methods
             arrayUnique: arrayUnique,

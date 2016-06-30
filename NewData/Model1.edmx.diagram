@@ -5,13 +5,13 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="26ee4490572f4e68bd09a95450f81ce3" Name="Diagram1">
-        <EntityTypeShape EntityType="CstatsModel.Attendance" Width="1.5" PointX="6" PointY="4.125" />
-        <EntityTypeShape EntityType="CstatsModel.Group" Width="1.5" PointX="0.75" PointY="10.625" />
-        <EntityTypeShape EntityType="CstatsModel.Meeting" Width="1.5" PointX="3.75" PointY="14.25" />
-        <EntityTypeShape EntityType="CstatsModel.MeetingType" Width="1.5" PointX="1.5" PointY="14.875" />
-        <EntityTypeShape EntityType="CstatsModel.User" Width="1.5" PointX="0.75" PointY="2.5" />
-        <EntityTypeShape EntityType="CstatsModel.X_User_Group" Width="1.5" PointX="3" PointY="1.75" />
-        <EntityTypeShape EntityType="CstatsModel.X_User_Meeting" Width="1.5" PointX="3" PointY="4.625" />
+        <EntityTypeShape EntityType="CstatsModel.Attendance" Width="1.5" PointX="6" PointY="4.25" />
+        <EntityTypeShape EntityType="CstatsModel.Group" Width="1.5" PointX="0.75" PointY="17.875" />
+        <EntityTypeShape EntityType="CstatsModel.Meeting" Width="1.5" PointX="0.75" PointY="10.375" />
+        <EntityTypeShape EntityType="CstatsModel.MeetingType" Width="1.5" PointX="1.5" PointY="15.125" />
+        <EntityTypeShape EntityType="CstatsModel.User" Width="1.5" PointX="0.75" PointY="2.75" />
+        <EntityTypeShape EntityType="CstatsModel.X_User_Group" Width="1.5" PointX="3" PointY="5" />
+        <EntityTypeShape EntityType="CstatsModel.X_User_Meeting" Width="1.5" PointX="3" PointY="1.75" />
         <AssociationConnector Association="CstatsModel.FK_Attendance_Meeting" />
         <AssociationConnector Association="CstatsModel.FK_Attendance_Recorder" />
         <AssociationConnector Association="CstatsModel.FK_Attendance_User" />

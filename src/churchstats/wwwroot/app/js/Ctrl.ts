@@ -139,23 +139,22 @@
 
 
         // Helper
-        var updateCounts = (data) => {
+        var updateCounts = (data: modeltypings.UserViewModel[]) => {
             $scope.counts.totalPossible = data.length;
             $scope.counts.unknown = data.filter(item => item.isAttend === null).length;
             $scope.counts.absent = data.filter(item => item.isAttend === false).length;
-            $scope.counts.present = data.filter(item => item.isAttend === true).length;
+            $scope.counts.present = data.filter(item => item.isAttend).length;
         };
 
-        var updateUserList = (user) => {
+        var updateUserList = (user: modeltypings.UserViewModel) => {
             $scope.userList.push(user);
             $scope.fullUserList.push(user);
         };
 
 
-        var updateMemberList = (member) => {
+        var updateMemberList = (member: modeltypings.UserViewModel) => {
             $scope.fullMemberList.push(member);
             filterMembersBySearch();
-
         };
 
 
@@ -238,6 +237,15 @@
         };
 
 
+        var removeMember = (data: modeltypings.XMeetingMemberModel) => {
+
+            var index = $dataService.arrayObjectIndexOf($scope.fullMemberList, data.memberId, "id");
+            if (index > -1) {
+                $scope.fullMemberList.splice(index, 1);
+                filterMembersBySearch();
+            }
+
+        }
 
         // Event handler
 
@@ -245,9 +253,6 @@
             alert('coming soon');
         }
 
-        $scope.nothing = () => {
-            
-        }
 
 
         $scope.forceRefreshList = () => {
@@ -349,7 +354,7 @@
         };
 
 
-        $scope.memberSelected = (item) => {
+        $scope.memberSelected = (item: modeltypings.UserViewModel) => {
 
 
             var attendance = <modeltypings.AttendanceViewModel>{};
@@ -369,6 +374,18 @@
             //  alert('Update database for: ' + item.fullName + ", present: " + item.isAttend);
         };
 
+        $scope.removeMemberFromMeeting = (id: number) => {
+
+            var xrf = <modeltypings.XMeetingMemberModel>{};
+            xrf.memberId = id;
+            xrf.meetingId = $scope.selectedMeetingId;
+
+            $dataService.removeMemberFromMeeting(xrf)
+                .then(() => {
+                    removeMember(xrf);
+                });
+        }
+
 
         $scope.reload = () => {
             location.reload();
@@ -382,7 +399,12 @@
             alert('hello value, world');
         };
 
-        hub.client.UpdateAttendance = (data) => {
+
+        hub.client.RemoveMember = (data: modeltypings.XMeetingMemberModel) => {
+            removeMember(data);
+        };
+
+        hub.client.UpdateAttendance = (data: modeltypings.AttendanceViewModel) => {
 
             var member = <modeltypings.UserViewModel>{};
             var recorder = <modeltypings.UserViewModel>{};
@@ -401,6 +423,7 @@
                     member.recorderName = recorder.fullName;
                     member.lastRecorded = data.lastUpdated;
                     member.attendanceId = data.id;
+                    member.attendanceNotes = data.notes;
 
                 } else {
                     member.attendanceId = 0;

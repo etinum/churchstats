@@ -53,7 +53,8 @@ namespace webapi.Controllers
             var users =
                 (from u in _ctx.Users
                  join x in _ctx.X_User_Meeting on u.Id equals x.UserId
-                 where x.MeetingId == meetingId
+                 where x.MeetingId == meetingId && 
+                 x.Active
                  select u);
 
             var userViewModels = _mapper.Map<List<UserViewModel>>(users);
@@ -68,7 +69,8 @@ namespace webapi.Controllers
                         a.UserId,
                         a.IsAttend,
                         a.RecorderId,
-                        a.LastUpdated
+                        a.LastUpdated,
+                        a.Notes
                     }).ToList();
 
             var userList = _ctx.Users.ToList();
@@ -80,6 +82,7 @@ namespace webapi.Controllers
                 userViewModel.RecorderId = match.RecorderId;
                 userViewModel.AttendanceId = match.Id;
                 userViewModel.LastRecorded = match.LastUpdated;
+                userViewModel.AttendanceNotes = match.Notes;
                 var usermatch = userList.FirstOrDefault(r => r.Id == match.RecorderId);
                 if (usermatch != null) userViewModel.RecorderName = usermatch.FirstName + ' ' + usermatch.LastName;
             }
@@ -87,17 +90,60 @@ namespace webapi.Controllers
             return Ok(userViewModels);
         }
 
+        [HttpPost]
+        public IHttpActionResult RemoveMemberFromMeeting(XMeetingMemberModel data)
+        {
+
+            // remove attendance record if it exist
+            var attrec =
+                _ctx.Attendances.FirstOrDefault(
+                    r =>
+                        r.UserId == data.MemberId && r.MeetingId == data.MeetingId &&
+                        r.DateRecorded > DateTime.Today);
+
+            if (attrec != null)
+            {
+                _ctx.Attendances.Remove(attrec);
+                _ctx.SaveChanges();
+            }
+
+
+            var xref = _ctx.X_User_Meeting.FirstOrDefault(r => r.MeetingId == data.MeetingId && r.UserId == data.MemberId);
+
+            if (xref == null) return NotFound();
+            xref.Active = false;
+            xref.LastDeactivatedDate = DateTime.Now;
+            _ctx.SaveChanges();
+
+            var subscribed = Hub.Clients.Group(data.MeetingId.ToString());
+            subscribed.RemoveMember(data);
+            return Ok();
+        }
+
 
         [HttpPost]
         public IHttpActionResult AddMemberToMeeting(XMeetingMemberModel data)
         {
-            var xref = _ctx.X_User_Meeting.Create();
-            xref.UserId = data.MemberId;
-            xref.MeetingId = data.MeetingId;
-            xref.DateAdded = DateTime.Now;
-            xref.Active = true;
 
-            _ctx.X_User_Meeting.Add(xref);
+            var xref = _ctx.X_User_Meeting.FirstOrDefault(r => r.MeetingId == data.MeetingId && r.UserId == data.MemberId);
+
+            if (xref == null)
+            {
+                xref = _ctx.X_User_Meeting.Create();
+                xref.UserId = data.MemberId;
+                xref.MeetingId = data.MeetingId;
+                xref.DateAdded = DateTime.Now;
+                xref.Active = true;
+                _ctx.X_User_Meeting.Add(xref);
+
+            }
+            else
+            {
+                xref.LastReactivatedDate = DateTime.Now;
+                xref.Active = true;
+            }
+
+
             _ctx.SaveChanges();
 
 
@@ -133,24 +179,5 @@ namespace webapi.Controllers
 
         }
 
-
-        //public bool AddUserToMeeting(int userId, int meetingId)
-        //{
-        //    return _meetingLogic.AddUserToMeeting(userId, meetingId);
-        //}
-
-        //public IEnumerable<MeetingViewModel> GetMeetingsByUser(int userId)
-        //{
-        //    return _mapper.Map<IEnumerable<Meeting>, IEnumerable<MeetingViewModel>>(_meetingLogic.GetMeetingsByUser(userId));
-        //}
-
-        //public IEnumerable<MeetingTypeViewModel> GetMeetingType()
-        //{
-        //    return _mapper.Map<IEnumerable<MeetingType>, IEnumerable<MeetingTypeViewModel>>(_meetingLogic.GetMeetingType());
-        //}
-        //public bool SaveMeeting(string meetingName, int meetingTypeId)
-        //{
-        //    return _meetingLogic.SaveMeeting(meetingName, meetingTypeId);
-        //}
     }
 }

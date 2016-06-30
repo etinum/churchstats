@@ -91,7 +91,7 @@
             $scope.counts.totalPossible = data.length;
             $scope.counts.unknown = data.filter(function (item) { return item.isAttend === null; }).length;
             $scope.counts.absent = data.filter(function (item) { return item.isAttend === false; }).length;
-            $scope.counts.present = data.filter(function (item) { return item.isAttend === true; }).length;
+            $scope.counts.present = data.filter(function (item) { return item.isAttend; }).length;
         };
         var updateUserList = function (user) {
             $scope.userList.push(user);
@@ -176,10 +176,15 @@
             user.isAttend = null;
             return user;
         };
+        var removeMember = function (data) {
+            var index = $dataService.arrayObjectIndexOf($scope.fullMemberList, data.memberId, "id");
+            if (index > -1) {
+                $scope.fullMemberList.splice(index, 1);
+                filterMembersBySearch();
+            }
+        };
         $scope.tbd = function () {
             alert('coming soon');
-        };
-        $scope.nothing = function () {
         };
         $scope.forceRefreshList = function () {
             $.connection.hub.start()
@@ -267,11 +272,23 @@
             });
             updateCounts($scope.memberList);
         };
+        $scope.removeMemberFromMeeting = function (id) {
+            var xrf = {};
+            xrf.memberId = id;
+            xrf.meetingId = $scope.selectedMeetingId;
+            $dataService.removeMemberFromMeeting(xrf)
+                .then(function () {
+                removeMember(xrf);
+            });
+        };
         $scope.reload = function () {
             location.reload();
         };
         hub.client.ClientCall = function () {
             alert('hello value, world');
+        };
+        hub.client.RemoveMember = function (data) {
+            removeMember(data);
         };
         hub.client.UpdateAttendance = function (data) {
             var member = {};
@@ -290,6 +307,7 @@
                     member.recorderName = recorder.fullName;
                     member.lastRecorded = data.lastUpdated;
                     member.attendanceId = data.id;
+                    member.attendanceNotes = data.notes;
                 }
                 else {
                     member.attendanceId = 0;

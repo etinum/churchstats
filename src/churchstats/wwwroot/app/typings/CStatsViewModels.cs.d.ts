@@ -21,6 +21,8 @@ declare module modeltypings {
         recorderName: string;
         attendanceId: number;
         lastRecorded: Date;
+        attendanceNotes: string;
+
 
     }
 

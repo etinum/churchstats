@@ -20,5 +20,6 @@
 		recorderName: string;
 		attendanceId: number;
 		lastRecorded: Date;
+		attendanceNotes: string;
 	}
 }
