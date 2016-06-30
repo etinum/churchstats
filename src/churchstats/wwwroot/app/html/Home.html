@@ -3,11 +3,10 @@
 
         <button type="button" class="btn btn-sm btn-warning " style="margin-bottom: 10px" ng-click="reload()">
             <i class="glyphicon glyphicon-repeat">
-            </i>  Restart
+            </i> Restart
         </button>
 
-
-        <div class="form-group" show-errors>
+    <div class="form-group" show-errors>
             <label for="recorderName" class="col-sm-3 control-label">Who are you?</label>
             <div class="col-sm-5">
                 <input type="text" ng-maxlength="ng_maxLength" maxlength={{maxLength}} id="recorderName" name="recorderName" class="form-control"
@@ -157,7 +156,19 @@
                 <div ng-repeat="item in memberList track by item.id">
                     <div class="form-group" ng-hide="(item.isAttend === true && item.isAttend === hidePresent) || (item.isAttend === false && hideAbsent) || (item.isAttend === null) && hideUnknown ">
                         <div class="row">
-                            <label class="col-xs-12 col-sm-4  control-label">{{item.fullName}}</label>
+                            <div class="col-xs-12 col-sm-4  control-label">
+                                <div class="btn-group" is-open="hideIcon" uib-dropdown>
+                                    <button type="button" class="btn btn-link" uib-dropdown-toggle>
+                                        <b>{{item.fullName}}</b> <i ng-hide="hideIcon" class="glyphicon glyphicon-chevron-right"></i><i ng-hide="!hideIcon" class="glyphicon glyphicon-chevron-down"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+                                        <li role="menuitem"><a ng-click="tbd()"><i class="glyphicon glyphicon-road"></i> Set as visitor</a></li>
+                                        <li role="menuitem"><a ng-click="tbd()"><i class="glyphicon glyphicon-file"></i> Add notes</a></li>
+                                        <li class="divider"></li>
+                                        <li role="menuitem"><a ng-click="open()" style='color: red'><i class="glyphicon glyphicon-remove"></i> Remove</a></li>
+                                    </ul>
+                                </div>
+                            </div>
                             <div class="col-xs-12 col-sm-8">
                                 <div class="btn-group">
                                     <div>

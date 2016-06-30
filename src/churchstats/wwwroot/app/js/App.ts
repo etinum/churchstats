@@ -34,6 +34,7 @@ angular.module('repoFormsApp', ['ngRoute', 'ngMessages', 'ui.bootstrap', 'enviro
             domains: {
                 development: ['localhost:911', 'dev.local'],
                 iisexpress: ['localhost:12345'],
+                mac: ['erictdev.local'],
                 production: ['cstats.etpics.com', 'plsf.portfoliorecovery.com']
                 // anotherStage: ['domain1', 'domain2'],
                 // anotherStage: ['domain1', 'domain2']
@@ -48,6 +49,12 @@ angular.module('repoFormsApp', ['ngRoute', 'ngMessages', 'ui.bootstrap', 'enviro
                 iisexpress: {
                     apiUrl: '//localhost:12345/webapi/',
                     staticUrl: '//localhost:12345/'
+                    // antoherCustomVar: 'lorem',
+                    // antoherCustomVar: 'ipsum'
+                },
+                mac: {
+                    apiUrl: '//erictdev.local/webapi/',
+                    staticUrl: '//erictdev.local/'
                     // antoherCustomVar: 'lorem',
                     // antoherCustomVar: 'ipsum'
                 },

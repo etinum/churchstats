@@ -19,6 +19,7 @@
         $scope.globalSearchString = '';
         $scope.counts = {};
         $scope.sortNameType = 'FA';
+        $scope.hideIcon = false;
         var hub = $.connection.attendHub;
         var recorderFieldTimeout;
         $('#recorderName')
@@ -174,6 +175,11 @@
             user.fullName = user.firstName + ' ' + user.lastName;
             user.isAttend = null;
             return user;
+        };
+        $scope.tbd = function () {
+            alert('coming soon');
+        };
+        $scope.nothing = function () {
         };
         $scope.forceRefreshList = function () {
             $.connection.hub.start()

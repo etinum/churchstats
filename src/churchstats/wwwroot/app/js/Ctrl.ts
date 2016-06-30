@@ -47,6 +47,9 @@
         $scope.globalSearchString = '';
         $scope.counts = {};
         $scope.sortNameType = 'FA';
+        $scope.hideIcon = false;
+
+
 
         var hub = $.connection.attendHub;
 
@@ -237,6 +240,15 @@
 
 
         // Event handler
+
+        $scope.tbd = () => {
+            alert('coming soon');
+        }
+
+        $scope.nothing = () => {
+            
+        }
+
 
         $scope.forceRefreshList = () => {
             $.connection.hub.start()

@@ -1,56 +1,35 @@
-/*fieldset legend .subtitle { font-size: 80%; }*/
 
-  .typeahead-demo .custom-popup-wrapper {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 1000;
-    display: none;
-    background-color: #f9f9f9;
-  }
 
-  .typeahead-demo .custom-popup-wrapper > .message {
-    padding: 10px 20px;
-    border-bottom: 1px solid #ddd;
-    color: #868686;
-  }
-
-  .typeahead-demo .custom-popup-wrapper > .dropdown-menu {
-    position: static;
-    float: none;
-    display: block;
-    min-width: 160px;
-    background-color: transparent;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-  }
-
-    .st-sort-ascent:before{
+.st-sort-ascent:before {
     content: '\25B2';
-  }
+}
 
-  .st-sort-descent:before{
+.st-sort-descent:before {
     content: '\25BC';
-  }
+}
 
-   @media (max-width: 768px) {
-      .col-xs-12, .col-xs-12, .xs-center {
-              text-align: center;
-       } 
-
-      .xs-float-right {
-          float: right;
-      }
-
-      .xs-float-left {
-          float: left;
-      }
-
-      .big-checkbox {width: 20px; height: 20px;}
+@media (max-width: 768px) {
+    .col-xs-12, .col-xs-12, .xs-center {
+        text-align: center;
     }
 
-   /* This is here to fix ui bootsrap modal from shifting content to the left on modal pop up*/
+    .xs-float-right {
+        float: right;
+    }
+
+    .xs-float-left {
+        float: left;
+    }
+
+    .big-checkbox {
+        width: 20px;
+        height: 20px;
+    }
+
+
+}
+
+/* This is here to fix ui bootsrap modal from shifting content to the left on modal pop up*/
 body {
     overflow-y: auto;
 }
