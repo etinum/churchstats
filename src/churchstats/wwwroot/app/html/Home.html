@@ -26,7 +26,7 @@
                 <label for="meetingName" class="col-sm-3 control-label">Meeting Name</label>
                 <div class="col-sm-9">
                     <input type="text" ng-maxlength="ng_maxLength" maxlength={{maxLength}} id="meetingName" name="meetingName" class="form-control"
-                           ng-model="meetingName" ng-required="true" uib-typeahead="item.name for item in meetingList  | filter:$viewValue | limitTo:8" autocomplete="off" typeahead-on-select="onBlurMeeting()" ng-disabled="meetingFieldDisable" />
+                           ng-model="meetingName" ng-required="true" uib-typeahead="item.name for item in meetingList  | filter:$viewValue | limitTo:8" autocomplete="off" typeahead-on-select="onBlurMeeting()" ng-disabled="meetingFieldDisable" placeholder="Pick or create one"/>
                     <div class="help-block" ng-messages="myForm.meetingName.$error" ng-show="myForm.meetingName.$touched || submitted">
                         <div ng-messages-include="app/html/error-messages.html"></div>
                     </div>
@@ -68,13 +68,15 @@
                             </button>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-success" style="margin-bottom: 10px" ng-click="forceRefreshList()">
-                                    <i class="glyphicon glyphicon-refresh"> Force
+                                    <i class="glyphicon glyphicon-refresh">
+                                        Force
                                     </i>
                                 </button>
                             </div>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-warning" style="margin-bottom: 10px" ng-click="open()">
-                                    <i class="glyphicon glyphicon-remove"> Reset
+                                    <i class="glyphicon glyphicon-remove">
+                                        Reset
                                     </i>
                                 </button>
                             </div>
@@ -92,7 +94,7 @@
 
 
                         <div class="row" ng-show="fullMemberList.length > 0">
-                            <div class="col-xs-12 col-sm-7 col-lg-7" style="margin-bottom: 5px">
+                            <div class="col-xs-12 col-sm-9 col-lg-9" style="margin-bottom: 5px">
                                 <div class="input-group">
                                     <input id="globalSearch" ng-model="globalSearchString" class="form-control" placeholder="global search ..." type="text" />
                                     <span class="input-group-btn">
@@ -103,50 +105,44 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-5 col-lg-5">
-                                <div class="row">
-                                    <label class="col-xs-4 col-sm-3">
-                                        <input class="big-checkbox" type="checkbox"
-                                               ng-model="hidePresent" ng-change="filterUserSelected()" /> Hide Present
-                                    </label>
-                                    <label class="col-xs-4 col-sm-3">
-                                        <input class="big-checkbox" type="checkbox"
-                                               ng-model="hideUnknown" ng-change="filterUserSelected()" /> Hide Unknown
-                                    </label>
-                                    <label class="col-xs-4 col-sm-3" style="text-align: center">
-                                        <input class="big-checkbox" type="checkbox"
-                                               ng-model="hideAbsent" ng-change="filterUserSelected()" /> Hide Absent
-                                    </label>
+                            <div class="btn-toolbar xs-center" role="toolbar">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn" ng-class="{'btn-success': !hidePresent, 'btn-default': hidePresent}" style="margin-bottom: 10px" ng-model="hidePresent" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
+                                        <i class="glyphicon"
+                                           ng-class="{'glyphicon-eye-open': !hidePresent, 'glyphicon-eye-close': hidePresent}">
+                                            Present
+                                        </i>
+                                    </button>
+
+                                    <button type="button" class="btn" ng-class="{'btn-warning': !hideUnknown, 'btn-default': hideUnknown}" style="margin-bottom: 10px" ng-model="hideUnknown" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
+                                        <i class="glyphicon"
+                                           ng-class="{'glyphicon-eye-open': !hideUnknown, 'glyphicon-eye-close': hideUnknown}">
+                                            Unknown
+                                        </i>
+                                    </button>
+
+                                    <button type="button" class="btn" ng-class="{'btn-danger': !hideAbsent, 'btn-default': hideAbsent}" style="margin-bottom: 10px" ng-model="hideAbsent" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
+                                        <i class="glyphicon"
+                                           ng-class="{'glyphicon-eye-open': !hideAbsent, 'glyphicon-eye-close': hideAbsent}">
+                                            Absent
+                                        </i>
+                                    </button>
                                 </div>
-                            </div>
-
-                            <div class="col-xs-12" style="text-align: center">
-                                <div class="btn-group">
-
-                                    <button type="button" class="btn btn-primary  xs-float-left" style="margin-bottom: 10px" ng-click="sortNameAlpha('FA')">
-                                        <i class="glyphicon glyphicon-sort-by-alphabet">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-primary  xs-float-left" style="margin-bottom: 10px" ng-click="sortNameAlpha('F')">
+                                        <i class="glyphicon"
+                                           ng-class="{'glyphicon-sort-by-alphabet': firstSortAsc, 'glyphicon-sort-by-alphabet-alt': !firstSortAsc}">
                                             First
                                         </i>
                                     </button>
-                                    <button type="button" class="btn btn-primary  xs-float-left" style="margin-bottom: 10px" ng-click="sortNameAlpha('FD')">
-                                        <i class="glyphicon glyphicon-sort-by-alphabet-alt">
-                                            Name
+                                    <button type="button" class="btn btn-primary xs-float-left" style="margin-bottom: 10px" ng-click="sortNameAlpha('L')">
+                                        <i class="glyphicon"
+                                           ng-class="{'glyphicon-sort-by-alphabet': lastSortAsc, 'glyphicon-sort-by-alphabet-alt': !lastSortAsc}">
+                                            Last
                                         </i>
                                     </button>
                                 </div>
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-primary" style="margin-bottom: 10px" ng-click="sortNameAlpha('LA')">
-                                            <i class="glyphicon glyphicon-sort-by-alphabet">
-                                                Last
-                                            </i>
-                                        </button>
-                                        <button type="button" class="btn btn-primary" style="margin-bottom: 10px" ng-click="sortNameAlpha('LD')">
-                                            <i class="glyphicon glyphicon-sort-by-alphabet-alt">
-                                                Name
-                                            </i>
-                                        </button>
-                                    </div>
-                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -154,7 +150,7 @@
 
 
                 <div ng-repeat="item in memberList track by item.id">
-                    <div class="form-group" ng-hide="(item.isAttend === true && item.isAttend === hidePresent) || (item.isAttend === false && hideAbsent) || (item.isAttend === null) && hideUnknown ">
+                    <div class="form-group" ng-hide="(item.isAttend === true && hidePresent) || (item.isAttend === false && hideAbsent) || (item.isAttend === null) && hideUnknown ">
                         <div class="row">
                             <div class="col-xs-12 col-sm-4  control-label">
                                 <div class="btn-group" is-open="hideIcon" uib-dropdown>

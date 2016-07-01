@@ -20,6 +20,12 @@
         $scope.counts = {};
         $scope.sortNameType = 'FA';
         $scope.hideIcon = false;
+        $scope.firstSortAsc = true;
+        $scope.lastSortAsc = true;
+        $scope.hideUnknown = false;
+        $scope.hidePresent = false;
+        $scope.hideAbsent = false;
+        var lastAction = Date.now();
         var hub = $.connection.attendHub;
         var recorderFieldTimeout;
         $('#recorderName')
@@ -194,7 +200,17 @@
             getMeetingMembers();
         };
         $scope.sortNameAlpha = function (type) {
-            $scope.sortNameType = type;
+            switch (type) {
+                case 'F':
+                    $scope.sortNameType = $scope.firstSortAsc ? 'FA' : 'FD';
+                    $scope.firstSortAsc = !$scope.firstSortAsc;
+                    break;
+                case 'L':
+                    $scope.sortNameType = $scope.lastSortAsc ? 'LA' : 'LD';
+                    $scope.lastSortAsc = !$scope.lastSortAsc;
+                    break;
+                default:
+            }
             filterMembersBySearch();
         };
         var searchFieldTimeout;
@@ -259,6 +275,11 @@
             });
         };
         $scope.memberSelected = function (item) {
+            var time = Date.now() - lastAction;
+            if (time > 60 * 1000) {
+                lastAction = Date.now();
+                $scope.forceRefreshList();
+            }
             var attendance = {};
             attendance.meetingId = $scope.selectedMeetingId;
             attendance.recorderId = $scope.selectedUserId;

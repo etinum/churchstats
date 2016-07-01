@@ -49,6 +49,16 @@
         $scope.sortNameType = 'FA';
         $scope.hideIcon = false;
 
+        $scope.firstSortAsc = true;
+        $scope.lastSortAsc = true;
+
+        $scope.hideUnknown = false;
+        $scope.hidePresent = false;
+        $scope.hideAbsent = false;
+
+
+        var lastAction = Date.now();
+
 
 
         var hub = $.connection.attendHub;
@@ -265,9 +275,23 @@
             
 
 
-        $scope.sortNameAlpha = (type) => {
+        $scope.sortNameAlpha = (type: string) => {
 
-            $scope.sortNameType = type;
+            
+            
+
+            switch (type) {
+                case 'F':
+                    $scope.sortNameType = $scope.firstSortAsc ? 'FA' : 'FD';
+                    $scope.firstSortAsc = !$scope.firstSortAsc;
+                    break;
+                case 'L':
+                    $scope.sortNameType = $scope.lastSortAsc ? 'LA' : 'LD';
+                    $scope.lastSortAsc = !$scope.lastSortAsc;
+                    break;
+            default:
+            }
+
             filterMembersBySearch();
 
         };
@@ -355,6 +379,14 @@
 
 
         $scope.memberSelected = (item: modeltypings.UserViewModel) => {
+
+
+            var time = Date.now() - lastAction;
+            if (time > 60 * 1000) {
+                lastAction = Date.now();
+                $scope.forceRefreshList();
+            }
+            
 
 
             var attendance = <modeltypings.AttendanceViewModel>{};

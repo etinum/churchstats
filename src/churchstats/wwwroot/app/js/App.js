@@ -26,6 +26,7 @@ angular.module('repoFormsApp', ['ngRoute', 'ngMessages', 'ui.bootstrap', 'enviro
                 development: ['localhost:911', 'dev.local'],
                 iisexpress: ['localhost:12345'],
                 mac: ['erictdev.local'],
+                box: ['attendance.etpics.com'],
                 production: ['cstats.etpics.com', 'plsf.portfoliorecovery.com']
             },
             vars: {
@@ -40,6 +41,10 @@ angular.module('repoFormsApp', ['ngRoute', 'ngMessages', 'ui.bootstrap', 'enviro
                 mac: {
                     apiUrl: '//erictdev.local/webapi/',
                     staticUrl: '//erictdev.local/'
+                },
+                box: {
+                    apiUrl: '//attendance.etpics.com/webapi/',
+                    staticUrl: '//attendance.etpics.com/'
                 },
                 production: {
                     apiUrl: '//cstats.etpics.com/webapi/',
