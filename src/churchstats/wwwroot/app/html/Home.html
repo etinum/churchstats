@@ -173,8 +173,8 @@
                                         <label class="btn" ng-class="{'btn-danger': item.isAttend === false, 'btn-info': item.isAttend !== false}" ng-model="item.isAttend" uib-btn-radio=false ng-change="memberSelected(item)">Absent</label>
                                     </div>
                                     <button class="btn btn-sm btn-default" disabled="disabled" style="border: none">
-                                        <i class="glyphicon" ng-class="{'glyphicon-question-sign': item.recorderName == null, 'glyphicon-eye-open': item.recorderName != null}">
-                                        </i> {{item.recorderName}} @ {{item.lastRecorded | date:'MM/dd, h:mma'}}
+                                        <i class="glyphicon" ng-class="{'glyphicon-question-sign': item.recorderName == null, 'glyphicon-pencil': item.recorderName != null}">
+                                        </i> <span ng-show="item.recorderName != null">{{item.recorderName}} @ {{item.lastRecorded | date:'MM/dd, h:mma'}}</span>
                                     </button>
                                 </div>
                             </div>

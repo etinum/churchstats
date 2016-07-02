@@ -103,9 +103,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\data\data.csproj">
-      <Project>{59f0a9bd-45ab-47bd-a695-d5e1ff874e7f}</Project>
-      <Name>data</Name>
+    <ProjectReference Include="..\NewData\newdata.csproj">
+      <Project>{c6f312ce-dc25-4997-8f1b-3c346c2068d1}</Project>
+      <Name>newdata</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

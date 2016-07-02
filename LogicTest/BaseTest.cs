@@ -1,19 +1,19 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using data;
 using Moq;
 using System.Data.Entity;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using CsvHelper;
+using NewData;
 
 namespace LogicTest
 {
     [TestClass]
     public class BaseTest
     {
-        protected chruchstatsEntities testCtx;
+        protected CStatsEntities testCtx;
 
         [TestInitialize]
         public void Init()
@@ -30,7 +30,7 @@ namespace LogicTest
             mockSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
 
 
-            var mockContext = new Mock<chruchstatsEntities>();
+            var mockContext = new Mock<CStatsEntities>();
             mockContext.Setup(m => m.Users).Returns(mockSet.Object);
             mockContext.Setup(m => m.SaveChanges());
             testCtx = mockContext.Object;
