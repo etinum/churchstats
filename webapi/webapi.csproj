@@ -245,6 +245,7 @@
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <None Include="Properties\PublishProfiles\cstatwebapi.pubxml" />
     <None Include="Properties\PublishProfiles\erichome.pubxml" />
+    <None Include="Properties\PublishProfiles\Sandbox.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
