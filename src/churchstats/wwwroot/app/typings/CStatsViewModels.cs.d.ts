@@ -15,14 +15,13 @@ declare module modeltypings {
         baptizedDate: Date;
         savedDate: Date;
         locality: string;
-        fullName: string;
         isAttend: boolean;
         recorderId: number;
         recorderName: string;
         attendanceId: number;
         lastRecorded: Date;
         attendanceNotes: string;
-
+        fullName: string;
 
     }
 
@@ -31,10 +30,14 @@ declare module modeltypings {
         name: string;
         meetingTypeId: number;
         dayOfTheWeek: number;
-        description: string;
+        leadUserId: number;
+        addressId: number;
+        contactInfoId: number;
+        notes: string;
         usualTime: Date;
         dateCreated: Date;
         lastUpdated: Date;
+        lastEditedBy: number;
     }
 
     interface MeetingTypeViewModel {
@@ -47,15 +50,29 @@ declare module modeltypings {
         memberId: number;
         meetingId: number;
     }
+    interface XMeetingUserViewModel {
+        userId: number;
+        meetingId: number;
+    }
 
     interface AttendanceViewModel {
         id: number;
         userId: number;
         meetingId: number;
         recorderId: number;
-        isAttend: boolean;
-        meetingDate: Date;
+        dateRecorded: Date;
         lastUpdated: Date;
+        meetingDate: Date;
+        attendTypeId: number;
+        isVisitor: boolean;
         notes: string;
+        isArchive: boolean;
+
+    }
+
+    interface AttendTypeViewModel {
+        id: number;
+        name: string;
+        active: boolean;
     }
 }

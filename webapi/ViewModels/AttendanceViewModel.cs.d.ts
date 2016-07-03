@@ -4,9 +4,12 @@
 		userId: number;
 		meetingId: number;
 		recorderId: number;
-		isAttend: boolean;
-		meetingDate: Date;
+		dateRecorded: Date;
 		lastUpdated: Date;
+		meetingDate: Date;
+		attendTypeId: number;
+		isVisitor: boolean;
 		notes: string;
+		isArchive: boolean;
 	}
 }

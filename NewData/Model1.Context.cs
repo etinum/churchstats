@@ -25,12 +25,20 @@ namespace NewData
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<Attendance> Attendances { get; set; }
-        public virtual DbSet<Group> Groups { get; set; }
+        public virtual DbSet<AttendType> AttendTypes { get; set; }
+        public virtual DbSet<ContactInfo> ContactInfoes { get; set; }
+        public virtual DbSet<Locality> Localities { get; set; }
         public virtual DbSet<Meeting> Meetings { get; set; }
         public virtual DbSet<MeetingType> MeetingTypes { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<Tag> Tags { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<X_User_Group> X_User_Group { get; set; }
+        public virtual DbSet<X_AdminUser_Meeting> X_AdminUser_Meeting { get; set; }
+        public virtual DbSet<X_Meeting_Tag> X_Meeting_Tag { get; set; }
         public virtual DbSet<X_User_Meeting> X_User_Meeting { get; set; }
+        public virtual DbSet<X_User_Role> X_User_Role { get; set; }
+        public virtual DbSet<X_User_Tag> X_User_Tag { get; set; }
     }
 }

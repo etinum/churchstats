@@ -10,16 +10,13 @@
 		isBaptized: boolean;
 		middleName: string;
 		notes: string;
-		email: string;
-		phoneNumber: string;
 		baptizedDate: Date;
 		savedDate: Date;
-		locality: string;
-		isAttend: boolean;
-		recorderId: number;
-		recorderName: string;
-		attendanceId: number;
-		lastRecorded: Date;
-		attendanceNotes: string;
+		addressId: number;
+		contactInfoId: number;
+		localityId: number;
+		dateCreated: Date;
+		lastUpdated: Date;
+		lastEditedBy: number;
 	}
 }

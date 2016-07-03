@@ -247,7 +247,7 @@
         };
 
 
-        var removeMember = (data: modeltypings.XMeetingMemberModel) => {
+        var removeMember = (data: modeltypings.XMeetingUserViewModel) => {
 
             var index = $dataService.arrayObjectIndexOf($scope.fullMemberList, data.memberId, "id");
             if (index > -1) {
@@ -339,7 +339,7 @@
 
         $scope.AddMember = (member) => {
 
-            var data = <modeltypings.XMeetingMemberModel>{};
+            var data = <modeltypings.XMeetingUserViewModel>{};
             data.meetingId = $scope.selectedMeetingId;
             data.memberId = member.id;
             updateMemberList(member);
@@ -363,7 +363,7 @@
                 .then((response) => {
                     user.id = response.data;
 
-                    var xref = <modeltypings.XMeetingMemberModel>{};
+                    var xref = <modeltypings.XMeetingUserViewModel>{};
                     xref.meetingId = $scope.selectedMeetingId;
                     xref.memberId = user.id;
                     updateMemberList(user);
@@ -408,7 +408,7 @@
 
         $scope.removeMemberFromMeeting = (id: number) => {
 
-            var xrf = <modeltypings.XMeetingMemberModel>{};
+            var xrf = <modeltypings.XMeetingUserViewModel>{};
             xrf.memberId = id;
             xrf.meetingId = $scope.selectedMeetingId;
 
@@ -432,7 +432,7 @@
         };
 
 
-        hub.client.RemoveMember = (data: modeltypings.XMeetingMemberModel) => {
+        hub.client.RemoveMember = (data: modeltypings.XMeetingUserViewModel) => {
             removeMember(data);
         };
 

@@ -12,21 +12,22 @@ namespace NewData
     using System;
     using System.Collections.Generic;
     
-    public partial class Group
+    public partial class Role
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Group()
+        public Role()
         {
-            this.X_User_Group = new HashSet<X_User_Group>();
+            this.X_User_Role = new HashSet<X_User_Role>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<bool> Assignable { get; set; }
+        public Nullable<System.DateTime> DateCreated { get; set; }
         public Nullable<System.DateTime> LastUpdated { get; set; }
-        public Nullable<bool> Active { get; set; }
+        public Nullable<int> LastUpdatedBy { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<X_User_Group> X_User_Group { get; set; }
+        public virtual ICollection<X_User_Role> X_User_Role { get; set; }
     }
 }

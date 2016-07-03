@@ -91,14 +91,14 @@ namespace webapi.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult RemoveMemberFromMeeting(XMeetingMemberModel data)
+        public IHttpActionResult RemoveMemberFromMeeting(XMeetingUserViewModel data)
         {
 
             // remove attendance record if it exist
             var attrec =
                 _ctx.Attendances.FirstOrDefault(
                     r =>
-                        r.UserId == data.MemberId && r.MeetingId == data.MeetingId &&
+                        r.UserId == data.UserId && r.MeetingId == data.MeetingId &&
                         r.DateRecorded > DateTime.Today);
 
             if (attrec != null)
@@ -108,7 +108,7 @@ namespace webapi.Controllers
             }
 
 
-            var xref = _ctx.X_User_Meeting.FirstOrDefault(r => r.MeetingId == data.MeetingId && r.UserId == data.MemberId);
+            var xref = _ctx.X_User_Meeting.FirstOrDefault(r => r.MeetingId == data.MeetingId && r.UserId == data.UserId);
 
             if (xref == null) return NotFound();
             xref.Active = false;
@@ -122,15 +122,15 @@ namespace webapi.Controllers
 
 
         [HttpPost]
-        public IHttpActionResult AddMemberToMeeting(XMeetingMemberModel data)
+        public IHttpActionResult AddMemberToMeeting(XMeetingUserViewModel data)
         {
 
-            var xref = _ctx.X_User_Meeting.FirstOrDefault(r => r.MeetingId == data.MeetingId && r.UserId == data.MemberId);
+            var xref = _ctx.X_User_Meeting.FirstOrDefault(r => r.MeetingId == data.MeetingId && r.UserId == data.UserId);
 
             if (xref == null)
             {
                 xref = _ctx.X_User_Meeting.Create();
-                xref.UserId = data.MemberId;
+                xref.UserId = data.UserId;
                 xref.MeetingId = data.MeetingId;
                 xref.DateAdded = DateTime.Now;
                 xref.Active = true;
@@ -151,7 +151,7 @@ namespace webapi.Controllers
             {
                 Id = 0,
                 IsAttend = null,
-                UserId = data.MemberId,
+                UserId = data.UserId,
                 MeetingId = data.MeetingId
                 
             };

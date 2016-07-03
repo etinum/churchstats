@@ -15,19 +15,15 @@ namespace webapi.ViewModels
         public bool? IsBaptized { get; set; }
         public string MiddleName { get; set; }
         public string Notes { get; set; }
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
         public DateTime? BaptizedDate { get; set; }
         public DateTime? SavedDate { get; set; }
-        public string Locality { get; set; }
+        public int? AddressId { get; set; }
+        public int? ContactInfoId { get; set; }
+        public int? LocalityId { get; set; }
+        public DateTime? DateCreated { get; set; }
+        public DateTime? LastUpdated { get; set; }
+        public int? LastEditedBy { get; set; }
         public string FullName => FirstName + " " + LastName;
-        public bool? IsAttend { get; set; }
-        public int RecorderId { get; set; }
-        public string RecorderName { get; set; }
-        public int AttendanceId { get; set; }
-        public DateTime? LastRecorded { get; set; }
-        public string AttendanceNotes { get; set; }
-
 
     }
 }

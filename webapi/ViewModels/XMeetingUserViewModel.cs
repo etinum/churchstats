@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace webapi.ViewModels
 {
-    public class XMeetingMemberModel
+    public class XMeetingUserViewModel
     {
-        public int MemberId { get; set; }
+        public int UserId { get; set; }
         public int MeetingId { get; set; }
 
     }

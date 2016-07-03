@@ -1,6 +1,6 @@
 ﻿declare module server {
-	interface XMeetingMemberModel {
-		memberId: number;
+	interface XMeetingUserViewModel {
+		userId: number;
 		meetingId: number;
 	}
 }

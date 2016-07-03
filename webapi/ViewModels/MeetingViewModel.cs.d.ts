@@ -4,9 +4,13 @@
 		name: string;
 		meetingTypeId: number;
 		dayOfTheWeek: number;
-		description: string;
+		leadUserId: number;
+		addressId: number;
+		contactInfoId: number;
+		notes: string;
 		usualTime: Date;
 		dateCreated: Date;
 		lastUpdated: Date;
+		lastEditedBy: number;
 	}
 }

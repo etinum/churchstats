@@ -1,4 +1,4 @@
-
+/// <reference path="../../../../../webapi/ViewModels/AttendanceViewModel.cs.d.ts" />
 /* TEMPLATE
 (app => {
 
@@ -190,7 +190,7 @@
             return deferred.promise;
         }
 
-        var removeMemberFromMeeting = (data: modeltypings.XMeetingMemberModel) => {
+        var removeMemberFromMeeting = (data: modeltypings.XMeetingUserViewModel) => {
             var url = baseWebApiUrl + 'api/Meeting/RemoveMemberFromMeeting';
             var deferred = $q.defer();
 

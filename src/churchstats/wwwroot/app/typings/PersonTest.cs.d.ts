@@ -1,4 +1,4 @@
-﻿declare module modeltypings {
+﻿declare module server {
 	interface IPersonTest {
 		id: number;
 		createdDate: Date;

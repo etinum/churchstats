@@ -12,23 +12,14 @@ namespace NewData
     using System;
     using System.Collections.Generic;
     
-    public partial class Attendance
+    public partial class X_AdminUser_Meeting
     {
-        public int Id { get; set; }
         public int UserId { get; set; }
         public int MeetingId { get; set; }
-        public int RecorderId { get; set; }
-        public System.DateTime DateRecorded { get; set; }
-        public System.DateTime LastUpdated { get; set; }
-        public Nullable<System.DateTime> MeetingDate { get; set; }
-        public Nullable<int> AttendTypeId { get; set; }
-        public Nullable<bool> IsVisitor { get; set; }
-        public string Notes { get; set; }
-        public Nullable<bool> IsArchive { get; set; }
+        public Nullable<System.DateTime> DateCreated { get; set; }
+        public Nullable<int> CreatedBy { get; set; }
     
-        public virtual AttendType AttendType { get; set; }
         public virtual Meeting Meeting { get; set; }
         public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
     }
 }

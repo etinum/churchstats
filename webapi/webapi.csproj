@@ -207,13 +207,14 @@
     <Compile Include="Hubs\AttendHub.cs" />
     <Compile Include="Mappers\ModelMapper.cs" />
     <Compile Include="ViewModels\AttendanceViewModel.cs" />
+    <Compile Include="ViewModels\AttendTypeViewModel.cs" />
     <Compile Include="ViewModels\MeetingViewModel.cs" />
     <Compile Include="ViewModels\MeetingTypeViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\SignalRContractResolver.cs" />
-    <Compile Include="ViewModels\XMeetingMemberModel.cs" />
+    <Compile Include="ViewModels\XMeetingUserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -290,6 +291,9 @@
     <TypeScriptCompile Include="ViewModels\AttendanceViewModel.cs.d.ts">
       <DependentUpon>AttendanceViewModel.cs</DependentUpon>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="ViewModels\AttendTypeViewModel.cs.d.ts">
+      <DependentUpon>AttendTypeViewModel.cs</DependentUpon>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="ViewModels\MeetingTypeViewModel.cs.d.ts">
       <DependentUpon>MeetingTypeViewModel.cs</DependentUpon>
     </TypeScriptCompile>
@@ -299,8 +303,8 @@
     <TypeScriptCompile Include="ViewModels\UserViewModel.cs.d.ts">
       <DependentUpon>UserViewModel.cs</DependentUpon>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="ViewModels\XMeetingMemberModel.cs.d.ts">
-      <DependentUpon>XMeetingMemberModel.cs</DependentUpon>
+    <TypeScriptCompile Include="ViewModels\XMeetingUserViewModel.cs.d.ts">
+      <DependentUpon>XMeetingUserViewModel.cs</DependentUpon>
     </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
