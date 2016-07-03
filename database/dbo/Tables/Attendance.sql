@@ -6,13 +6,17 @@
     [DateRecorded] DATETIME       NOT NULL,
     [LastUpdated]  DATETIME       NOT NULL,
     [MeetingDate]  DATETIME       NULL,
-    [IsAttend]     BIT            NULL,
+    [AttendTypeId] INT            NULL,
+    [IsVisitor]    BIT            NULL,
     [Notes]        NVARCHAR (MAX) NULL,
+    [IsArchive]    BIT            CONSTRAINT [DF_Attendance_IsArchive] DEFAULT ((0)) NULL,
     CONSTRAINT [PK_Attendances] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_Attendance_Meeting] FOREIGN KEY ([MeetingId]) REFERENCES [dbo].[Meeting] ([Id]),
     CONSTRAINT [FK_Attendance_Recorder] FOREIGN KEY ([RecorderId]) REFERENCES [dbo].[User] ([Id]),
     CONSTRAINT [FK_Attendance_User] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id])
 );
+
+
 
 
 
