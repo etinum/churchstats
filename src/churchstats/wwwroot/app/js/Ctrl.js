@@ -7,21 +7,24 @@
 })(angular.module("repoFormsApp"));
 (function (app) {
     var controller = function ($scope, $location, $dataService, $window, $uibModal, $interval) {
+        var devmode = false;
         $scope.rf = {};
-        $scope.haveRecorder = false;
         $scope.recorderFieldDisable = false;
         $scope.meetingFieldDisable = false;
         $scope.isNewUser = false;
         $scope.isNewMeeting = false;
-        $scope.haveMeeting = false;
-        $scope.selectedUserId = 0;
-        $scope.selectedMeetingId = 0;
+        $scope.haveRecorder = devmode ? true : false;
+        $scope.haveMeeting = devmode ? true : false;
+        $scope.selectedUserId = devmode ? 201 : 0;
+        $scope.selectedMeetingId = devmode ? 4 : 0;
         $scope.globalSearchString = '';
         $scope.counts = {};
         $scope.sortNameType = 'FA';
         $scope.hideIcon = false;
         $scope.firstSortAsc = true;
         $scope.lastSortAsc = true;
+        $scope.showGrid = false;
+        gridAdjustBySize();
         $scope.hideUnknown = false;
         $scope.hidePresent = false;
         $scope.hideAbsent = false;
@@ -100,6 +103,19 @@
                 }
             });
         };
+        function gridAdjustBySize() {
+            if (window.innerWidth > 543) {
+                $scope.$evalAsync(function () {
+                    $scope.gridModValue = 4;
+                });
+            }
+            else {
+                $scope.$evalAsync(function () {
+                    $scope.gridModValue = 3;
+                });
+            }
+        }
+        ;
         var updateCounts = function (data) {
             $scope.counts.totalPossible = data.length;
             $scope.counts.unknown = data.filter(function (item) { return item.attendTypeId === 3; }).length;
@@ -351,9 +367,16 @@
         };
         $.connection.hub.start()
             .done(function () {
+            $(window).resize(function () {
+                gridAdjustBySize();
+            });
             $scope.load = $dataService.getAllUsers().then(function (data) {
                 $scope.userList = data;
                 $scope.fullUserList = angular.copy($scope.userList);
+                if (devmode) {
+                    getMeetingMembers();
+                    hub.server.subscribe($scope.selectedMeetingId);
+                }
             });
             ;
             $dataService.getAllMeetings().then(function (data) {

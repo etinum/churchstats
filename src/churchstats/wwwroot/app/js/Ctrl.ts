@@ -33,17 +33,21 @@
 
     var controller = ($scope, $location, $dataService, $window, $uibModal, $interval) => {
 
+        var devmode = false;
+
         // controller variables
         $scope.rf = {};
-        $scope.haveRecorder = false;
         $scope.recorderFieldDisable = false;
         $scope.meetingFieldDisable = false;
         $scope.isNewUser = false;
         $scope.isNewMeeting = false;
-        $scope.haveMeeting = false;
 
-        $scope.selectedUserId = 0;
-        $scope.selectedMeetingId = 0;
+
+        $scope.haveRecorder = devmode ? true:  false;
+        $scope.haveMeeting = devmode ? true : false;
+        $scope.selectedUserId = devmode ? 201 : 0;
+        $scope.selectedMeetingId = devmode ? 4 : 0;
+
         $scope.globalSearchString = '';
         $scope.counts = {};
         $scope.sortNameType = 'FA';
@@ -51,6 +55,9 @@
 
         $scope.firstSortAsc = true;
         $scope.lastSortAsc = true;
+
+        $scope.showGrid = false;
+        gridAdjustBySize();
 
         $scope.hideUnknown = false;
         $scope.hidePresent = false;
@@ -157,6 +164,18 @@
 
 
         // Helper
+        function gridAdjustBySize() {
+            if (window.innerWidth > 543) {
+                $scope.$evalAsync(() => {
+                    $scope.gridModValue = 4;
+                });
+            } else {
+                $scope.$evalAsync(() => {
+                    $scope.gridModValue = 3;
+                });            }
+        };
+
+
         var updateCounts = (data: modeltypings.UserViewModel[]) => {
             $scope.counts.totalPossible = data.length;
             $scope.counts.unknown = data.filter(item => item.attendTypeId === modeltypings.AttendTypeEnum.Unknown).length;
@@ -484,11 +503,21 @@
         $.connection.hub.start()
             .done(() => {
 
+                $(window).resize(() => {
+                    gridAdjustBySize();
+                });
+
 
                 // data for checkbox.
                 $scope.load = $dataService.getAllUsers().then(data => {
                     $scope.userList = <modeltypings.UserViewModel[]>data;
                     $scope.fullUserList = angular.copy($scope.userList);
+
+                    if (devmode) {
+                        getMeetingMembers();
+                        hub.server.subscribe($scope.selectedMeetingId);
+                    }
+
                 });;
 
 
