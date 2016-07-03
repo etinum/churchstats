@@ -21,12 +21,11 @@ namespace NewData
         public System.DateTime DateRecorded { get; set; }
         public System.DateTime LastUpdated { get; set; }
         public Nullable<System.DateTime> MeetingDate { get; set; }
-        public Nullable<int> AttendTypeId { get; set; }
+        public Nullable<AttendTypeEnum> AttendTypeId { get; set; }
         public Nullable<bool> IsVisitor { get; set; }
         public string Notes { get; set; }
         public Nullable<bool> IsArchive { get; set; }
     
-        public virtual AttendType AttendType { get; set; }
         public virtual Meeting Meeting { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }

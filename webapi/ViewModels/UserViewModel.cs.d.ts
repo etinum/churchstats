@@ -18,5 +18,11 @@
 		dateCreated: Date;
 		lastUpdated: Date;
 		lastEditedBy: number;
+		attendTypeId: any;
+		recorderId: number;
+		recorderName: string;
+		attendanceId: number;
+		lastRecorded: Date;
+		attendanceNotes: string;
 	}
 }

@@ -150,7 +150,7 @@
 
 
                 <div ng-repeat="item in memberList track by item.id">
-                    <div class="form-group" ng-hide="(item.isAttend === true && hidePresent) || (item.isAttend === false && hideAbsent) || (item.isAttend === null) && hideUnknown ">
+                    <div class="form-group" ng-hide="(item.attendTypeId === attendType.present && hidePresent) || (item.attendTypeId === attendType.absent && hideAbsent) || (item.attendTypeId === attendType.unknown && hideUnknown) ">
                         <div class="row">
                             <div class="col-xs-12 col-sm-4  control-label">
                                 <div class="btn-group" is-open="hideIcon" uib-dropdown>
@@ -168,9 +168,9 @@
                             <div class="col-xs-12 col-sm-8">
                                 <div class="btn-group">
                                     <div>
-                                        <label class="btn" ng-class="{'btn-success': item.isAttend === true, 'btn-info': item.isAttend !== true}" ng-model="item.isAttend" uib-btn-radio=true ng-change="memberSelected(item)">Present</label>
-                                        <label class="btn" ng-class="{'btn-warning': item.isAttend === null, 'btn-info': item.isAttend !== null}" ng-model="item.isAttend" uib-btn-radio=null ng-change="memberSelected(item)">Unknown</label>
-                                        <label class="btn" ng-class="{'btn-danger': item.isAttend === false, 'btn-info': item.isAttend !== false}" ng-model="item.isAttend" uib-btn-radio=false ng-change="memberSelected(item)">Absent</label>
+                                        <label class="btn" ng-class="{'btn-success': item.attendTypeId === attendType.present, 'btn-info': item.attendTypeId !== attendType.present}" ng-model="item.attendTypeId" uib-btn-radio={{attendType.present}} ng-change="memberSelected(item)">Present</label>
+                                        <label class="btn" ng-class="{'btn-warning': item.attendTypeId === attendType.unknown, 'btn-info': item.attendTypeId !== attendType.unknown}" ng-model="item.attendTypeId" uib-btn-radio={{attendType.unknown}} ng-change="memberSelected(item)">Unknown</label>
+                                        <label class="btn" ng-class="{'btn-danger': item.attendTypeId === attendType.absent, 'btn-info': item.attendTypeId !== attendType.absent}" ng-model="item.attendTypeId" uib-btn-radio={{attendType.absent}} ng-change="memberSelected(item)">Absent</label>
                                     </div>
                                     <button class="btn btn-sm btn-default" disabled="disabled" style="border: none">
                                         <i class="glyphicon" ng-class="{'glyphicon-question-sign': item.recorderName == null, 'glyphicon-pencil': item.recorderName != null}">

@@ -1,4 +1,5 @@
 ﻿using System;
+using NewData;
 
 namespace webapi.ViewModels
 {
@@ -24,6 +25,14 @@ namespace webapi.ViewModels
         public DateTime? LastUpdated { get; set; }
         public int? LastEditedBy { get; set; }
         public string FullName => FirstName + " " + LastName;
+
+        public AttendTypeEnum? AttendTypeId { get; set; }
+        public int RecorderId { get; set; }
+        public string RecorderName { get; set; }
+        public int AttendanceId { get; set; }
+        public DateTime? LastRecorded { get; set; }
+        public string AttendanceNotes { get; set; }
+
 
     }
 }

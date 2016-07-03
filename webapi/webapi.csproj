@@ -207,7 +207,6 @@
     <Compile Include="Hubs\AttendHub.cs" />
     <Compile Include="Mappers\ModelMapper.cs" />
     <Compile Include="ViewModels\AttendanceViewModel.cs" />
-    <Compile Include="ViewModels\AttendTypeViewModel.cs" />
     <Compile Include="ViewModels\MeetingViewModel.cs" />
     <Compile Include="ViewModels\MeetingTypeViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
@@ -290,9 +289,6 @@
   <ItemGroup>
     <TypeScriptCompile Include="ViewModels\AttendanceViewModel.cs.d.ts">
       <DependentUpon>AttendanceViewModel.cs</DependentUpon>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="ViewModels\AttendTypeViewModel.cs.d.ts">
-      <DependentUpon>AttendTypeViewModel.cs</DependentUpon>
     </TypeScriptCompile>
     <TypeScriptCompile Include="ViewModels\MeetingTypeViewModel.cs.d.ts">
       <DependentUpon>MeetingTypeViewModel.cs</DependentUpon>

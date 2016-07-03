@@ -26,8 +26,6 @@ namespace NewData
         }
     
         public virtual DbSet<Address> Addresses { get; set; }
-        public virtual DbSet<Attendance> Attendances { get; set; }
-        public virtual DbSet<AttendType> AttendTypes { get; set; }
         public virtual DbSet<ContactInfo> ContactInfoes { get; set; }
         public virtual DbSet<Locality> Localities { get; set; }
         public virtual DbSet<Meeting> Meetings { get; set; }
@@ -40,5 +38,6 @@ namespace NewData
         public virtual DbSet<X_User_Meeting> X_User_Meeting { get; set; }
         public virtual DbSet<X_User_Role> X_User_Role { get; set; }
         public virtual DbSet<X_User_Tag> X_User_Tag { get; set; }
+        public virtual DbSet<Attendance> Attendances { get; set; }
     }
 }

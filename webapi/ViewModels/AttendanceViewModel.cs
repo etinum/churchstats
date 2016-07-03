@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using NewData;
 
 namespace webapi.ViewModels
 {
@@ -12,7 +12,7 @@ namespace webapi.ViewModels
         public DateTime DateRecorded { get; set; }
         public DateTime LastUpdated { get; set; }
         public DateTime? MeetingDate { get; set; }
-        public int? AttendTypeId { get; set; }
+        public AttendTypeEnum? AttendTypeId { get; set; }
         public bool? IsVisitor { get; set; }
         public string Notes { get; set; }
         public bool? IsArchive { get; set; }

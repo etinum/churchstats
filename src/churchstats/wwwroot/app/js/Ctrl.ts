@@ -31,7 +31,7 @@
 
 (app => {
 
-    var controller = ($scope, $location, $dataService, $window, $uibModal) => {
+    var controller = ($scope, $location, $dataService, $window, $uibModal, $interval) => {
 
         // controller variables
         $scope.rf = {};
@@ -56,9 +56,13 @@
         $scope.hidePresent = false;
         $scope.hideAbsent = false;
 
+        $scope.attendType = {};
+        $scope.attendType.present = modeltypings.AttendTypeEnum.Present;
+        $scope.attendType.absent = modeltypings.AttendTypeEnum.Absent;
+        $scope.attendType.unknown = modeltypings.AttendTypeEnum.Unknown;
+
 
         var lastAction = Date.now();
-
 
 
         var hub = $.connection.attendHub;
@@ -140,8 +144,12 @@
                     $scope.isNewMeeting = false;
                     $scope.selectedMeetingId = $scope.meetingList[index].id;
                     getMeetingMembers();
-
                     hub.server.subscribe($scope.selectedMeetingId);
+
+                    $interval(() => {
+                        checkIdleRefresh();
+                    },
+                        10 * 1000);
                 }
             });
 
@@ -151,9 +159,9 @@
         // Helper
         var updateCounts = (data: modeltypings.UserViewModel[]) => {
             $scope.counts.totalPossible = data.length;
-            $scope.counts.unknown = data.filter(item => item.isAttend === null).length;
-            $scope.counts.absent = data.filter(item => item.isAttend === false).length;
-            $scope.counts.present = data.filter(item => item.isAttend).length;
+            $scope.counts.unknown = data.filter(item => item.attendTypeId === modeltypings.AttendTypeEnum.Unknown).length;
+            $scope.counts.absent = data.filter(item => item.attendTypeId === modeltypings.AttendTypeEnum.Absent).length;
+            $scope.counts.present = data.filter(item => item.attendTypeId === modeltypings.AttendTypeEnum.Present).length;
         };
 
         var updateUserList = (user: modeltypings.UserViewModel) => {
@@ -206,8 +214,8 @@
         }
 
         function filterMembersBySearch() {
-
             sortName();
+
             $scope.$evalAsync(() => {
                 $scope.memberList = $scope.fullMemberList.filter(item => item.fullName.toLowerCase().indexOf($scope.globalSearchString.toLowerCase()) > -1);
                 $scope.availableMemberList = $scope.fullUserList.filter(item => $dataService.arrayObjectIndexOf($scope.fullMemberList, item.fullName, "fullName", false) === -1);
@@ -240,7 +248,7 @@
             user.firstName = $dataService.capitalizeFirstLetter(name.split(' ')[0]);
             user.lastName = $dataService.capitalizeFirstLetter(name.split(' ')[1]);;
             user.fullName = user.firstName + ' ' + user.lastName;
-            user.isAttend = null;
+            user.attendTypeId = modeltypings.AttendTypeEnum.Unknown;
 
             return user;
 
@@ -249,12 +257,21 @@
 
         var removeMember = (data: modeltypings.XMeetingUserViewModel) => {
 
-            var index = $dataService.arrayObjectIndexOf($scope.fullMemberList, data.memberId, "id");
+            var index = $dataService.arrayObjectIndexOf($scope.fullMemberList, data.userId, "id");
             if (index > -1) {
                 $scope.fullMemberList.splice(index, 1);
                 filterMembersBySearch();
             }
 
+        }
+
+        function checkIdleRefresh() {
+
+            var time = Date.now() - lastAction;
+            if (time > 90 * 1000) {
+                lastAction = Date.now();
+                $scope.forceRefreshList();
+            }
         }
 
         // Event handler
@@ -341,7 +358,7 @@
 
             var data = <modeltypings.XMeetingUserViewModel>{};
             data.meetingId = $scope.selectedMeetingId;
-            data.memberId = member.id;
+            data.userId = member.id;
             updateMemberList(member);
 
             $scope.load = $dataService.addMemberToMeeting(data)
@@ -365,7 +382,7 @@
 
                     var xref = <modeltypings.XMeetingUserViewModel>{};
                     xref.meetingId = $scope.selectedMeetingId;
-                    xref.memberId = user.id;
+                    xref.userId = user.id;
                     updateMemberList(user);
                     updateUserList(user);
 
@@ -380,21 +397,14 @@
 
         $scope.memberSelected = (item: modeltypings.UserViewModel) => {
 
-
-            var time = Date.now() - lastAction;
-            if (time > 60 * 1000) {
-                lastAction = Date.now();
-                $scope.forceRefreshList();
-            }
-            
-
+            checkIdleRefresh();
 
             var attendance = <modeltypings.AttendanceViewModel>{};
             attendance.meetingId = $scope.selectedMeetingId;
             attendance.recorderId = $scope.selectedUserId;
             attendance.userId = item.id;
             attendance.id = item.attendanceId;
-            attendance.isAttend = item.isAttend;
+            attendance.attendTypeId = item.attendTypeId;
             attendance.meetingDate = new Date();
 
             $dataService.saveAttendance(attendance)
@@ -409,7 +419,7 @@
         $scope.removeMemberFromMeeting = (id: number) => {
 
             var xrf = <modeltypings.XMeetingUserViewModel>{};
-            xrf.memberId = id;
+            xrf.userId = id;
             xrf.meetingId = $scope.selectedMeetingId;
 
             $dataService.removeMemberFromMeeting(xrf)
@@ -449,7 +459,7 @@
             }
 
             $scope.$evalAsync(() => {
-                member.isAttend = data.isAttend;
+                member.attendTypeId = data.attendTypeId;
                 if (recorder.id != null) {
                     member.recorderId = data.recorderId;
                     member.recorderName = recorder.fullName;
@@ -474,7 +484,6 @@
         $.connection.hub.start()
             .done(() => {
 
-                // Initiation... 
 
                 // data for checkbox.
                 $scope.load = $dataService.getAllUsers().then(data => {
@@ -516,7 +525,7 @@
 
     };
 
-    controller.$inject = ['$scope', '$location', 'dataService', '$window', '$uibModal'];
+    controller.$inject = ['$scope', '$location', 'dataService', '$window', '$uibModal', '$interval'];
     app.controller('homeCtrl', controller);
 })(angular.module("repoFormsApp"));
 

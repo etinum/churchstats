@@ -61,7 +61,7 @@ namespace webapi.Controllers
                 if (attendance != null)
                 {
                     attendance.LastUpdated = DateTime.Now;
-                    attendance.IsAttend = attendanceViewModel.IsAttend;
+                    attendance.AttendTypeId = attendanceViewModel.AttendTypeId;
                     attendance.RecorderId = attendanceViewModel.RecorderId;
                 }
             }

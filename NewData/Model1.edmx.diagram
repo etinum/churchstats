@@ -6,8 +6,6 @@
     <edmx:Diagrams>
       <Diagram DiagramId="26ee4490572f4e68bd09a95450f81ce3" Name="Diagram1">
         <EntityTypeShape EntityType="CstatsModel.Address" Width="1.5" PointX="7.5" PointY="14.25" />
-        <EntityTypeShape EntityType="CstatsModel.Attendance" Width="1.5" PointX="15" PointY="11" />
-        <EntityTypeShape EntityType="CstatsModel.AttendType" Width="1.5" PointX="12.75" PointY="6.125" />
         <EntityTypeShape EntityType="CstatsModel.ContactInfo" Width="1.5" PointX="0.75" PointY="9.625" />
         <EntityTypeShape EntityType="CstatsModel.Locality" Width="1.5" PointX="3" PointY="9.75" />
         <EntityTypeShape EntityType="CstatsModel.Meeting" Width="1.5" PointX="9.75" PointY="13.25" />
@@ -24,10 +22,6 @@
         <AssociationConnector Association="CstatsModel.FK_Locality_Address" />
         <AssociationConnector Association="CstatsModel.FK_Meeting_Address" />
         <AssociationConnector Association="CstatsModel.FK_User_Address" />
-        <AssociationConnector Association="CstatsModel.FK_Attendance_AttendType" />
-        <AssociationConnector Association="CstatsModel.FK_Attendance_Meeting" />
-        <AssociationConnector Association="CstatsModel.FK_Attendance_Recorder" />
-        <AssociationConnector Association="CstatsModel.FK_Attendance_User" />
         <AssociationConnector Association="CstatsModel.FK_ContactInfo_User" />
         <AssociationConnector Association="CstatsModel.FK_Locality_ContactInfo" />
         <AssociationConnector Association="CstatsModel.FK_Meeting_ContactInfo" />
@@ -49,6 +43,10 @@
         <AssociationConnector Association="CstatsModel.FK_X_User_Meeting_User" />
         <AssociationConnector Association="CstatsModel.FK_X_User_Role_User" />
         <AssociationConnector Association="CstatsModel.FK_X_User_Tag_User" />
+        <EntityTypeShape EntityType="CstatsModel.Attendance" Width="1.5" PointX="15" PointY="11.125" />
+        <AssociationConnector Association="CstatsModel.FK_Attendance_Meeting" />
+        <AssociationConnector Association="CstatsModel.FK_Attendance_Recorder" />
+        <AssociationConnector Association="CstatsModel.FK_Attendance_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

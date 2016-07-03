@@ -10,18 +10,22 @@ declare module modeltypings {
         isBaptized: boolean;
         middleName: string;
         notes: string;
-        email: string;
-        phoneNumber: string;
         baptizedDate: Date;
         savedDate: Date;
-        locality: string;
-        isAttend: boolean;
+        addressId: number;
+        contactInfoId: number;
+        localityId: number;
+        dateCreated: Date;
+        lastUpdated: Date;
+        lastEditedBy: number;
+        fullName: string;
+
+        attendTypeId: AttendTypeEnum;
         recorderId: number;
         recorderName: string;
         attendanceId: number;
         lastRecorded: Date;
         attendanceNotes: string;
-        fullName: string;
 
     }
 
@@ -63,16 +67,18 @@ declare module modeltypings {
         dateRecorded: Date;
         lastUpdated: Date;
         meetingDate: Date;
-        attendTypeId: number;
+        attendTypeId: AttendTypeEnum;
         isVisitor: boolean;
         notes: string;
         isArchive: boolean;
 
     }
 
-    interface AttendTypeViewModel {
-        id: number;
-        name: string;
-        active: boolean;
+    const enum AttendTypeEnum {
+        Present = 1,
+        Absent = 2,
+        Unknown = 3,
+        Late = 4,
     }
+
 }

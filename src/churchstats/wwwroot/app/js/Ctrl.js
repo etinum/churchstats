@@ -6,7 +6,7 @@
     app.controller('masterCtrl', controller);
 })(angular.module("repoFormsApp"));
 (function (app) {
-    var controller = function ($scope, $location, $dataService, $window, $uibModal) {
+    var controller = function ($scope, $location, $dataService, $window, $uibModal, $interval) {
         $scope.rf = {};
         $scope.haveRecorder = false;
         $scope.recorderFieldDisable = false;
@@ -25,6 +25,10 @@
         $scope.hideUnknown = false;
         $scope.hidePresent = false;
         $scope.hideAbsent = false;
+        $scope.attendType = {};
+        $scope.attendType.present = 1;
+        $scope.attendType.absent = 2;
+        $scope.attendType.unknown = 3;
         var lastAction = Date.now();
         var hub = $.connection.attendHub;
         var recorderFieldTimeout;
@@ -90,14 +94,17 @@
                     $scope.selectedMeetingId = $scope.meetingList[index].id;
                     getMeetingMembers();
                     hub.server.subscribe($scope.selectedMeetingId);
+                    $interval(function () {
+                        checkIdleRefresh();
+                    }, 10 * 1000);
                 }
             });
         };
         var updateCounts = function (data) {
             $scope.counts.totalPossible = data.length;
-            $scope.counts.unknown = data.filter(function (item) { return item.isAttend === null; }).length;
-            $scope.counts.absent = data.filter(function (item) { return item.isAttend === false; }).length;
-            $scope.counts.present = data.filter(function (item) { return item.isAttend; }).length;
+            $scope.counts.unknown = data.filter(function (item) { return item.attendTypeId === 3; }).length;
+            $scope.counts.absent = data.filter(function (item) { return item.attendTypeId === 2; }).length;
+            $scope.counts.present = data.filter(function (item) { return item.attendTypeId === 1; }).length;
         };
         var updateUserList = function (user) {
             $scope.userList.push(user);
@@ -179,16 +186,23 @@
             user.lastName = $dataService.capitalizeFirstLetter(name.split(' ')[1]);
             ;
             user.fullName = user.firstName + ' ' + user.lastName;
-            user.isAttend = null;
+            user.attendTypeId = 3;
             return user;
         };
         var removeMember = function (data) {
-            var index = $dataService.arrayObjectIndexOf($scope.fullMemberList, data.memberId, "id");
+            var index = $dataService.arrayObjectIndexOf($scope.fullMemberList, data.userId, "id");
             if (index > -1) {
                 $scope.fullMemberList.splice(index, 1);
                 filterMembersBySearch();
             }
         };
+        function checkIdleRefresh() {
+            var time = Date.now() - lastAction;
+            if (time > 90 * 1000) {
+                lastAction = Date.now();
+                $scope.forceRefreshList();
+            }
+        }
         $scope.tbd = function () {
             alert('coming soon');
         };
@@ -248,7 +262,7 @@
         $scope.AddMember = function (member) {
             var data = {};
             data.meetingId = $scope.selectedMeetingId;
-            data.memberId = member.id;
+            data.userId = member.id;
             updateMemberList(member);
             $scope.load = $dataService.addMemberToMeeting(data)
                 .then(function () {
@@ -265,7 +279,7 @@
                 user.id = response.data;
                 var xref = {};
                 xref.meetingId = $scope.selectedMeetingId;
-                xref.memberId = user.id;
+                xref.userId = user.id;
                 updateMemberList(user);
                 updateUserList(user);
                 $scope.load = $dataService.addMemberToMeeting(xref)
@@ -275,17 +289,13 @@
             });
         };
         $scope.memberSelected = function (item) {
-            var time = Date.now() - lastAction;
-            if (time > 60 * 1000) {
-                lastAction = Date.now();
-                $scope.forceRefreshList();
-            }
+            checkIdleRefresh();
             var attendance = {};
             attendance.meetingId = $scope.selectedMeetingId;
             attendance.recorderId = $scope.selectedUserId;
             attendance.userId = item.id;
             attendance.id = item.attendanceId;
-            attendance.isAttend = item.isAttend;
+            attendance.attendTypeId = item.attendTypeId;
             attendance.meetingDate = new Date();
             $dataService.saveAttendance(attendance)
                 .then(function (response) {
@@ -295,7 +305,7 @@
         };
         $scope.removeMemberFromMeeting = function (id) {
             var xrf = {};
-            xrf.memberId = id;
+            xrf.userId = id;
             xrf.meetingId = $scope.selectedMeetingId;
             $dataService.removeMemberFromMeeting(xrf)
                 .then(function () {
@@ -322,7 +332,7 @@
                 recorder = $scope.fullUserList.filter(function (item) { return item.id === data.recorderId; })[0];
             }
             $scope.$evalAsync(function () {
-                member.isAttend = data.isAttend;
+                member.attendTypeId = data.attendTypeId;
                 if (recorder.id != null) {
                     member.recorderId = data.recorderId;
                     member.recorderName = recorder.fullName;
@@ -367,7 +377,7 @@
             });
         };
     };
-    controller.$inject = ['$scope', '$location', 'dataService', '$window', '$uibModal'];
+    controller.$inject = ['$scope', '$location', 'dataService', '$window', '$uibModal', '$interval'];
     app.controller('homeCtrl', controller);
 })(angular.module("repoFormsApp"));
 (function (app) {

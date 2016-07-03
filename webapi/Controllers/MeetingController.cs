@@ -67,7 +67,7 @@ namespace webapi.Controllers
                     {
                         a.Id,
                         a.UserId,
-                        a.IsAttend,
+                        a.AttendTypeId,
                         a.RecorderId,
                         a.LastUpdated,
                         a.Notes
@@ -77,8 +77,12 @@ namespace webapi.Controllers
             foreach (var userViewModel in userViewModels)
             {
                 var match = attendances.FirstOrDefault(r => r.UserId == userViewModel.Id);
-                if (match == null) continue;
-                userViewModel.IsAttend = match.IsAttend;
+                if (match == null)
+                {
+                    userViewModel.AttendTypeId = AttendTypeEnum.Unknown;
+                    continue;
+                }
+                userViewModel.AttendTypeId = match.AttendTypeId;
                 userViewModel.RecorderId = match.RecorderId;
                 userViewModel.AttendanceId = match.Id;
                 userViewModel.LastRecorded = match.LastUpdated;
@@ -147,10 +151,12 @@ namespace webapi.Controllers
             _ctx.SaveChanges();
 
 
+            
+
             var attendanceVm = new AttendanceViewModel()
             {
                 Id = 0,
-                IsAttend = null,
+                AttendTypeId = AttendTypeEnum.Unknown,
                 UserId = data.UserId,
                 MeetingId = data.MeetingId
                 
