@@ -19,7 +19,7 @@ declare module modeltypings {
         lastUpdated: Date;
         lastEditedBy: number;
         fullName: string;
-
+        fullNameRev: string;
         attendTypeId: AttendTypeEnum;
         recorderId: number;
         recorderName: string;

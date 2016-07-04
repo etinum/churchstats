@@ -29,6 +29,10 @@
 
 }
 
+.longPressConfirm {
+    border-width: 4px;
+}
+
 /* This is here to fix ui bootsrap modal from shifting content to the left on modal pop up*/
 body {
     overflow-y: auto;

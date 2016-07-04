@@ -3,7 +3,7 @@
 /// <reference path="../typings/angular-environment.d.ts" />
 
 
-angular.module('repoFormsApp', ['ngRoute', 'ngMessages', 'ui.bootstrap', 'environment', 'smart-table', 'cgBusy']);
+angular.module('repoFormsApp', ['ngRoute', 'ngMessages', 'ui.bootstrap', 'environment', 'smart-table', 'cgBusy', 'ngStorage']);
 
 
 
@@ -34,7 +34,7 @@ angular.module('repoFormsApp', ['ngRoute', 'ngMessages', 'ui.bootstrap', 'enviro
             domains: {
                 development: ['localhost:911', 'dev.local'],
                 iisexpress: ['localhost:12345'],
-                mac: ['erictdev.local'],
+                mac: ['erictdev'],
                 box: ['attendance.etpics.com'],
                 production: ['cstats.etpics.com', 'plsf.portfoliorecovery.com']
                 // anotherStage: ['domain1', 'domain2'],
@@ -54,7 +54,7 @@ angular.module('repoFormsApp', ['ngRoute', 'ngMessages', 'ui.bootstrap', 'enviro
                     // antoherCustomVar: 'ipsum'
                 },
                 mac: {
-                    apiUrl: '//erictdev.local/webapi/',
+                    apiUrl: '//erictdev/webapi/',
                     staticUrl: '//erictdev.local/'
                     // antoherCustomVar: 'lorem',
                     // antoherCustomVar: 'ipsum'

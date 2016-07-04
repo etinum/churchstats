@@ -4,12 +4,14 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Web.Http;
 using webapi.ViewModels;
 using AutoMapper;
 using NewData;
 using webapi.Hubs;
 using webapi.Mappers;
+using webapi.Utils;
 
 
 namespace webapi.Controllers
@@ -177,13 +179,24 @@ namespace webapi.Controllers
             if (meeting.Id == 0)
             {
                 meeting.DateCreated = DateTime.Now;
-                meeting.DayOfTheWeek = (int)DateTime.Now.DayOfWeek;
+                meeting.DayOfTheWeek = (int) DateTime.Now.DayOfWeek;
+                _ctx.Meetings.Add(meeting);
+
             }
-            _ctx.Meetings.Add(meeting);
+            else
+            {
+
+                var meetingTarget = _ctx.Meetings.First(r => r.Id == meeting.Id);
+                Common.MergeObjects(meeting, meetingTarget);
+
+            }
             _ctx.SaveChanges();
             return Ok(meeting.Id);
 
         }
+
+
+
 
     }
 }

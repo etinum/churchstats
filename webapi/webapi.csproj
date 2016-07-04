@@ -206,6 +206,7 @@
     </Compile>
     <Compile Include="Hubs\AttendHub.cs" />
     <Compile Include="Mappers\ModelMapper.cs" />
+    <Compile Include="Utils\Common.cs" />
     <Compile Include="ViewModels\AttendanceViewModel.cs" />
     <Compile Include="ViewModels\MeetingViewModel.cs" />
     <Compile Include="ViewModels\MeetingTypeViewModel.cs" />

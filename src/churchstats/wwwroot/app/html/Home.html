@@ -1,212 +1,249 @@
 <form class="form-horizontal" name="myForm" role="form" novalidate>
     <div cg-busy="load">
 
-        <button type="button" class="btn btn-sm btn-warning " style="margin-bottom: 10px" ng-click="reload()">
-            <i class="glyphicon glyphicon-repeat">
-            </i> Restart
-        </button>
+        <!--<button type="button" class="btn btn-primary" ng-click="testApi()">
+        <i class="glyphicon glyphicon-save-file">
+            Test
+        </i>
+            </button>-->
 
-        <div class="form-group" show-errors>
-            <label for="recorderName" class="col-sm-3 control-label">Who are you?</label>
-            <div class="col-sm-5">
-                <input type="text" ng-maxlength="ng_maxLength" maxlength={{maxLength}} id="recorderName" name="recorderName" class="form-control"
-                       ng-model="recorderName" ng-required="true" uib-typeahead="item.fullName for item in userList  | filter:$viewValue | limitTo:8" autocomplete="off" typeahead-on-select="onBlurRecorder()" ng-disabled="recorderFieldDisable" />
-                <div class="help-block" ng-messages="myForm.recorderName.$error" ng-show="myForm.recorderName.$touched || submitted">
-                    <div ng-messages-include="app/html/error-messages.html"></div>
-                </div>
-            </div>
-            <div class="col-sm-4" ng-hide="!isNewUser">
-                <input type="button" class="btn btn-primary" value="Create New User?"
-                       ng-click="createNewUserForRecorder(recorderName)" />
-            </div>
-        </div>
-
-        <div ng-hide="!haveRecorder">
             <div class="form-group" show-errors>
-                <label for="meetingName" class="col-sm-3 control-label">Meeting Name</label>
-                <div class="col-sm-9">
-                    <input type="text" ng-maxlength="ng_maxLength" maxlength={{maxLength}} id="meetingName" name="meetingName" class="form-control"
-                           ng-model="meetingName" ng-required="true" uib-typeahead="item.name for item in meetingList  | filter:$viewValue | limitTo:8" autocomplete="off" typeahead-on-select="onBlurMeeting()" ng-disabled="meetingFieldDisable" placeholder="Pick or create one" />
-                    <div class="help-block" ng-messages="myForm.meetingName.$error" ng-show="myForm.meetingName.$touched || submitted">
-                        <div ng-messages-include="app/html/error-messages.html"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group" ng-hide="!isNewMeeting" show-errors>
-                <label for="meetingTypeId" class="col-sm-3 control-label">Choose Meeting Type</label>
+                <label for="recorderName" class="col-sm-3 control-label">Who are you?</label>
                 <div class="col-sm-5">
-                    <select id="meetingTypeId" name="meetingTypeId" class="form-control"
-                            data-ng-model="meetingTypeId" ng-required="true" ng-change="meetingTypeChanged()">
-                        <option value="">---Please select---</option>
-                        <option ng-repeat="item in meetingTypeOptions" value="{{item.id}}">{{item.name}}</option>
-                    </select>
-                    <div class="help-block" ng-messages="myForm.meetingTypeId.$error" ng-show="myForm.meetingTypeId.$touched || submitted">
+                    <div ng-class="{'input-group':haveRecorder || isNewUser}">
+                        <input type="text" ng-maxlength="ng_maxLength" maxlength={{maxLength}} id="recorderName" name="recorderName" class="form-control"
+                               ng-model="recorderName" ng-required="true" uib-typeahead="item.fullName for item in userList  | filter:$viewValue | limitTo:8" autocomplete="off" typeahead-on-select="onBlurRecorder()"
+                               ng-disabled="recorderFieldDisable" placeholder="ie: First Last"/>
+                        <span class="input-group-btn" ng-show="!haveRecorder && isNewUser">
+                            <button type="button" class="btn btn-primary" ng-click="createNewUserForRecorder(recorderName)">
+                                <i class="glyphicon glyphicon-save-file">
+                                    Create
+                                </i>
+                            </button>
+                        </span>
+                        <span class="input-group-btn" ng-show="haveRecorder">
+                            <button type="button" class="btn btn-primary" ng-click="reloadUser()">
+                                <i class="glyphicon glyphicon-repeat">
+                                </i>
+                            </button>
+                        </span>
+
+                    </div>
+                    <div class="help-block" ng-messages="myForm.recorderName.$error" ng-show="myForm.recorderName.$touched || submitted">
                         <div ng-messages-include="app/html/error-messages.html"></div>
                     </div>
                 </div>
-                <div class="col-sm-4">
-                    <input type="button" class="btn btn-primary" value="Create Meeting"
-                           ng-click="createMeeting()" />
-                </div>
-
             </div>
 
 
 
-            <div class="panel panel-default" ng-show="haveMeeting">
-                <div class="panel-heading">Meeting stats --> Accounted: {{(100*(counts.present + counts.absent)/counts.totalPossible)| number:0}}%, Present: {{counts.present}} ({{(100*counts.present/counts.totalPossible)| number:0}}%) , Absent: {{counts.absent}}, Unknown: {{counts.unknown}}, Total Possible: {{counts.totalPossible}}</div>
-                <div class="panel-body">
 
-                    <div class="container">
-
-                        <div class="btn-toolbar">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-primary" style="margin-bottom: 10px" ng-model="showAddMember" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
-                                    <i class="glyphicon glyphicon-plus">
+            <div ng-hide="!haveRecorder">
+                <div class="form-group" show-errors>
+                    <label for="meetingName" class="col-sm-3 control-label">Meeting Name</label>
+                    <div class="col-sm-6">
+                        <div ng-class="{'input-group':haveMeeting}">
+                            <span class="input-group-btn" ng-show="haveMeeting">
+                                <button type="button" class="btn btn-primary" ng-click="openSaveMeetingDialog()">
+                                    <i class="glyphicon glyphicon-edit">
                                     </i>
                                 </button>
-                            </div>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-success" style="margin-bottom: 10px" ng-click="forceRefreshList()">
-                                    <i class="glyphicon glyphicon-refresh">
-                                        Force
+                            </span>
+                            <input type="text" ng-maxlength="ng_maxLength" maxlength={{maxLength}} id="meetingName" name="meetingName" class="form-control"
+                                   ng-model="meetingName" ng-required="true" uib-typeahead="item.name for item in meetingList  | filter:$viewValue | limitTo:8" autocomplete="off"
+                                   typeahead-on-select="onBlurMeeting()" ng-disabled="meetingFieldDisable" placeholder="Pick or create one" />
+                            <span class="input-group-btn" ng-show="haveMeeting">
+                                <button type="button" class="btn btn-primary" ng-click="reloadMeeting()">
+                                    <i class="glyphicon glyphicon-repeat">
                                     </i>
                                 </button>
-                            </div>
-                            <div class="btn-group">
+                            </span>
+                        </div>
+                        <div class="help-block" ng-messages="myForm.meetingName.$error" ng-show="myForm.meetingName.$touched || submitted">
+                            <div ng-messages-include="app/html/error-messages.html"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-hide="!isNewMeeting" show-errors>
+                    <label for="meetingTypeId" class="col-sm-3 control-label">Choose Meeting Type</label>
+                    <div class="col-sm-5">
+                        <div class="input-group">
+                            <select id="meetingTypeId" name="meetingTypeId" class="form-control"
+                                    data-ng-model="meetingTypeId" ng-required="true" ng-change="meetingTypeChanged()">
+                                <option value="">---Please select---</option>
+                                <option ng-repeat="item in meetingTypeOptions" value="{{item.id}}">{{item.name}}</option>
+                            </select>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" ng-click="createMeeting()">
+                                    <i class="glyphicon glyphicon-save-file">
+                                        Create
+                                    </i>
+                                </button>
+                            </span>
+                        </div>
+                        <div class="help-block" ng-messages="myForm.meetingTypeId.$error" ng-show="myForm.meetingTypeId.$touched || submitted">
+                            <div ng-messages-include="app/html/error-messages.html"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="panel panel-default" ng-show="haveMeeting">
+                    <div class="panel-heading">Meeting stats --> Accounted: {{(100*(counts.present + counts.absent)/counts.totalPossible)| number:0}}%, Present: {{counts.present}} ({{(100*counts.present/counts.totalPossible)| number:0}}%) , Absent: {{counts.absent}}, Unknown: {{counts.unknown}}, Total Possible: {{counts.totalPossible}}</div>
+                    <div class="panel-body">
+
+                        <div class="container">
+
+                            <div class="btn-toolbar">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary" style="margin-bottom: 10px" ng-model="showAddMember" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
+                                        <i class="glyphicon glyphicon-plus">
+                                        </i>
+                                    </button>
+                                </div>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-success" style="margin-bottom: 10px" ng-click="forceRefreshList()">
+                                        <i class="glyphicon glyphicon-refresh">
+                                            Force
+                                        </i>
+                                    </button>
+                                </div>
+                                <!--<div class="btn-group">
                                 <button type="button" class="btn btn-warning" style="margin-bottom: 10px" ng-click="open()">
                                     <i class="glyphicon glyphicon-remove">
                                         Reset
                                     </i>
                                 </button>
+                            </div>-->
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary" style="margin-bottom: 10px" ng-model="showGrid" ng-click="showGrid = showGrid ? 0 : 1">
+                                        <i class="glyphicon" ng-class="{'glyphicon-th': !showGrid, 'glyphicon-th-list': showGrid}">
+                                        </i>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-primary" style="margin-bottom: 10px" ng-model="showGrid" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
-                                    <i class="glyphicon" ng-class="{'glyphicon-th': !showGrid, 'glyphicon-th-list': showGrid}">
-                                    </i>
-                                </button>
+
+                            <div ng-show="showAddMember" class="input-group col-sm-10" style="margin-bottom: 15px">
+                                <input type="text" ng-maxlength="ng_maxLength" maxlength={{maxLength}} id="addMeetingMembers" name="addMeetingMembers" class="form-control" style="background-color: lightcyan"
+                                       ng-model="addMeetingMembers" ng-required="true" uib-typeahead="item.fullName for item in availableMemberList  | filter:$viewValue | limitTo:8" autocomplete="off" typeahead-on-select="AddMember($item)" placeholder="Add member" />
+                                <span class="input-group-btn">
+                                    <input type="button" class="btn btn-primary" value="Add New User"
+                                           ng-click="AddNewUserAsMember(addMeetingMembers)" />
+                                </span>
                             </div>
-                        </div>
-
-                        <div ng-show="showAddMember" class="input-group col-sm-10" style="margin-bottom: 15px">
-                            <input type="text" ng-maxlength="ng_maxLength" maxlength={{maxLength}} id="addMeetingMembers" name="addMeetingMembers" class="form-control"
-                                   ng-model="addMeetingMembers" ng-required="true" uib-typeahead="item.fullName for item in availableMemberList  | filter:$viewValue | limitTo:8" autocomplete="off" typeahead-on-select="AddMember($item)" placeholder="names?" />
-                            <span class="input-group-btn">
-                                <input type="button" class="btn btn-primary" value="Add New User"
-                                       ng-click="AddNewUserAsMember(addMeetingMembers)" />
-                            </span>
-                        </div>
 
 
 
-                        <div class="row" ng-show="fullMemberList.length > 0">
-                            <div class="col-xs-12 col-sm-9 col-lg-9" style="margin-bottom: 5px">
-                                <div class="input-group">
-                                    <input id="globalSearch" ng-model="globalSearchString" class="form-control" placeholder="global search ..." type="text" />
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-primary" style="margin-bottom: 10px" ng-click="globalSearchString='';filterMembersBySearch()">
-                                            <i class="glyphicon glyphicon-remove-sign">
+                            <div class="row" ng-show="fullMemberList.length > 0">
+                                <div class="col-xs-12 col-sm-9 col-lg-9" style="margin-bottom: 5px" ng-show="!showAddMember">
+                                    <div class="input-group">
+                                        <input id="globalSearch" ng-model="globalSearchString" class="form-control" placeholder="Search members" type="text" style="background-color: lightgoldenrodyellow" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-primary" style="margin-bottom: 10px" ng-click="globalSearchString='';filterMembersBySearch()">
+                                                <i class="glyphicon glyphicon-remove-sign">
+                                                </i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="btn-toolbar xs-center" role="toolbar">
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn" ng-class="{'btn-success': !hidePresent, 'btn-default': hidePresent}" style="margin-bottom: 10px" ng-model="hidePresent" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
+                                            <i class="glyphicon"
+                                               ng-class="{'glyphicon-eye-close': !hidePresent, 'glyphicon-eye-open': hidePresent}">
+                                                Present
                                             </i>
                                         </button>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="btn-toolbar xs-center" role="toolbar">
-                                <div class="btn-group" role="group">
-                                    <button type="button" class="btn" ng-class="{'btn-success': !hidePresent, 'btn-default': hidePresent}" style="margin-bottom: 10px" ng-model="hidePresent" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
-                                        <i class="glyphicon"
-                                           ng-class="{'glyphicon-eye-close': !hidePresent, 'glyphicon-eye-open': hidePresent}">
-                                            Present
-                                        </i>
-                                    </button>
 
-                                    <button type="button" class="btn" ng-class="{'btn-warning': !hideUnknown, 'btn-default': hideUnknown}" style="margin-bottom: 10px" ng-model="hideUnknown" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
-                                        <i class="glyphicon"
-                                           ng-class="{'glyphicon-eye-close': !hideUnknown, 'glyphicon-eye-open': hideUnknown}">
-                                            Unknown
-                                        </i>
-                                    </button>
+                                        <button type="button" class="btn" ng-class="{'btn-warning': !hideUnknown, 'btn-default': hideUnknown}" style="margin-bottom: 10px" ng-model="hideUnknown" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
+                                            <i class="glyphicon"
+                                               ng-class="{'glyphicon-eye-close': !hideUnknown, 'glyphicon-eye-open': hideUnknown}">
+                                                Unknown
+                                            </i>
+                                        </button>
 
-                                    <button type="button" class="btn" ng-class="{'btn-danger': !hideAbsent, 'btn-default': hideAbsent}" style="margin-bottom: 10px" ng-model="hideAbsent" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
-                                        <i class="glyphicon"
-                                           ng-class="{'glyphicon-eye-close': !hideAbsent, 'glyphicon-eye-open': hideAbsent}">
-                                            Absent
-                                        </i>
-                                    </button>
-                                </div>
-                                <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-primary  xs-float-left" style="margin-bottom: 10px" ng-click="sortNameAlpha('F')">
-                                        <i class="glyphicon"
-                                           ng-class="{'glyphicon-sort-by-alphabet': firstSortAsc, 'glyphicon-sort-by-alphabet-alt': !firstSortAsc}">
-                                            First
-                                        </i>
-                                    </button>
-                                    <button type="button" class="btn btn-primary xs-float-left" style="margin-bottom: 10px" ng-click="sortNameAlpha('L')">
-                                        <i class="glyphicon"
-                                           ng-class="{'glyphicon-sort-by-alphabet': lastSortAsc, 'glyphicon-sort-by-alphabet-alt': !lastSortAsc}">
-                                            Last
-                                        </i>
-                                    </button>
+                                        <button type="button" class="btn" ng-class="{'btn-danger': !hideAbsent, 'btn-default': hideAbsent}" style="margin-bottom: 10px" ng-model="hideAbsent" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
+                                            <i class="glyphicon"
+                                               ng-class="{'glyphicon-eye-close': !hideAbsent, 'glyphicon-eye-open': hideAbsent}">
+                                                Absent
+                                            </i>
+                                        </button>
+                                    </div>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn xs-float-left" ng-class="{'btn-primary':isFirstSort,'btn-default':!isFirstSort }" style="margin-bottom: 10px" ng-click="sortNameAlpha('F')">
+                                            <i class="glyphicon"
+                                               ng-class="{'glyphicon-sort-by-alphabet': !firstSortAsc, 'glyphicon-sort-by-alphabet-alt': firstSortAsc}">
+                                                First
+                                            </i>
+                                        </button>
+                                        <button type="button" class="btn xs-float-left" ng-class="{'btn-primary':!isFirstSort,'btn-default':isFirstSort }" style="margin-bottom: 10px" ng-click="sortNameAlpha('L')">
+                                            <i class="glyphicon"
+                                               ng-class="{'glyphicon-sort-by-alphabet': lastSortAsc, 'glyphicon-sort-by-alphabet-alt': !lastSortAsc}">
+                                                Last
+                                            </i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div ng-show="showGrid">
-                    <label>Toggle sequence: Unknown(yellow)->Present(green)->Absent(red), etc.</label>
-                </div>
+                    <div ng-show="showGrid">
+                        <label>Toggle sequence: Unknown(yellow)->Present(green)->Absent(red), etc.</label>
+                    </div>
 
-                <div ng-repeat="item in memberList track by item.id">
-                    <div ng-hide="(item.attendTypeId === attendType.present && hidePresent) || (item.attendTypeId === attendType.absent && hideAbsent) || (item.attendTypeId === attendType.unknown && hideUnknown) ">
 
-                        <div ng-show="showGrid">
-                            <div class="clearfix" ng-if="$index % gridModValue == 0"></div>
-                                <button class="btn" ng-class="{'col-xs-4': (gridModValue === 3), 'col-xs-3': (gridModValue === 4),'btn-success': item.attendTypeId === attendType.present, 'btn-warning': item.attendTypeId === attendType.unknown, 'btn-danger': item.attendTypeId === attendType.absent}"
-                                       ng-click="item.attendTypeId = (item.attendTypeId === attendType.unknown) ? attendType.present : ( (item.attendTypeId === attendType.absent) ? attendType.unknown : attendType.absent ); memberSelected(item)">
-                                    {{item.fullName}}
-                                </button>
+                    <div ng-repeat="item in memberList track by item.id">
+                        <div ng-hide="(item.attendTypeId === attendType.present && hidePresent) || (item.attendTypeId === attendType.absent && hideAbsent) || (item.attendTypeId === attendType.unknown && hideUnknown) ">
+
+                            <div ng-show="showGrid">
+                                <div class="clearfix" ng-if="$index % gridModValue == 0"></div>
+                                <label class="btn" style="border-style: dotted; border-color: whitesmoke" ng-class="{'longPressConfirm':item.fire ,'col-xs-4': (gridModValue === 3), 'col-xs-3': (gridModValue === 4),'btn-success': item.attendTypeId === attendType.present, 'btn-warning': item.attendTypeId === attendType.unknown, 'btn-danger': item.attendTypeId === attendType.absent}"
+                                       ng-click="setMemberAttendType(item); memberSelected(item)" on-long-press="memberGridLp(item)" on-touch-end="memberGridLpEnd(item)" prevent-click="true">
+                                    <span ng-show="!isFirstSort">{{item.fullNameRev}}</span><span ng-show="isFirstSort">{{item.fullName}}</span>
+                                </label>
                             </div>
 
-                        <div ng-show="!showGrid">
+                            <div ng-show="!showGrid">
 
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-4  control-label">
-                                    <div class="btn-group" is-open="hideIcon" uib-dropdown>
-                                        <button type="button" class="btn btn-link" uib-dropdown-toggle>
-                                            <b>{{item.fullName}}</b> <i ng-hide="hideIcon" class="glyphicon glyphicon-chevron-right"></i><i ng-hide="!hideIcon" class="glyphicon glyphicon-chevron-down"></i>
-                                        </button>
-                                        <ul class="dropdown-menu" uib-dropdown-menu role="menu">
-                                            <li role="menuitem"><a ng-click="tbd()"><i class="glyphicon glyphicon-road"></i> Over 15 minutes late</a></li>
-                                            <li role="menuitem"><a ng-click="tbd()"><i class="glyphicon glyphicon-road"></i> Set as visitor</a></li>
-                                            <li role="menuitem"><a ng-click="tbd()"><i class="glyphicon glyphicon-file"></i> Add notes</a></li>
-                                            <li class="divider"></li>
-                                            <li role="menuitem"><a ng-click="removeMemberFromMeeting(item.id)" style='color: red'><i class="glyphicon glyphicon-remove"></i> Remove</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-8">
-                                    <div class="btn-group">
-                                        <div>
-                                            <label class="btn" ng-class="{'btn-success': item.attendTypeId === attendType.present, 'btn-info': item.attendTypeId !== attendType.present}" ng-model="item.attendTypeId" uib-btn-radio={{attendType.present}} ng-change="memberSelected(item)">Present</label>
-                                            <label class="btn" ng-class="{'btn-warning': item.attendTypeId === attendType.unknown, 'btn-info': item.attendTypeId !== attendType.unknown}" ng-model="item.attendTypeId" uib-btn-radio={{attendType.unknown}} ng-change="memberSelected(item)">Unknown</label>
-                                            <label class="btn" ng-class="{'btn-danger': item.attendTypeId === attendType.absent, 'btn-info': item.attendTypeId !== attendType.absent}" ng-model="item.attendTypeId" uib-btn-radio={{attendType.absent}} ng-change="memberSelected(item)">Absent</label>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-4  control-label">
+                                        <div class="btn-group" is-open="hideIcon" uib-dropdown>
+                                            <button type="button" class="btn btn-link" uib-dropdown-toggle>
+                                                <b><span ng-show="!isFirstSort">{{item.fullNameRev}}</span><span ng-show="isFirstSort">{{item.fullName}}</span></b> <i ng-hide="hideIcon" class="glyphicon glyphicon-chevron-right"></i><i ng-hide="!hideIcon" class="glyphicon glyphicon-chevron-down"></i>
+                                            </button>
+                                            <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+                                                <li role="menuitem"><a ng-click="tbd()"><i class="glyphicon glyphicon-road"></i> Over 15 minutes late</a></li>
+                                                <li role="menuitem"><a ng-click="tbd()"><i class="glyphicon glyphicon-road"></i> Set as visitor</a></li>
+                                                <li role="menuitem"><a ng-click="tbd()"><i class="glyphicon glyphicon-file"></i> Add notes</a></li>
+                                                <li class="divider"></li>
+                                                <li role="menuitem"><a ng-click="removeMemberFromMeeting(item.id)" style='color: red'><i class="glyphicon glyphicon-remove"></i> Remove</a></li>
+                                            </ul>
                                         </div>
-                                        <button class="btn btn-sm btn-default" disabled="disabled" style="border: none">
-                                            <i class="glyphicon" ng-class="{'glyphicon-question-sign': item.recorderName == null, 'glyphicon-pencil': item.recorderName != null}">
-                                            </i> <span ng-show="item.recorderName != null">{{item.recorderName}} @ {{item.lastRecorded | date:'MM/dd, h:mma'}}</span>
-                                        </button>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-8">
+                                        <div class="btn-group">
+                                            <div>
+                                                <label class="btn" ng-class="{'btn-success': item.attendTypeId === attendType.present, 'btn-info': item.attendTypeId !== attendType.present}" ng-model="item.attendTypeId" uib-btn-radio={{attendType.present}} ng-change="memberSelected(item)">Present</label>
+                                                <label class="btn" ng-class="{'btn-warning': item.attendTypeId === attendType.unknown, 'btn-info': item.attendTypeId !== attendType.unknown}" ng-model="item.attendTypeId" uib-btn-radio={{attendType.unknown}} ng-change="memberSelected(item)">Unknown</label>
+                                                <label class="btn" ng-class="{'btn-danger': item.attendTypeId === attendType.absent, 'btn-info': item.attendTypeId !== attendType.absent}" ng-model="item.attendTypeId" uib-btn-radio={{attendType.absent}} ng-change="memberSelected(item)">Absent</label>
+                                            </div>
+                                            <button class="btn btn-sm btn-default" disabled="disabled" style="border: none">
+                                                <i class="glyphicon" ng-class="{'glyphicon-question-sign': item.recorderName == null, 'glyphicon-pencil': item.recorderName != null}">
+                                                </i> <span ng-show="item.recorderName != null">{{item.recorderName}} @ {{item.lastRecorded | date:'MM/dd, h:mma'}}</span>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <br /><br /><br />
                 </div>
-                <br /><br /><br />
             </div>
-        </div>
-    </div>
+</div>
 </form>
 
 

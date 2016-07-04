@@ -9,7 +9,9 @@
     "angular-messages": "~1.5.5",
     "bootstrap": "~3.3.6",
     "angular-smart-table": "~2.1.8",
-    "angular-environment": "1.0.3"
+    "angular-environment": "1.0.3",
+    "ngstorage": "0.3.10" 
+
   },
   "resolutions": {
     "angular": "~1.5.6"

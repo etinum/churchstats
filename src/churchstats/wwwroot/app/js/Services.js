@@ -24,6 +24,25 @@
             return false;
         }
         ;
+        function arrayGetObject(myArray, searchTerm, property, caseSensitive) {
+            caseSensitive = typeof caseSensitive !== 'undefined' ? caseSensitive : true;
+            var len = myArray.length;
+            if (caseSensitive) {
+                for (var i = 0; i < len; i++) {
+                    if (myArray[i][property] === searchTerm)
+                        return myArray[i];
+                }
+                return null;
+            }
+            else {
+                searchTerm = searchTerm.toLowerCase();
+                for (var e = 0; e < len; e++) {
+                    if (myArray[e][property].toLowerCase() === searchTerm)
+                        return myArray[e];
+                }
+                return null;
+            }
+        }
         function arrayObjectIndexOf(myArray, searchTerm, property, caseSensitive) {
             caseSensitive = typeof caseSensitive !== 'undefined' ? caseSensitive : true;
             var len = myArray.length;
@@ -191,6 +210,7 @@
             getLocation: getLocation,
             arrayUnique: arrayUnique,
             arrayObjectIndexOf: arrayObjectIndexOf,
+            arrayGetObject: arrayGetObject,
             isFalse: isFalse,
             isTrue: isTrue,
             capitalizeFirstLetter: capitalizeFirstLetter,

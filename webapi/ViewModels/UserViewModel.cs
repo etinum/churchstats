@@ -25,6 +25,7 @@ namespace webapi.ViewModels
         public DateTime? LastUpdated { get; set; }
         public int? LastEditedBy { get; set; }
         public string FullName => FirstName + " " + LastName;
+        public string FullNameRev => LastName + ", " + FirstName;
 
         public AttendTypeEnum? AttendTypeId { get; set; }
         public int RecorderId { get; set; }

@@ -1,0 +1,28 @@
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.27/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.10/ngStorage.min.js"></script>
+    <script>
+            var example = angular.module("example", ["ngStorage"]);
+            example.controller("ExampleController", function($scope, $localStorage) {
+
+                $scope.save = function() {
+                    $localStorage.message = "Hello World";
+                }
+
+                $scope.load = function() {
+                    $scope.data = $localStorage.message;
+                }
+
+            });
+    </script>
+</head>
+<body ng-app="example">
+    <div ng-controller="ExampleController">
+        <button ng-click="save()">Save</button>
+        <button ng-click="load()">Load</button>
+        <br>
+        {{data}}
+    </div>
+</body>
+</html>

@@ -31,9 +31,12 @@
 
 (app => {
 
-    var controller = ($scope, $location, $dataService, $window, $uibModal, $interval) => {
+    var controller = ($scope, $location, $dataService, $window, $uibModal, $interval, $timeout, $localStorage) => {
 
         var devmode = false;
+
+        $scope.$storage = $localStorage;
+
 
         // controller variables
         $scope.rf = {};
@@ -43,10 +46,10 @@
         $scope.isNewMeeting = false;
 
 
-        $scope.haveRecorder = devmode ? true:  false;
-        $scope.haveMeeting = devmode ? true : false;
-        $scope.selectedUserId = devmode ? 201 : 0;
-        $scope.selectedMeetingId = devmode ? 4 : 0;
+        $scope.haveRecorder = false;
+        $scope.haveMeeting = false;
+        $scope.selectedUserId = 0;
+        $scope.selectedMeetingId = 0;
 
         $scope.globalSearchString = '';
         $scope.counts = {};
@@ -55,8 +58,9 @@
 
         $scope.firstSortAsc = true;
         $scope.lastSortAsc = true;
+        $scope.isFirstSort = true;
 
-        $scope.showGrid = false;
+        $scope.showGrid = true;
         gridAdjustBySize();
 
         $scope.hideUnknown = false;
@@ -107,19 +111,15 @@
                 recorderFieldTimeout = null;
             }
 
-            var index = $dataService.arrayObjectIndexOf($scope.userList, $scope.recorderName, "fullName", false);
+            var user = $dataService.arrayGetObject($scope.userList, $scope.recorderName, "fullName", false);
             $scope.$evalAsync(() => {
-                if (index === -1) {
+                if (user == null) {
                     //alert('Create new user');
                     $scope.haveRecorder = false;
                     $scope.isNewUser = true;
                 } else {
                     //alert('User exist');
-                    $scope.recorderName = $scope.userList[index].fullName;
-                    $scope.recorderFieldDisable = true;
-                    $scope.haveRecorder = true;
-                    $scope.isNewUser = false;
-                    $scope.selectedUserId = $scope.userList[index].id;
+                    setupUserField(user);
                 }
             });
 
@@ -136,27 +136,23 @@
                 meetingFieldTimeout = null;
             }
 
-            var index = $dataService.arrayObjectIndexOf($scope.meetingList, $scope.meetingName, "name", false);
+            var meeting = $dataService.arrayGetObject($scope.meetingList, $scope.meetingName, "name");
             $scope.$evalAsync(() => {
 
-                if (index === -1) {
+                if (meeting == null) {
                     //alert('Create new user');
                     $scope.isNewMeeting = true;
                     $scope.haveMeeting = false;
                 } else {
 
-                    $scope.meetingName = $scope.meetingList[index].name;
-                    $scope.meetingFieldDisable = true;
-                    $scope.haveMeeting = true;
-                    $scope.isNewMeeting = false;
-                    $scope.selectedMeetingId = $scope.meetingList[index].id;
-                    getMeetingMembers();
+                    setupMeetingField(meeting);
+
                     hub.server.subscribe($scope.selectedMeetingId);
 
                     $interval(() => {
                         checkIdleRefresh();
                     },
-                        10 * 1000);
+                        60 * 1000);
                 }
             });
 
@@ -164,6 +160,29 @@
 
 
         // Helper
+        function setupUserField(user : modeltypings.UserViewModel) {
+            $scope.recorderName = user.fullName;
+            $scope.recorderFieldDisable = true;
+            $scope.haveRecorder = true;
+            $scope.isNewUser = false;
+            $localStorage.selectedUserId = $scope.selectedUserId = user.id;
+
+            if ($localStorage.selectedMeetingId != undefined) {
+                const meeting = $dataService.arrayGetObject($scope.meetingList, $localStorage.selectedMeetingId, "id");
+                setupMeetingField(meeting);
+            }
+        };
+
+        function setupMeetingField(meeting: modeltypings.MeetingViewModel) {
+            $scope.meetingName = meeting.name;
+            $scope.meetingFieldDisable = true;
+            $scope.haveMeeting = true;
+            $scope.isNewMeeting = false;
+            $localStorage.selectedMeetingId = $scope.selectedMeetingId = meeting.id;
+            getMeetingMembers(meeting.id);
+        };
+
+
         function gridAdjustBySize() {
             if (window.innerWidth > 543) {
                 $scope.$evalAsync(() => {
@@ -242,8 +261,8 @@
             });
         }
 
-        function getMeetingMembers() {
-            $scope.load = $dataService.getMeetingMembers($scope.selectedMeetingId)
+        function getMeetingMembers(meetingId: number) {
+            $scope.load = $dataService.getMeetingMembers(meetingId)
                 .then(data => {
                     $scope.fullMemberList = <modeltypings.UserViewModel>data;
                     filterMembersBySearch();
@@ -287,13 +306,30 @@
         function checkIdleRefresh() {
 
             var time = Date.now() - lastAction;
-            if (time > 90 * 1000) {
+            if (time > 150 * 1000) {
                 lastAction = Date.now();
                 $scope.forceRefreshList();
             }
         }
 
+        function idleReset() {
+            lastAction = Date.now();
+        }
+
+
         // Event handler
+
+
+        var renameMeeting = (name) => {
+
+            var meeting = $dataService.arrayGetObject($scope.meetingList, $scope.selectedMeetingId, "id");
+            meeting.name = name;
+
+            $scope.load = $dataService.saveMeeting(meeting)
+                .then(() => {
+                    $scope.meetingName = name;
+                });
+        }
 
         $scope.tbd = () => {
             alert('coming soon');
@@ -306,24 +342,26 @@
                 .done(() => {
                     hub.server.subscribe($scope.selectedMeetingId);
                 });
-            getMeetingMembers();
+            getMeetingMembers($scope.selectedMeetingId);
         }
             
 
 
         $scope.sortNameAlpha = (type: string) => {
 
-            
-            
 
             switch (type) {
                 case 'F':
-                    $scope.sortNameType = $scope.firstSortAsc ? 'FA' : 'FD';
+                    $scope.sortNameType = $scope.firstSortAsc ? 'FD' : 'FA';
                     $scope.firstSortAsc = !$scope.firstSortAsc;
+                    $scope.isFirstSort = true;
+                    $scope.lastSortAsc = true;
                     break;
                 case 'L':
                     $scope.sortNameType = $scope.lastSortAsc ? 'LA' : 'LD';
                     $scope.lastSortAsc = !$scope.lastSortAsc;
+                    $scope.isFirstSort = false;
+                    $scope.firstSortAsc = false;
                     break;
             default:
             }
@@ -413,10 +451,27 @@
                 });
         };
 
+        $scope.setMemberAttendType = (item) => {
+            if ($scope.justLp) {
+                $timeout.cancel($scope.longPressTimeout);
+                $scope.justLp = false;
+                return;
+            }
+            item.attendTypeId = (item.attendTypeId === $scope.attendType.unknown)
+                ? $scope.attendType.present
+                : ((item.attendTypeId === $scope.attendType.absent) ? $scope.attendType.unknown : $scope.attendType.absent);
+        };
+        
 
         $scope.memberSelected = (item: modeltypings.UserViewModel) => {
+            if ($scope.justLp) {
+                $timeout.cancel($scope.longPressTimeout);
+                $scope.justLp = false;
+                return;
+            }
 
             checkIdleRefresh();
+            idleReset();
 
             var attendance = <modeltypings.AttendanceViewModel>{};
             attendance.meetingId = $scope.selectedMeetingId;
@@ -448,8 +503,63 @@
         }
 
 
-        $scope.reload = () => {
+        $scope.reloadUser = () => {
+
+            delete $localStorage.selectedUserId;
+            delete $localStorage.selectedMeetingId;
+
+            $timeout(() => {
+                location.reload();                
+            }, 250);
+        };
+
+        $scope.reloadMeeting = () => {
+
+            delete $localStorage.selectedMeetingId;
+
+            $timeout(() => {
+                location.reload();
+            }, 250);
+        };
+
+
+
+        $scope.refreshBrowser = () => {
             location.reload();
+        };
+
+
+
+        $scope.memberGridLpEnd = (item) => {
+            item.fire = 0;
+            $timeout(() => {
+                $scope.open();
+            }, 150);
+        };
+
+        $scope.memberGridLp = (item) => {
+            item.fire = 1;
+            $scope.justLp = true;
+            $scope.longPressTimeout = $timeout(() => {
+                $scope.justLp = false;
+                item.fire = 0;
+            }, 1500);
+        };
+
+
+        $scope.testApi = () => {
+            var meeting = <modeltypings.MeetingViewModel>{};
+            meeting.id = 4;
+            meeting.name = 'my crazy name';
+            meeting.meetingTypeId = 4;
+
+            $dataService.saveMeeting(meeting)
+                .then((response) => {
+                    meeting.id = response.data;
+                    $scope.meetingList.push(meeting);
+                    $scope.onBlurMeeting();
+                });
+
         };
 
 
@@ -503,35 +613,52 @@
         $.connection.hub.start()
             .done(() => {
 
-                $(window).resize(() => {
-                    gridAdjustBySize();
-                });
+                $(window)
+                    .resize(() => {
+                        gridAdjustBySize();
+                    });
 
+                $scope.initLoadCount = 0;
 
                 // data for checkbox.
-                $scope.load = $dataService.getAllUsers().then(data => {
-                    $scope.userList = <modeltypings.UserViewModel[]>data;
-                    $scope.fullUserList = angular.copy($scope.userList);
-
-                    if (devmode) {
-                        getMeetingMembers();
-                        hub.server.subscribe($scope.selectedMeetingId);
-                    }
-
-                });;
+                $scope.load = $dataService.getAllUsers()
+                    .then(data => {
+                        $scope.initLoadCount++;
+                        $scope.userList = <modeltypings.UserViewModel[]>data;
+                        $scope.fullUserList = angular.copy($scope.userList);
+                    });;
 
 
                 //Data for meetings
-                $dataService.getAllMeetings().then(data => {
-                    $scope.meetingList = <modeltypings.MeetingViewModel[]>data;
-                });;
+                $dataService.getAllMeetings()
+                    .then(data => {
+                        $scope.initLoadCount++;
+                        $scope.meetingList = <modeltypings.MeetingViewModel[]>data;
+                    });;
 
 
                 //Data for meeting types
-                $dataService.getAllMeetingTypes().then(data => {
-                    $scope.meetingTypeOptions = <modeltypings.MeetingTypeViewModel[]>data;
-                });;
-            });
+                $dataService.getAllMeetingTypes()
+                    .then(data => {
+                        $scope.initLoadCount++;
+                        $scope.meetingTypeOptions = <modeltypings.MeetingTypeViewModel[]>data;
+                    });;
+
+
+                $scope.$watch('initLoadCount',
+                (newValue) =>
+                {
+                    if (newValue === 3) {
+                        if ($localStorage.selectedUserId != undefined) {
+                            const user = $dataService.arrayGetObject($scope.userList, $localStorage.selectedUserId, "id");
+                            if (user != null)
+                            setupUserField(user);
+                        }
+                    }
+                });
+
+
+    });
 
 
         // Modal Activities
@@ -552,9 +679,33 @@
         };
 
 
+        $scope.openSaveMeetingDialog = () => {
+
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'saveDialog.html',
+                controller: 'saveMeetingCtrl',
+                size: 'sm',
+                resolve: {
+                    data : () => {
+                        return $scope.meetingName;
+                    }
+                }
+
+            });
+
+            modalInstance.result.then((newMeetingName) => {
+                renameMeeting(newMeetingName);
+            },
+            () => {
+
+            });
+
+        }
+
     };
 
-    controller.$inject = ['$scope', '$location', 'dataService', '$window', '$uibModal', '$interval'];
+    controller.$inject = ['$scope', '$location', 'dataService', '$window', '$uibModal', '$interval', '$timeout', '$localStorage'];
     app.controller('homeCtrl', controller);
 })(angular.module("repoFormsApp"));
 
@@ -562,9 +713,6 @@
 
 (app => {
     var controller = ($scope, $uibModalInstance, $timeout, $window, $location) => {
-
-
-
 
         $scope.close = () => {
 
@@ -579,4 +727,25 @@
     };
     controller.$inject = ['$scope', '$uibModalInstance', '$timeout', '$window', '$location'];
     app.controller('confirmResetCtrl', controller);
+})(angular.module("repoFormsApp"));
+
+
+(app => {
+    var controller = ($scope, $uibModalInstance, $timeout, $window, data) => {
+
+        $scope.placeHolderString = "New meeting name";
+        $scope.inputString = data;
+
+        $scope.save = () => {
+            $uibModalInstance.close($scope.inputString);
+        };
+
+        $scope.cancel = () => {
+            $uibModalInstance.dismiss();
+        }
+
+
+    };
+    controller.$inject = ['$scope', '$uibModalInstance', '$timeout', '$window', 'data'];
+    app.controller('saveMeetingCtrl', controller);
 })(angular.module("repoFormsApp"));
