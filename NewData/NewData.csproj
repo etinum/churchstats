@@ -66,6 +66,9 @@
     <Compile Include="Locality.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="MemberTypeEnum.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Role.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -145,6 +148,9 @@
   <ItemGroup>
     <TypeScriptCompile Include="AttendTypeEnum.cs.d.ts">
       <DependentUpon>AttendTypeEnum.cs</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="MemberTypeEnum.cs.d.ts">
+      <DependentUpon>MemberTypeEnum.cs</DependentUpon>
     </TypeScriptCompile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -56,7 +56,7 @@ namespace webapi.Controllers
                 (from u in _ctx.Users
                  join x in _ctx.X_User_Meeting on u.Id equals x.UserId
                  where x.MeetingId == meetingId && 
-                 x.Active
+                 x.Active.Value
                  select u);
 
             var userViewModels = _mapper.Map<List<UserViewModel>>(users);
@@ -69,7 +69,7 @@ namespace webapi.Controllers
                     {
                         a.Id,
                         a.UserId,
-                        a.AttendTypeId,
+                        a.AttendType,
                         a.RecorderId,
                         a.LastUpdated,
                         a.Notes
@@ -81,10 +81,10 @@ namespace webapi.Controllers
                 var match = attendances.FirstOrDefault(r => r.UserId == userViewModel.Id);
                 if (match == null)
                 {
-                    userViewModel.AttendTypeId = AttendTypeEnum.Unknown;
+                    userViewModel.AttendType = AttendTypeEnum.Unknown;
                     continue;
                 }
-                userViewModel.AttendTypeId = match.AttendTypeId;
+                userViewModel.AttendType = match.AttendType;
                 userViewModel.RecorderId = match.RecorderId;
                 userViewModel.AttendanceId = match.Id;
                 userViewModel.LastRecorded = match.LastUpdated;
@@ -158,7 +158,7 @@ namespace webapi.Controllers
             var attendanceVm = new AttendanceViewModel()
             {
                 Id = 0,
-                AttendTypeId = AttendTypeEnum.Unknown,
+                AttendType = AttendTypeEnum.Unknown,
                 UserId = data.UserId,
                 MeetingId = data.MeetingId
                 

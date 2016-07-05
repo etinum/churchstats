@@ -24,7 +24,7 @@ namespace NewData
         public int Id { get; set; }
         public string Name { get; set; }
         public Nullable<bool> Active { get; set; }
-        public Nullable<int> Type { get; set; }
+        public Nullable<int> TagType { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<System.DateTime> LastUpdated { get; set; }
         public Nullable<int> LastEditedBy { get; set; }

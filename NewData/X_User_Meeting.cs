@@ -16,7 +16,8 @@ namespace NewData
     {
         public int UserId { get; set; }
         public int MeetingId { get; set; }
-        public bool Active { get; set; }
+        public Nullable<MemberTypeEnum> MemberType { get; set; }
+        public Nullable<bool> Active { get; set; }
         public Nullable<System.DateTime> DateAdded { get; set; }
         public Nullable<System.DateTime> LastDeactivatedDate { get; set; }
         public Nullable<System.DateTime> LastReactivatedDate { get; set; }

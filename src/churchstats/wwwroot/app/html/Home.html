@@ -11,6 +11,12 @@
                 <label for="recorderName" class="col-sm-3 control-label">Who are you?</label>
                 <div class="col-sm-5">
                     <div ng-class="{'input-group':haveRecorder || isNewUser}">
+                        <span class="input-group-btn" ng-show="haveRecorder">
+                            <button type="button" class="btn btn-primary" ng-click="openSaveUserDialog()">
+                                <i class="glyphicon glyphicon-edit">
+                                </i>
+                            </button>
+                        </span>
                         <input type="text" ng-maxlength="ng_maxLength" maxlength={{maxLength}} id="recorderName" name="recorderName" class="form-control"
                                ng-model="recorderName" ng-required="true" uib-typeahead="item.fullName for item in userList  | filter:$viewValue | limitTo:8" autocomplete="off" typeahead-on-select="onBlurRecorder()"
                                ng-disabled="recorderFieldDisable" placeholder="ie: First Last"/>
@@ -23,7 +29,7 @@
                         </span>
                         <span class="input-group-btn" ng-show="haveRecorder">
                             <button type="button" class="btn btn-primary" ng-click="reloadUser()">
-                                <i class="glyphicon glyphicon-repeat">
+                                <i class="glyphicon glyphicon-log-in">
                                 </i>
                             </button>
                         </span>
@@ -54,7 +60,7 @@
                                    typeahead-on-select="onBlurMeeting()" ng-disabled="meetingFieldDisable" placeholder="Pick or create one" />
                             <span class="input-group-btn" ng-show="haveMeeting">
                                 <button type="button" class="btn btn-primary" ng-click="reloadMeeting()">
-                                    <i class="glyphicon glyphicon-repeat">
+                                    <i class="glyphicon glyphicon-log-in">
                                     </i>
                                 </button>
                             </span>
@@ -99,7 +105,7 @@
                             <div class="btn-toolbar">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-primary" style="margin-bottom: 10px" ng-model="showAddMember" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
-                                        <i class="glyphicon glyphicon-plus">
+                                        <i class="glyphicon"  ng-class="{'glyphicon-plus': !showAddMember, 'glyphicon-search': showAddMember}">
                                         </i>
                                     </button>
                                 </div>
@@ -196,11 +202,11 @@
 
 
                     <div ng-repeat="item in memberList track by item.id">
-                        <div ng-hide="(item.attendTypeId === attendType.present && hidePresent) || (item.attendTypeId === attendType.absent && hideAbsent) || (item.attendTypeId === attendType.unknown && hideUnknown) ">
+                        <div ng-hide="(item.attendType === attendTypeEnum.present && hidePresent) || (item.attendType === attendTypeEnum.absent && hideAbsent) || (item.attendType === attendTypeEnum.unknown && hideUnknown) ">
 
                             <div ng-show="showGrid">
                                 <div class="clearfix" ng-if="$index % gridModValue == 0"></div>
-                                <label class="btn" style="border-style: dotted; border-color: whitesmoke" ng-class="{'longPressConfirm':item.fire ,'col-xs-4': (gridModValue === 3), 'col-xs-3': (gridModValue === 4),'btn-success': item.attendTypeId === attendType.present, 'btn-warning': item.attendTypeId === attendType.unknown, 'btn-danger': item.attendTypeId === attendType.absent}"
+                                <label class="btn" style="border-style: dotted; border-color: whitesmoke" ng-class="{'longPressConfirm':item.fire ,'col-xs-4': (gridModValue === 3), 'col-xs-3': (gridModValue === 4),'btn-success': item.attendType === attendTypeEnum.present, 'btn-warning': item.attendType === attendTypeEnum.unknown, 'btn-danger': item.attendType === attendTypeEnum.absent}"
                                        ng-click="setMemberAttendType(item); memberSelected(item)" on-long-press="memberGridLp(item)" on-touch-end="memberGridLpEnd(item)" prevent-click="true">
                                     <span ng-show="!isFirstSort">{{item.fullNameRev}}</span><span ng-show="isFirstSort">{{item.fullName}}</span>
                                 </label>
@@ -226,9 +232,9 @@
                                     <div class="col-xs-12 col-sm-8">
                                         <div class="btn-group">
                                             <div>
-                                                <label class="btn" ng-class="{'btn-success': item.attendTypeId === attendType.present, 'btn-info': item.attendTypeId !== attendType.present}" ng-model="item.attendTypeId" uib-btn-radio={{attendType.present}} ng-change="memberSelected(item)">Present</label>
-                                                <label class="btn" ng-class="{'btn-warning': item.attendTypeId === attendType.unknown, 'btn-info': item.attendTypeId !== attendType.unknown}" ng-model="item.attendTypeId" uib-btn-radio={{attendType.unknown}} ng-change="memberSelected(item)">Unknown</label>
-                                                <label class="btn" ng-class="{'btn-danger': item.attendTypeId === attendType.absent, 'btn-info': item.attendTypeId !== attendType.absent}" ng-model="item.attendTypeId" uib-btn-radio={{attendType.absent}} ng-change="memberSelected(item)">Absent</label>
+                                                <label class="btn" ng-class="{'btn-success': item.attendType === attendTypeEnum.present, 'btn-info': item.attendType !== attendTypeEnum.present}" ng-model="item.attendType" uib-btn-radio={{attendTypeEnum.present}} ng-change="memberSelected(item)">Present</label>
+                                                <label class="btn" ng-class="{'btn-warning': item.attendType === attendTypeEnum.unknown, 'btn-info': item.attendType !== attendTypeEnum.unknown}" ng-model="item.attendType" uib-btn-radio={{attendTypeEnum.unknown}} ng-change="memberSelected(item)">Unknown</label>
+                                                <label class="btn" ng-class="{'btn-danger': item.attendType === attendTypeEnum.absent, 'btn-info': item.attendType !== attendTypeEnum.absent}" ng-model="item.attendType" uib-btn-radio={{attendTypeEnum.absent}} ng-change="memberSelected(item)">Absent</label>
                                             </div>
                                             <button class="btn btn-sm btn-default" disabled="disabled" style="border: none">
                                                 <i class="glyphicon" ng-class="{'glyphicon-question-sign': item.recorderName == null, 'glyphicon-pencil': item.recorderName != null}">

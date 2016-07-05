@@ -21,8 +21,8 @@ namespace NewData
         public System.DateTime DateRecorded { get; set; }
         public System.DateTime LastUpdated { get; set; }
         public Nullable<System.DateTime> MeetingDate { get; set; }
-        public Nullable<AttendTypeEnum> AttendTypeId { get; set; }
-        public Nullable<bool> IsVisitor { get; set; }
+        public Nullable<AttendTypeEnum> AttendType { get; set; }
+        public Nullable<AttendTypeEnum> MemberType { get; set; }
         public string Notes { get; set; }
         public Nullable<bool> IsArchive { get; set; }
     

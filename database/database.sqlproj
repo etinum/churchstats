@@ -59,6 +59,7 @@
     <Folder Include="Properties" />
     <Folder Include="dbo\" />
     <Folder Include="dbo\Tables\" />
+    <Folder Include="dbo\Stored Procedures\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\X_User_Group.sql" />
@@ -76,5 +77,6 @@
     <Build Include="dbo\Tables\Locality.sql" />
     <Build Include="dbo\Tables\ContactInfo.sql" />
     <Build Include="dbo\Tables\Address.sql" />
+    <Build Include="dbo\Stored Procedures\RemoveExtraUser.sql" />
   </ItemGroup>
 </Project>

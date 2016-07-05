@@ -2,5 +2,6 @@
 	interface XMeetingUserViewModel {
 		userId: number;
 		meetingId: number;
+		memberType: any;
 	}
 }

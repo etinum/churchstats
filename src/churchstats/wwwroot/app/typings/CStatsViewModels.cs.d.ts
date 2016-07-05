@@ -20,7 +20,7 @@ declare module modeltypings {
         lastEditedBy: number;
         fullName: string;
         fullNameRev: string;
-        attendTypeId: AttendTypeEnum;
+        attendType: AttendTypeEnum;
         recorderId: number;
         recorderName: string;
         attendanceId: number;
@@ -67,7 +67,8 @@ declare module modeltypings {
         dateRecorded: Date;
         lastUpdated: Date;
         meetingDate: Date;
-        attendTypeId: AttendTypeEnum;
+		attendType: AttendTypeEnum;
+        memberType: MemberTypeEnum;
         isVisitor: boolean;
         notes: string;
         isArchive: boolean;
@@ -80,5 +81,8 @@ declare module modeltypings {
         Unknown = 3,
         Late = 4,
     }
-
+    const enum MemberTypeEnum {
+        Visitor = 1,
+        Returning = 2,
+    }
 }

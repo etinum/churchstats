@@ -18,7 +18,7 @@
 		dateCreated: Date;
 		lastUpdated: Date;
 		lastEditedBy: number;
-		attendTypeId: any;
+		attendType: any;
 		recorderId: number;
 		recorderName: string;
 		attendanceId: number;

@@ -1,7 +1,8 @@
 ﻿CREATE TABLE [dbo].[X_User_Meeting] (
     [UserId]              INT      NOT NULL,
     [MeetingId]           INT      NOT NULL,
-    [Active]              BIT      NOT NULL,
+    [MemberType]          INT      NULL,
+    [Active]              BIT      NULL,
     [DateAdded]           DATETIME NULL,
     [LastDeactivatedDate] DATETIME NULL,
     [LastReactivatedDate] DATETIME NULL,
@@ -9,6 +10,8 @@
     CONSTRAINT [FK_X_User_Meeting_Meeting] FOREIGN KEY ([MeetingId]) REFERENCES [dbo].[Meeting] ([Id]),
     CONSTRAINT [FK_X_User_Meeting_User] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id])
 );
+
+
 
 
 

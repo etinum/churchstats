@@ -27,7 +27,7 @@ namespace webapi.ViewModels
         public string FullName => FirstName + " " + LastName;
         public string FullNameRev => LastName + ", " + FirstName;
 
-        public AttendTypeEnum? AttendTypeId { get; set; }
+        public AttendTypeEnum? AttendType { get; set; }
         public int RecorderId { get; set; }
         public string RecorderName { get; set; }
         public int AttendanceId { get; set; }

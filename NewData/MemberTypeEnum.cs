@@ -10,15 +10,10 @@
 namespace NewData
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class X_User_Tag
+    public enum MemberTypeEnum : int
     {
-        public int UserId { get; set; }
-        public int TagId { get; set; }
-        public Nullable<System.DateTime> DateAdded { get; set; }
-    
-        public virtual User User { get; set; }
-        public virtual Tag Tag { get; set; }
+        Visitor = 1,
+        Returning = 2
     }
 }

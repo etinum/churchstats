@@ -7,8 +7,8 @@
 		dateRecorded: Date;
 		lastUpdated: Date;
 		meetingDate: Date;
-		attendTypeId: any;
-		isVisitor: boolean;
+		attendType: any;
+		memberType: any;
 		notes: string;
 		isArchive: boolean;
 	}

@@ -12,8 +12,8 @@ namespace webapi.ViewModels
         public DateTime DateRecorded { get; set; }
         public DateTime LastUpdated { get; set; }
         public DateTime? MeetingDate { get; set; }
-        public AttendTypeEnum? AttendTypeId { get; set; }
-        public bool? IsVisitor { get; set; }
+        public AttendTypeEnum? AttendType { get; set; }
+        public MemberTypeEnum? MemberType { get; set; }
         public string Notes { get; set; }
         public bool? IsArchive { get; set; }
 

@@ -30,10 +30,10 @@
         $scope.hideUnknown = false;
         $scope.hidePresent = false;
         $scope.hideAbsent = false;
-        $scope.attendType = {};
-        $scope.attendType.present = 1;
-        $scope.attendType.absent = 2;
-        $scope.attendType.unknown = 3;
+        $scope.attendTypeEnum = {};
+        $scope.attendTypeEnum.present = 1;
+        $scope.attendTypeEnum.absent = 2;
+        $scope.attendTypeEnum.unknown = 3;
         var lastAction = Date.now();
         var hub = $.connection.attendHub;
         var recorderFieldTimeout;
@@ -132,9 +132,9 @@
         ;
         var updateCounts = function (data) {
             $scope.counts.totalPossible = data.length;
-            $scope.counts.unknown = data.filter(function (item) { return item.attendTypeId === 3; }).length;
-            $scope.counts.absent = data.filter(function (item) { return item.attendTypeId === 2; }).length;
-            $scope.counts.present = data.filter(function (item) { return item.attendTypeId === 1; }).length;
+            $scope.counts.unknown = data.filter(function (item) { return item.attendType === 3; }).length;
+            $scope.counts.absent = data.filter(function (item) { return item.attendType === 2; }).length;
+            $scope.counts.present = data.filter(function (item) { return item.attendType === 1; }).length;
         };
         var updateUserList = function (user) {
             $scope.userList.push(user);
@@ -212,13 +212,16 @@
                 return null;
             }
             var user = {};
+            user.attendType = 3;
+            parseNameForUser(user, name);
+            return user;
+        };
+        function parseNameForUser(user, name) {
             user.firstName = $dataService.capitalizeFirstLetter(name.split(' ')[0]);
             user.lastName = $dataService.capitalizeFirstLetter(name.split(' ')[1]);
             ;
             user.fullName = user.firstName + ' ' + user.lastName;
-            user.attendTypeId = 3;
-            return user;
-        };
+        }
         var removeMember = function (data) {
             var index = $dataService.arrayObjectIndexOf($scope.fullMemberList, data.userId, "id");
             if (index > -1) {
@@ -236,14 +239,6 @@
         function idleReset() {
             lastAction = Date.now();
         }
-        var renameMeeting = function (name) {
-            var meeting = $dataService.arrayGetObject($scope.meetingList, $scope.selectedMeetingId, "id");
-            meeting.name = name;
-            $scope.load = $dataService.saveMeeting(meeting)
-                .then(function () {
-                $scope.meetingName = name;
-            });
-        };
         $scope.tbd = function () {
             alert('coming soon');
         };
@@ -308,6 +303,7 @@
             var data = {};
             data.meetingId = $scope.selectedMeetingId;
             data.userId = member.id;
+            member.attendType = 3;
             updateMemberList(member);
             $scope.load = $dataService.addMemberToMeeting(data)
                 .then(function () {
@@ -339,9 +335,9 @@
                 $scope.justLp = false;
                 return;
             }
-            item.attendTypeId = (item.attendTypeId === $scope.attendType.unknown)
-                ? $scope.attendType.present
-                : ((item.attendTypeId === $scope.attendType.absent) ? $scope.attendType.unknown : $scope.attendType.absent);
+            item.attendType = (item.attendType === $scope.attendTypeEnum.unknown)
+                ? $scope.attendTypeEnum.present
+                : ((item.attendType === $scope.attendTypeEnum.absent) ? $scope.attendTypeEnum.unknown : $scope.attendTypeEnum.absent);
         };
         $scope.memberSelected = function (item) {
             if ($scope.justLp) {
@@ -356,7 +352,7 @@
             attendance.recorderId = $scope.selectedUserId;
             attendance.userId = item.id;
             attendance.id = item.attendanceId;
-            attendance.attendTypeId = item.attendTypeId;
+            attendance.attendType = item.attendType;
             attendance.meetingDate = new Date();
             $dataService.saveAttendance(attendance)
                 .then(function (response) {
@@ -432,7 +428,7 @@
                 recorder = $scope.fullUserList.filter(function (item) { return item.id === data.recorderId; })[0];
             }
             $scope.$evalAsync(function () {
-                member.attendTypeId = data.attendTypeId;
+                member.attendType = data.attendType;
                 if (recorder.id != null) {
                     member.recorderId = data.recorderId;
                     member.recorderName = recorder.fullName;
@@ -496,6 +492,29 @@
             }, function () {
             });
         };
+        $scope.openSaveUserDialog = function () {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'saveDialog.html',
+                controller: 'saveUserCtrl',
+                size: 'sm',
+                resolve: {
+                    data: function () {
+                        return $scope.recorderName;
+                    }
+                }
+            });
+            modalInstance.result.then(function (newUserName) {
+                var user = $dataService.arrayGetObject($scope.fullUserList, $scope.selectedUserId, "id");
+                parseNameForUser(user, newUserName);
+                $scope.load = $dataService.saveUser(user)
+                    .then(function () {
+                    $scope.recorderName = newUserName;
+                    getMeetingMembers($scope.selectedMeetingId);
+                });
+            }, function () {
+            });
+        };
         $scope.openSaveMeetingDialog = function () {
             var modalInstance = $uibModal.open({
                 animation: true,
@@ -509,7 +528,12 @@
                 }
             });
             modalInstance.result.then(function (newMeetingName) {
-                renameMeeting(newMeetingName);
+                var meeting = $dataService.arrayGetObject($scope.meetingList, $scope.selectedMeetingId, "id");
+                meeting.name = newMeetingName;
+                $scope.load = $dataService.saveMeeting(meeting)
+                    .then(function () {
+                    $scope.meetingName = newMeetingName;
+                });
             }, function () {
             });
         };
@@ -534,7 +558,23 @@
 })(angular.module("repoFormsApp"));
 (function (app) {
     var controller = function ($scope, $uibModalInstance, $timeout, $window, data) {
+        $scope.placeHolderString = "New user name";
+        $scope.titleString = "New User Name";
+        $scope.inputString = data;
+        $scope.save = function () {
+            $uibModalInstance.close($scope.inputString);
+        };
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss();
+        };
+    };
+    controller.$inject = ['$scope', '$uibModalInstance', '$timeout', '$window', 'data'];
+    app.controller('saveUserCtrl', controller);
+})(angular.module("repoFormsApp"));
+(function (app) {
+    var controller = function ($scope, $uibModalInstance, $timeout, $window, data) {
         $scope.placeHolderString = "New meeting name";
+        $scope.titleString = "New Meeting Name";
         $scope.inputString = data;
         $scope.save = function () {
             $uibModalInstance.close($scope.inputString);

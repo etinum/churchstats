@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NewData;
 
 namespace webapi.ViewModels
 {
@@ -10,6 +6,8 @@ namespace webapi.ViewModels
     {
         public int UserId { get; set; }
         public int MeetingId { get; set; }
+        public MemberTypeEnum? MemberType { get; set; }
+
 
     }
 }

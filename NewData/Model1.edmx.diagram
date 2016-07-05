@@ -4,18 +4,16 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="26ee4490572f4e68bd09a95450f81ce3" Name="Diagram1">
+      <Diagram DiagramId="26ee4490572f4e68bd09a95450f81ce3" Name="Diagram1" ZoomLevel="114">
         <EntityTypeShape EntityType="CstatsModel.Address" Width="1.5" PointX="7.5" PointY="14.25" />
         <EntityTypeShape EntityType="CstatsModel.ContactInfo" Width="1.5" PointX="0.75" PointY="9.625" />
         <EntityTypeShape EntityType="CstatsModel.Locality" Width="1.5" PointX="3" PointY="9.75" />
         <EntityTypeShape EntityType="CstatsModel.Meeting" Width="1.5" PointX="9.75" PointY="13.25" />
         <EntityTypeShape EntityType="CstatsModel.MeetingType" Width="1.5" PointX="7.5" PointY="18.875" />
         <EntityTypeShape EntityType="CstatsModel.Role" Width="1.5" PointX="5.25" PointY="16.375" />
-        <EntityTypeShape EntityType="CstatsModel.Tag" Width="1.5" PointX="7.5" PointY="7.875" />
         <EntityTypeShape EntityType="CstatsModel.User" Width="1.5" PointX="5.25" PointY="7.625" />
         <EntityTypeShape EntityType="CstatsModel.X_AdminUser_Meeting" Width="1.5" PointX="12" PointY="14.875" />
         <EntityTypeShape EntityType="CstatsModel.X_Meeting_Tag" Width="1.5" PointX="12" PointY="12" />
-        <EntityTypeShape EntityType="CstatsModel.X_User_Meeting" Width="1.5" PointX="12" PointY="8.75" />
         <EntityTypeShape EntityType="CstatsModel.X_User_Role" Width="1.5" PointX="7.5" PointY="11.5" />
         <EntityTypeShape EntityType="CstatsModel.X_User_Tag" Width="1.5" PointX="9.75" PointY="10.5" />
         <AssociationConnector Association="CstatsModel.FK_Address_User" />
@@ -33,16 +31,18 @@
         <AssociationConnector Association="CstatsModel.FK_Meeting_User1" />
         <AssociationConnector Association="CstatsModel.FK_X_AdminUser_Meeting_Meeting" />
         <AssociationConnector Association="CstatsModel.FK_X_Meeting_Tag_Meeting" />
-        <AssociationConnector Association="CstatsModel.FK_X_User_Meeting_Meeting" />
         <AssociationConnector Association="CstatsModel.FK_X_User_Role_Role" />
+        <AssociationConnector Association="CstatsModel.FK_User_User" />
+        <AssociationConnector Association="CstatsModel.FK_X_AdminUser_Meeting_User" />
+        <AssociationConnector Association="CstatsModel.FK_X_User_Role_User" />
+        <AssociationConnector Association="CstatsModel.FK_X_User_Tag_User" />
+        <EntityTypeShape EntityType="CstatsModel.Tag" Width="1.5" PointX="7.5" PointY="7" />
+        <EntityTypeShape EntityType="CstatsModel.X_User_Meeting" Width="1.5" PointX="12" PointY="7.625" />
+        <AssociationConnector Association="CstatsModel.FK_X_User_Meeting_Meeting" />
         <AssociationConnector Association="CstatsModel.FK_Group_User" />
         <AssociationConnector Association="CstatsModel.FK_X_Meeting_Tag_Tag" />
         <AssociationConnector Association="CstatsModel.FK_X_User_Tag_Tag" />
-        <AssociationConnector Association="CstatsModel.FK_User_User" />
-        <AssociationConnector Association="CstatsModel.FK_X_AdminUser_Meeting_User" />
         <AssociationConnector Association="CstatsModel.FK_X_User_Meeting_User" />
-        <AssociationConnector Association="CstatsModel.FK_X_User_Role_User" />
-        <AssociationConnector Association="CstatsModel.FK_X_User_Tag_User" />
         <EntityTypeShape EntityType="CstatsModel.Attendance" Width="1.5" PointX="15" PointY="11.125" />
         <AssociationConnector Association="CstatsModel.FK_Attendance_Meeting" />
         <AssociationConnector Association="CstatsModel.FK_Attendance_Recorder" />
