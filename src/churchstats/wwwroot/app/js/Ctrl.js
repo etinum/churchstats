@@ -187,10 +187,26 @@
                 default:
             }
         }
+        function filterMemberListAttendTypes() {
+            if ($scope.hidePresent) {
+                $scope.memberList = $scope.memberList
+                    .filter(function (item) { return item.attendType !== 1; });
+            }
+            if ($scope.hideAbsent) {
+                $scope.memberList = $scope.memberList
+                    .filter(function (item) { return item.attendType !== 2; });
+            }
+            if ($scope.hideUnknown) {
+                $scope.memberList = $scope.memberList
+                    .filter(function (item) { return item.attendType !== 3; });
+            }
+        }
+        $scope.filterMembersBySearch = filterMembersBySearch;
         function filterMembersBySearch() {
             sortName();
             $scope.$evalAsync(function () {
                 $scope.memberList = $scope.fullMemberList.filter(function (item) { return item.fullName.toLowerCase().indexOf($scope.globalSearchString.toLowerCase()) > -1; });
+                filterMemberListAttendTypes();
                 $scope.availableMemberList = $scope.fullUserList.filter(function (item) { return $dataService.arrayObjectIndexOf($scope.fullMemberList, item.fullName, "fullName", false) === -1; });
                 updateCounts($scope.memberList);
             });

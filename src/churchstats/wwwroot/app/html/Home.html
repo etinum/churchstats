@@ -157,21 +157,24 @@
                                 </div>
                                 <div class="btn-toolbar xs-center" role="toolbar">
                                     <div class="btn-group" role="group">
-                                        <button type="button" class="btn" ng-class="{'btn-success': !hidePresent, 'btn-default': hidePresent}" style="margin-bottom: 10px" ng-model="hidePresent" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
+                                        <button type="button" class="btn" ng-class="{'btn-success': !hidePresent, 'btn-default': hidePresent}" style="margin-bottom: 10px" ng-model="hidePresent" 
+                                                uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0" ng-click="filterMembersBySearch()">
                                             <i class="glyphicon"
                                                ng-class="{'glyphicon-eye-close': !hidePresent, 'glyphicon-eye-open': hidePresent}">
                                                 Present
                                             </i>
                                         </button>
 
-                                        <button type="button" class="btn" ng-class="{'btn-warning': !hideUnknown, 'btn-default': hideUnknown}" style="margin-bottom: 10px" ng-model="hideUnknown" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
+                                        <button type="button" class="btn" ng-class="{'btn-warning': !hideUnknown, 'btn-default': hideUnknown}" style="margin-bottom: 10px" ng-model="hideUnknown" 
+                                                uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0" ng-click="filterMembersBySearch()">
                                             <i class="glyphicon"
                                                ng-class="{'glyphicon-eye-close': !hideUnknown, 'glyphicon-eye-open': hideUnknown}">
                                                 Unknown
                                             </i>
                                         </button>
 
-                                        <button type="button" class="btn" ng-class="{'btn-danger': !hideAbsent, 'btn-default': hideAbsent}" style="margin-bottom: 10px" ng-model="hideAbsent" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
+                                        <button type="button" class="btn" ng-class="{'btn-danger': !hideAbsent, 'btn-default': hideAbsent}" style="margin-bottom: 10px" ng-model="hideAbsent" 
+                                                uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0" ng-click="filterMembersBySearch()">
                                             <i class="glyphicon"
                                                ng-class="{'glyphicon-eye-close': !hideAbsent, 'glyphicon-eye-open': hideAbsent}">
                                                 Absent
@@ -203,7 +206,7 @@
 
 
                     <div ng-repeat="item in memberList track by item.id">
-                        <div ng-hide="(item.attendType === attendTypeEnum.present && hidePresent) || (item.attendType === attendTypeEnum.absent && hideAbsent) || (item.attendType === attendTypeEnum.unknown && hideUnknown) ">
+                        <div >
 
                             <div ng-show="showGrid">
                                 <div class="clearfix" ng-if="$index % gridModValue == 0"></div>

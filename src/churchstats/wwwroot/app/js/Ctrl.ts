@@ -123,7 +123,6 @@
                     setupUserField(user);
                 }
             });
-
         };
 
         $scope.onBlurMeeting = () => {
@@ -253,11 +252,40 @@
             }
         }
 
+        function filterMemberListAttendTypes() {
+
+            if ($scope.hidePresent) {
+
+                $scope.memberList = $scope.memberList
+                    .filter(item => item.attendType !== modeltypings.AttendTypeEnum.Present);
+            }
+
+            if ($scope.hideAbsent) {
+
+                $scope.memberList = $scope.memberList
+                    .filter(item => item.attendType !== modeltypings.AttendTypeEnum.Absent);
+            }
+
+            if ($scope.hideUnknown) {
+
+                $scope.memberList = $scope.memberList
+                    .filter(item => item.attendType !== modeltypings.AttendTypeEnum.Unknown);
+            }
+
+
+
+        }
+
+        $scope.filterMembersBySearch = filterMembersBySearch;
+
         function filterMembersBySearch() {
             sortName();
 
             $scope.$evalAsync(() => {
                 $scope.memberList = $scope.fullMemberList.filter(item => item.fullName.toLowerCase().indexOf($scope.globalSearchString.toLowerCase()) > -1);
+
+                filterMemberListAttendTypes();
+
                 $scope.availableMemberList = $scope.fullUserList.filter(item => $dataService.arrayObjectIndexOf($scope.fullMemberList, item.fullName, "fullName", false) === -1);
                 updateCounts($scope.memberList);
             });
