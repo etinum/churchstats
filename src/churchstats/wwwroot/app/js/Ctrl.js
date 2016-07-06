@@ -104,7 +104,8 @@
             $localStorage.selectedUserId = $scope.selectedUserId = user.id;
             if ($localStorage.selectedMeetingId != undefined) {
                 var meeting = $dataService.arrayGetObject($scope.meetingList, $localStorage.selectedMeetingId, "id");
-                setupMeetingField(meeting);
+                if (meeting != null)
+                    setupMeetingField(meeting);
             }
         }
         ;
@@ -203,25 +204,26 @@
         }
         ;
         var createUserViewModel = function (name) {
+            var user = {};
+            user = parseNameForUser(user, name);
+            user.attendType = 3;
+            return user;
+        };
+        function parseNameForUser(user, name) {
             if (name.split(' ').length !== 2) {
-                alert('Sorry, we need first and last name only');
+                alert('Sorry, we accept first and last name only');
                 return null;
             }
             if ($dataService.arrayObjectIndexOf($scope.fullUserList, name, "fullName", false) > -1) {
                 alert('User already exist, please pick another one');
                 return null;
             }
-            var user = {};
-            user.attendType = 3;
-            parseNameForUser(user, name);
-            return user;
-        };
-        function parseNameForUser(user, name) {
             user.firstName = $dataService.capitalizeFirstLetter(name.split(' ')[0]);
             user.lastName = $dataService.capitalizeFirstLetter(name.split(' ')[1]);
             ;
             user.fullName = user.firstName + ' ' + user.lastName;
         }
+        ;
         var removeMember = function (data) {
             var index = $dataService.arrayObjectIndexOf($scope.fullMemberList, data.userId, "id");
             if (index > -1) {
@@ -506,7 +508,9 @@
             });
             modalInstance.result.then(function (newUserName) {
                 var user = $dataService.arrayGetObject($scope.fullUserList, $scope.selectedUserId, "id");
-                parseNameForUser(user, newUserName);
+                user = parseNameForUser(user, newUserName);
+                if (user == null)
+                    return;
                 $scope.load = $dataService.saveUser(user)
                     .then(function () {
                     $scope.recorderName = newUserName;

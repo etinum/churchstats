@@ -161,7 +161,7 @@
 
 
         // Helper
-        function setupUserField(user : modeltypings.UserViewModel) {
+        function setupUserField(user: modeltypings.UserViewModel) {
             $scope.recorderName = user.fullName;
             $scope.recorderFieldDisable = true;
             $scope.haveRecorder = true;
@@ -170,7 +170,8 @@
 
             if ($localStorage.selectedMeetingId != undefined) {
                 const meeting = $dataService.arrayGetObject($scope.meetingList, $localStorage.selectedMeetingId, "id");
-                setupMeetingField(meeting);
+                if (meeting != null)
+                    setupMeetingField(meeting);
             }
         };
 
@@ -271,10 +272,20 @@
         };
 
 
-        var createUserViewModel = (name) => {
+        var createUserViewModel = (name: string) => {
+
+            var user = <modeltypings.UserViewModel>{};
+            user = parseNameForUser(user, name);
+            user.attendType = modeltypings.AttendTypeEnum.Unknown;
+
+            return user;
+
+        };
+
+        function parseNameForUser(user: modeltypings.UserViewModel, name: string) {
 
             if (name.split(' ').length !== 2) {
-                alert('Sorry, we need first and last name only');
+                alert('Sorry, we accept first and last name only');
                 return null;
             }
 
@@ -283,19 +294,10 @@
                 return null;
             }
 
-            var user = <modeltypings.UserViewModel>{};
-            user.attendType = modeltypings.AttendTypeEnum.Unknown;
-            parseNameForUser(user, name);
-
-            return user;
-
-        };
-
-        function parseNameForUser(user : modeltypings.UserViewModel, name : string) {
             user.firstName = $dataService.capitalizeFirstLetter(name.split(' ')[0]);
             user.lastName = $dataService.capitalizeFirstLetter(name.split(' ')[1]);;
             user.fullName = user.firstName + ' ' + user.lastName;
-        }
+        };
 
 
         var removeMember = (data: modeltypings.XMeetingUserViewModel) => {
@@ -306,7 +308,7 @@
                 filterMembersBySearch();
             }
 
-        }
+        };
 
         function checkIdleRefresh() {
 
@@ -327,8 +329,7 @@
 
         $scope.tbd = () => {
             alert('coming soon');
-        }
-
+        };
 
 
         $scope.forceRefreshList = () => {
@@ -337,7 +338,7 @@
                     hub.server.subscribe($scope.selectedMeetingId);
                 });
             getMeetingMembers($scope.selectedMeetingId);
-        }
+        };
             
 
 
@@ -691,7 +692,10 @@
 
             modalInstance.result.then((newUserName: string) => {
                 var user = $dataService.arrayGetObject($scope.fullUserList, $scope.selectedUserId, "id");
-                parseNameForUser(user, newUserName);
+                user = parseNameForUser(user, newUserName);
+
+                if (user == null)
+                    return;
 
                 $scope.load = $dataService.saveUser(user)
                     .then(() => {
