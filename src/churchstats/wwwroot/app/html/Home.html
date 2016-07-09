@@ -17,14 +17,14 @@
                     <p class="input-group">
                         <input id="attendanceDate" name="attendanceDate" type="text" ng-click="attendanceDatePopup = !attendanceDatePopup" class="form-control" uib-datepicker-popup="{{format}}"
                                ng-model="attendanceDate" ng-change="changeAttendanceDate()" is-open="attendanceDatePopup" datepicker-options="dateOptions" ng-required="true"
-                               close-text="Close" alt-input-formats="altInputFormats" readonly/>
+                               close-text="Close" alt-input-formats="altInputFormats" readonly />
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-primary" ng-click="changeAttendanceDateToday()">Today</button>
                         </span>
                     </p>
-                        <div class="help-block" ng-messages="myForm.attendanceDate.$error" ng-show="myForm.attendanceDate.$touched || submitted">
-                            <div ng-messages-include="app/html/error-messages.html"></div>
-                        </div>
+                    <div class="help-block" ng-messages="myForm.attendanceDate.$error" ng-show="myForm.attendanceDate.$touched || submitted">
+                        <div ng-messages-include="app/html/error-messages.html"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -117,8 +117,6 @@
                     </div>
                 </div>
             </div>
-
-
 
             <div class="panel panel-default" ng-show="haveMeeting">
                 <div class="panel-heading">Meeting stats --> Accounted: {{(100*(counts.present + counts.absent)/counts.totalPossible)| number:0}}%, Present: {{counts.present}} ({{(100*counts.present/counts.totalPossible)| number:0}}%) , Absent: {{counts.absent}}, Unknown: {{counts.unknown}}, Total Possible: {{counts.totalPossible}}</div>
@@ -225,8 +223,16 @@
                 </div>
 
                 <div ng-show="showGrid">
-                    <label>Toggle sequence: Unknown(yellow)->Present(green)->Absent(red), etc.</label>
+                    <div class="alert alert-info" role="alert">
+                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                        Toggle sequence: Unknown(yellow)->Present(green)->Absent(red), etc.
+                    </div>
                 </div>
+                <div ng-show="isHistorical" class="alert alert-warning" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    You are viewing historical data.
+                </div>
+
 
 
                 <div ng-repeat="item in memberList track by item.id">

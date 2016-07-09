@@ -47,6 +47,7 @@
 
         
         $scope.attendanceDate = new Date();
+        $scope.isHistorical = false;
 
 
         $scope.haveRecorder = false;
@@ -361,7 +362,7 @@
             if ($scope.haveRecorder) {
                 getMeetingMembers($scope.selectedMeetingId, $scope.attendanceDate);
             }
-        };
+       };
 
         $scope.changeAttendanceDateToday = () => {
             if ($scope.haveRecorder && $scope.attendanceDate.toDateString() !== new Date().toDateString()) {
@@ -369,6 +370,12 @@
                 $scope.attendanceDate = new Date();
             }            
         }
+
+        $scope.$watch('attendanceDate',
+            (newValue: Date) => {
+            if (newValue != null)
+                $scope.isHistorical = (newValue.toDateString() !== new Date().toDateString());
+        });
 
 
         $scope.tbd = () => {

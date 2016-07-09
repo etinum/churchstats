@@ -15,6 +15,7 @@
         $scope.isNewUser = false;
         $scope.isNewMeeting = false;
         $scope.attendanceDate = new Date();
+        $scope.isHistorical = false;
         $scope.haveRecorder = false;
         $scope.haveMeeting = false;
         $scope.selectedUserId = 0;
@@ -269,6 +270,10 @@
                 $scope.attendanceDate = new Date();
             }
         };
+        $scope.$watch('attendanceDate', function (newValue) {
+            if (newValue != null)
+                $scope.isHistorical = (newValue.toDateString() !== new Date().toDateString());
+        });
         $scope.tbd = function () {
             alert('coming soon');
         };
