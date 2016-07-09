@@ -14,6 +14,7 @@
         $scope.meetingFieldDisable = false;
         $scope.isNewUser = false;
         $scope.isNewMeeting = false;
+        $scope.attendanceDate = new Date();
         $scope.haveRecorder = false;
         $scope.haveMeeting = false;
         $scope.selectedUserId = 0;
@@ -115,7 +116,7 @@
             $scope.haveMeeting = true;
             $scope.isNewMeeting = false;
             $localStorage.selectedMeetingId = $scope.selectedMeetingId = meeting.id;
-            getMeetingMembers(meeting.id);
+            getMeetingMembers(meeting.id, $scope.attendanceDate);
         }
         ;
         function gridAdjustBySize() {
@@ -211,8 +212,8 @@
                 updateCounts($scope.memberList);
             });
         }
-        function getMeetingMembers(meetingId) {
-            $scope.load = $dataService.getMeetingMembers(meetingId)
+        function getMeetingMembers(meetingId, attendanceDate) {
+            $scope.load = $dataService.getMeetingMembers(meetingId, attendanceDate)
                 .then(function (data) {
                 $scope.fullMemberList = data;
                 filterMembersBySearch();
@@ -257,6 +258,17 @@
         function idleReset() {
             lastAction = Date.now();
         }
+        $scope.changeAttendanceDate = function () {
+            if ($scope.haveRecorder) {
+                getMeetingMembers($scope.selectedMeetingId, $scope.attendanceDate);
+            }
+        };
+        $scope.changeAttendanceDateToday = function () {
+            if ($scope.haveRecorder && $scope.attendanceDate.toDateString() !== new Date().toDateString()) {
+                getMeetingMembers($scope.selectedMeetingId, new Date());
+                $scope.attendanceDate = new Date();
+            }
+        };
         $scope.tbd = function () {
             alert('coming soon');
         };
@@ -265,7 +277,7 @@
                 .done(function () {
                 hub.server.subscribe($scope.selectedMeetingId);
             });
-            getMeetingMembers($scope.selectedMeetingId);
+            getMeetingMembers($scope.selectedMeetingId, $scope.attendanceDate);
         };
         $scope.sortNameAlpha = function (type) {
             switch (type) {
@@ -321,6 +333,7 @@
             var data = {};
             data.meetingId = $scope.selectedMeetingId;
             data.userId = member.id;
+            data.effectiveDateAdded = $scope.attendanceDate;
             member.attendType = 3;
             updateMemberList(member);
             $scope.load = $dataService.addMemberToMeeting(data)
@@ -339,6 +352,7 @@
                 var xref = {};
                 xref.meetingId = $scope.selectedMeetingId;
                 xref.userId = user.id;
+                xref.effectiveDateAdded = $scope.attendanceDate;
                 updateMemberList(user);
                 updateUserList(user);
                 $scope.load = $dataService.addMemberToMeeting(xref)
@@ -371,7 +385,7 @@
             attendance.userId = item.id;
             attendance.id = item.attendanceId;
             attendance.attendType = item.attendType;
-            attendance.meetingDate = new Date();
+            attendance.meetingDate = $scope.attendanceDate;
             $dataService.saveAttendance(attendance)
                 .then(function (response) {
                 attendance.id = response.data;
@@ -476,7 +490,6 @@
                 $scope.userList = data;
                 $scope.fullUserList = angular.copy($scope.userList);
             });
-            ;
             $dataService.getAllMeetings()
                 .then(function (data) {
                 $scope.initLoadCount++;
@@ -530,7 +543,7 @@
                 $scope.load = $dataService.saveUser(user)
                     .then(function () {
                     $scope.recorderName = newUserName;
-                    getMeetingMembers($scope.selectedMeetingId);
+                    getMeetingMembers($scope.selectedMeetingId, $scope.attendanceDate);
                 });
             }, function () {
             });

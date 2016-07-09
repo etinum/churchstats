@@ -93,12 +93,13 @@
             });
             return deferred.promise;
         };
-        var getMeetingMembers = function (id) {
+        var getMeetingMembers = function (id, date) {
             var url = baseWebApiUrl + 'api/meeting/GetMeetingMembers';
             var deferred = $q.defer();
             $http.get(url, {
                 params: {
-                    meetingId: id
+                    meetingId: id,
+                    meetingDate: date
                 }
             })
                 .then(function (response) {

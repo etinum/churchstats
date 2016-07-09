@@ -49,14 +49,14 @@ namespace webapi.Controllers
 
 
         [HttpGet]
-        public IHttpActionResult GetMeetingMembers(int meetingId)
+        public IHttpActionResult GetMeetingMembers(int meetingId, DateTime meetingDate)
         {
 
             var users =
                 (from u in _ctx.Users
                  join x in _ctx.X_User_Meeting on u.Id equals x.UserId
                  where x.MeetingId == meetingId && 
-                 x.Active.Value
+                 x.Active.Value && x.DateAdded <= meetingDate
                  select u);
 
             var userViewModels = _mapper.Map<List<UserViewModel>>(users);
@@ -64,7 +64,7 @@ namespace webapi.Controllers
             var attendances = (from a in _ctx.Attendances
                 join u in _ctx.Users on a.UserId equals u.Id
                 where a.MeetingId == meetingId
-                      && (DbFunctions.TruncateTime(a.MeetingDate.Value) == DbFunctions.TruncateTime(DateTime.Today))
+                      && (DbFunctions.TruncateTime(a.MeetingDate.Value) == DbFunctions.TruncateTime(meetingDate))
                 select new
                     {
                         a.Id,
@@ -138,7 +138,7 @@ namespace webapi.Controllers
                 xref = _ctx.X_User_Meeting.Create();
                 xref.UserId = data.UserId;
                 xref.MeetingId = data.MeetingId;
-                xref.DateAdded = DateTime.Now;
+                xref.DateAdded = data.EffectiveDateAdded ?? DateTime.Now;
                 xref.Active = true;
                 _ctx.X_User_Meeting.Add(xref);
 

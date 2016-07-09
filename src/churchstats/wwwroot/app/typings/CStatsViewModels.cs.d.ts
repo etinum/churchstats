@@ -57,6 +57,8 @@ declare module modeltypings {
     interface XMeetingUserViewModel {
         userId: number;
         meetingId: number;
+        memberType: MemberTypeEnum;
+        effectiveDateAdded: Date;
     }
 
     interface AttendanceViewModel {

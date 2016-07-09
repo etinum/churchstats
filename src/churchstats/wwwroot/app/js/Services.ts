@@ -125,15 +125,17 @@
             return deferred.promise;
         }
 
-        var getMeetingMembers = (id) => {
+        var getMeetingMembers = (id, date) => {
             var url = baseWebApiUrl + 'api/meeting/GetMeetingMembers';
             var deferred = $q.defer();
 
-            $http.get(url, {
-                params: {
-                    meetingId: id
-                }
-            })
+            $http.get(url,
+                {
+                    params: {
+                        meetingId: id,
+                        meetingDate: date
+                    }
+                })
                 .then(response => {
                     deferred.resolve(response.data);
                 }, (response) => {

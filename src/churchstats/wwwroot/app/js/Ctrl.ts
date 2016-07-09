@@ -45,6 +45,9 @@
         $scope.isNewUser = false;
         $scope.isNewMeeting = false;
 
+        
+        $scope.attendanceDate = new Date();
+
 
         $scope.haveRecorder = false;
         $scope.haveMeeting = false;
@@ -180,7 +183,7 @@
             $scope.haveMeeting = true;
             $scope.isNewMeeting = false;
             $localStorage.selectedMeetingId = $scope.selectedMeetingId = meeting.id;
-            getMeetingMembers(meeting.id);
+            getMeetingMembers(meeting.id, $scope.attendanceDate);
         };
 
 
@@ -291,8 +294,8 @@
             });
         }
 
-        function getMeetingMembers(meetingId: number) {
-            $scope.load = $dataService.getMeetingMembers(meetingId)
+        function getMeetingMembers(meetingId: number, attendanceDate: Date) {
+            $scope.load = $dataService.getMeetingMembers(meetingId, attendanceDate)
                 .then(data => {
                     $scope.fullMemberList = <modeltypings.UserViewModel>data;
                     filterMembersBySearch();
@@ -354,6 +357,19 @@
 
         // Event handler
 
+        $scope.changeAttendanceDate = () => {
+            if ($scope.haveRecorder) {
+                getMeetingMembers($scope.selectedMeetingId, $scope.attendanceDate);
+            }
+        };
+
+        $scope.changeAttendanceDateToday = () => {
+            if ($scope.haveRecorder && $scope.attendanceDate.toDateString() !== new Date().toDateString()) {
+                getMeetingMembers($scope.selectedMeetingId, new Date());
+                $scope.attendanceDate = new Date();
+            }            
+        }
+
 
         $scope.tbd = () => {
             alert('coming soon');
@@ -365,7 +381,7 @@
                 .done(() => {
                     hub.server.subscribe($scope.selectedMeetingId);
                 });
-            getMeetingMembers($scope.selectedMeetingId);
+            getMeetingMembers($scope.selectedMeetingId, $scope.attendanceDate);
         };
             
 
@@ -439,6 +455,7 @@
             var data = <modeltypings.XMeetingUserViewModel>{};
             data.meetingId = $scope.selectedMeetingId;
             data.userId = member.id;
+            data.effectiveDateAdded = $scope.attendanceDate;
             member.attendType = modeltypings.AttendTypeEnum.Unknown;
             updateMemberList(member);
 
@@ -464,6 +481,8 @@
                     var xref = <modeltypings.XMeetingUserViewModel>{};
                     xref.meetingId = $scope.selectedMeetingId;
                     xref.userId = user.id;
+                    xref.effectiveDateAdded = $scope.attendanceDate;
+
                     updateMemberList(user);
                     updateUserList(user);
 
@@ -503,7 +522,7 @@
             attendance.userId = item.id;
             attendance.id = item.attendanceId;
             attendance.attendType = item.attendType;
-            attendance.meetingDate = new Date();
+            attendance.meetingDate = $scope.attendanceDate;
 
             $dataService.saveAttendance(attendance)
                 .then((response) => {
@@ -650,7 +669,7 @@
                         $scope.initLoadCount++;
                         $scope.userList = <modeltypings.UserViewModel[]>data;
                         $scope.fullUserList = angular.copy($scope.userList);
-                    });;
+                    });
 
 
                 //Data for meetings
@@ -728,7 +747,7 @@
                 $scope.load = $dataService.saveUser(user)
                     .then(() => {
                         $scope.recorderName = newUserName;
-                        getMeetingMembers($scope.selectedMeetingId);
+                        getMeetingMembers($scope.selectedMeetingId, $scope.attendanceDate);
                     });
             },
                 () => {
