@@ -17,7 +17,7 @@ namespace NewData
         public int Id { get; set; }
         public int UserId { get; set; }
         public int MeetingId { get; set; }
-        public int RecorderId { get; set; }
+        public Nullable<int> RecorderId { get; set; }
         public System.DateTime DateRecorded { get; set; }
         public System.DateTime LastUpdated { get; set; }
         public Nullable<System.DateTime> MeetingDate { get; set; }

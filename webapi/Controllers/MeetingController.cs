@@ -118,7 +118,6 @@ namespace webapi.Controllers
 
             if (xref == null) return NotFound();
             xref.Active = false;
-            xref.LastDeactivatedDate = DateTime.Now;
             _ctx.SaveChanges();
 
             var subscribed = Hub.Clients.Group(data.MeetingId.ToString());
@@ -145,7 +144,6 @@ namespace webapi.Controllers
             }
             else
             {
-                xref.LastReactivatedDate = DateTime.Now;
                 xref.Active = true;
             }
 

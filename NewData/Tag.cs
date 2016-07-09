@@ -29,10 +29,10 @@ namespace NewData
         public Nullable<System.DateTime> LastUpdated { get; set; }
         public Nullable<int> LastEditedBy { get; set; }
     
-        public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<X_Meeting_Tag> X_Meeting_Tag { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<X_User_Tag> X_User_Tag { get; set; }
+        public virtual User User { get; set; }
     }
 }

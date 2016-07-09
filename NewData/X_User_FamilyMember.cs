@@ -12,13 +12,13 @@ namespace NewData
     using System;
     using System.Collections.Generic;
     
-    public partial class X_User_Tag
+    public partial class X_User_FamilyMember
     {
         public int UserId { get; set; }
-        public int TagId { get; set; }
-        public Nullable<System.DateTime> DateAdded { get; set; }
+        public int FamilyMemberUserId { get; set; }
+        public Nullable<System.DateTime> DateCreated { get; set; }
     
-        public virtual Tag Tag { get; set; }
         public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
     }
 }
