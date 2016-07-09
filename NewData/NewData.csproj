@@ -107,6 +107,9 @@
     <Compile Include="X_Meeting_Tag.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="X_User_FamilyMember.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="X_User_Meeting.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
