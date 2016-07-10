@@ -52,17 +52,8 @@ namespace webapi.Controllers
         public IHttpActionResult GetMeetingMembers(int meetingId, DateTime meetingDate)
         {
 
-            var users =
-                (from u in _ctx.Users
-                 join x in _ctx.X_User_Meeting on u.Id equals x.UserId
-                 where x.MeetingId == meetingId && 
-                 x.Active.Value && x.DateAdded <= meetingDate
-                 select u);
-
-            var userViewModels = _mapper.Map<List<UserViewModel>>(users);
 
             var attendances = (from a in _ctx.Attendances
-                join u in _ctx.Users on a.UserId equals u.Id
                 where a.MeetingId == meetingId
                       && (DbFunctions.TruncateTime(a.MeetingDate.Value) == DbFunctions.TruncateTime(meetingDate))
                 select new
@@ -73,9 +64,24 @@ namespace webapi.Controllers
                         a.RecorderId,
                         a.LastUpdated,
                         a.Notes
-                    }).ToList();
+                    });
+
+            var listXUserId =
+                _ctx.X_User_Meeting.Where(x => x.MeetingId == meetingId && x.Active.Value && x.DateAdded <= meetingDate)
+                    .Select(r => r.UserId);
+
+            var listUserId = attendances.Select(a => a.UserId);
+
+            var totalListUserId = listXUserId.Concat(listUserId).Distinct();
+
+            var users = (from u in _ctx.Users
+                join l in totalListUserId on u.Id equals l
+                select u);
+
+            var userViewModels = _mapper.Map<List<UserViewModel>>(users);
 
             var userList = _ctx.Users.ToList();
+
             foreach (var userViewModel in userViewModels)
             {
                 var match = attendances.FirstOrDefault(r => r.UserId == userViewModel.Id);

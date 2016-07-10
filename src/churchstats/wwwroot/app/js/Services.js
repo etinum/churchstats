@@ -67,7 +67,6 @@
         }
         var baseWebApiUrl = $envService.read('apiUrl');
         var alertFailed = function (response) {
-            alert("There was a problem with the back end call, here is your status code: " + response.status);
         };
         var getAllUsers = function () {
             var url = baseWebApiUrl + 'api/User/GetAllUsers';

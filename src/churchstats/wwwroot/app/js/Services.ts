@@ -93,7 +93,7 @@
 
         // Error messages
         var alertFailed = (response) => {
-            alert("There was a problem with the back end call, here is your status code: " + response.status);
+          //  alert("There was a problem with the back end call, here is your status code: " + response.status);
         };
 
 

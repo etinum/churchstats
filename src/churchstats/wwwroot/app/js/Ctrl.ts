@@ -547,7 +547,6 @@
         $scope.removeMemberFromMeeting = (id: number) => {
 
             if (!isTodaysDate()) {
-                $scope.open();
                 alert("Members cannot be delete for historical meetings.");
                 return;
             }
