@@ -8,7 +8,7 @@ namespace webapi.ViewModels
         public int UserId { get; set; }
         public int MeetingId { get; set; }
         public MemberTypeEnum? MemberType { get; set; }
-        public DateTime? EffectiveDateAdded { get; set; }
+        public DateTime? EffectiveDate { get; set; }
 
     }
 }

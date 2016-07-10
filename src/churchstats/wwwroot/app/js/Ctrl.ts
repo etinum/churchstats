@@ -48,6 +48,7 @@
         
         $scope.attendanceDate = new Date();
         $scope.isHistorical = false;
+        $scope.todayDate = new Date();
 
 
         $scope.haveRecorder = false;
@@ -355,6 +356,9 @@
             lastAction = Date.now();
         }
 
+        function isTodaysDate() : boolean {
+            return ($scope.attendanceDate.toDateString() === new Date().toDateString());
+        }
 
         // Event handler
 
@@ -462,7 +466,7 @@
             var data = <modeltypings.XMeetingUserViewModel>{};
             data.meetingId = $scope.selectedMeetingId;
             data.userId = member.id;
-            data.effectiveDateAdded = $scope.attendanceDate;
+            data.effectiveDate = $scope.attendanceDate;
             member.attendType = modeltypings.AttendTypeEnum.Unknown;
             updateMemberList(member);
 
@@ -488,7 +492,7 @@
                     var xref = <modeltypings.XMeetingUserViewModel>{};
                     xref.meetingId = $scope.selectedMeetingId;
                     xref.userId = user.id;
-                    xref.effectiveDateAdded = $scope.attendanceDate;
+                    xref.effectiveDate = $scope.attendanceDate;
 
                     updateMemberList(user);
                     updateUserList(user);
@@ -542,9 +546,16 @@
 
         $scope.removeMemberFromMeeting = (id: number) => {
 
+            if (!isTodaysDate()) {
+                $scope.open();
+                alert("Members cannot be delete for historical meetings.");
+                return;
+            }
+
             var xrf = <modeltypings.XMeetingUserViewModel>{};
             xrf.userId = id;
             xrf.meetingId = $scope.selectedMeetingId;
+            xrf.effectiveDate = $scope.attendanceDate;
 
             $dataService.removeMemberFromMeeting(xrf)
                 .then(() => {
@@ -580,19 +591,19 @@
 
 
 
-        $scope.memberGridLpEnd = (item) => {
-            item.fire = 0;
+        $scope.memberGridLpEnd = (item: modeltypings.UserViewModel) => {
+            item.longPressActive = 0;
             $timeout(() => {
-                $scope.open();
+                $scope.openMemberOptionsDialog(item);
             }, 150);
         };
 
-        $scope.memberGridLp = (item) => {
-            item.fire = 1;
+        $scope.memberGridLp = (item: modeltypings.UserViewModel) => {
+            item.longPressActive = 1;
             $scope.justLp = true;
             $scope.longPressTimeout = $timeout(() => {
                 $scope.justLp = false;
-                item.fire = 0;
+                item.longPressActive = 0;
             }, 1500);
         };
 
@@ -793,6 +804,49 @@
 
         }
 
+        $scope.openMemberOptionsDialog = (memberVm: modeltypings.UserViewModel) => {
+
+
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'memberOptions.html',
+                controller: 'memberOptionsCtrl',
+                size: 'sm',
+                resolve: {
+                    data: () => {
+                        return memberVm;
+                    }
+                }
+
+            });
+
+            modalInstance.result.then((actionType: string) => {
+
+
+                switch (actionType) {
+                case 'late':
+                     break;
+                case 'visitor':
+                    break;
+                case 'notes':
+                    break;
+                case 'remove':
+                    $scope.removeMemberFromMeeting(memberVm.id);
+                    break;
+
+                default:
+                }
+
+
+            },
+                () => {
+
+                });
+
+        }
+
+
+
     };
 
     controller.$inject = ['$scope', '$location', 'dataService', '$window', '$uibModal', '$interval', '$timeout', '$localStorage'];
@@ -862,4 +916,26 @@
     };
     controller.$inject = ['$scope', '$uibModalInstance', '$timeout', '$window', 'data'];
     app.controller('saveMeetingCtrl', controller);
+})(angular.module("repoFormsApp"));
+
+
+(app => {
+    var controller = ($scope, $uibModalInstance, $timeout, $window, data) => {
+
+
+        $scope.memberVm = <modeltypings.UserViewModel>data;
+
+
+        $scope.optionSelected = (type: string) => {
+            $uibModalInstance.close(type);
+        };
+
+        $scope.cancel = () => {
+            $uibModalInstance.dismiss();
+        }
+
+
+    };
+    controller.$inject = ['$scope', '$uibModalInstance', '$timeout', '$window', 'data'];
+    app.controller('memberOptionsCtrl', controller);
 })(angular.module("repoFormsApp"));

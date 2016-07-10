@@ -3,6 +3,6 @@
 		userId: number;
 		meetingId: number;
 		memberType: any;
-		effectiveDateAdded: Date;
+		effectiveDate: Date;
 	}
 }

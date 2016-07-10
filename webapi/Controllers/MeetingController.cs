@@ -105,7 +105,7 @@ namespace webapi.Controllers
                 _ctx.Attendances.FirstOrDefault(
                     r =>
                         r.UserId == data.UserId && r.MeetingId == data.MeetingId &&
-                        r.DateRecorded > DateTime.Today);
+                        DbFunctions.TruncateTime(r.DateRecorded) == DbFunctions.TruncateTime(data.EffectiveDate.Value));
 
             if (attrec != null)
             {
@@ -137,7 +137,7 @@ namespace webapi.Controllers
                 xref = _ctx.X_User_Meeting.Create();
                 xref.UserId = data.UserId;
                 xref.MeetingId = data.MeetingId;
-                xref.DateAdded = data.EffectiveDateAdded ?? DateTime.Now;
+                xref.DateAdded = data.EffectiveDate ?? DateTime.Now;
                 xref.Active = true;
                 _ctx.X_User_Meeting.Add(xref);
 

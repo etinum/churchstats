@@ -27,6 +27,8 @@ declare module modeltypings {
         lastRecorded: Date;
         attendanceNotes: string;
 
+        longPressActive: number;
+
     }
 
     interface MeetingViewModel {
@@ -58,7 +60,7 @@ declare module modeltypings {
         userId: number;
         meetingId: number;
         memberType: MemberTypeEnum;
-        effectiveDateAdded: Date;
+        effectiveDate: Date;
     }
 
     interface AttendanceViewModel {

@@ -16,6 +16,7 @@
         $scope.isNewMeeting = false;
         $scope.attendanceDate = new Date();
         $scope.isHistorical = false;
+        $scope.todayDate = new Date();
         $scope.haveRecorder = false;
         $scope.haveMeeting = false;
         $scope.selectedUserId = 0;
@@ -259,6 +260,9 @@
         function idleReset() {
             lastAction = Date.now();
         }
+        function isTodaysDate() {
+            return ($scope.attendanceDate.toDateString() === new Date().toDateString());
+        }
         $scope.changeAttendanceDate = function () {
             if ($scope.haveRecorder) {
                 getMeetingMembers($scope.selectedMeetingId, $scope.attendanceDate);
@@ -338,7 +342,7 @@
             var data = {};
             data.meetingId = $scope.selectedMeetingId;
             data.userId = member.id;
-            data.effectiveDateAdded = $scope.attendanceDate;
+            data.effectiveDate = $scope.attendanceDate;
             member.attendType = 3;
             updateMemberList(member);
             $scope.load = $dataService.addMemberToMeeting(data)
@@ -357,7 +361,7 @@
                 var xref = {};
                 xref.meetingId = $scope.selectedMeetingId;
                 xref.userId = user.id;
-                xref.effectiveDateAdded = $scope.attendanceDate;
+                xref.effectiveDate = $scope.attendanceDate;
                 updateMemberList(user);
                 updateUserList(user);
                 $scope.load = $dataService.addMemberToMeeting(xref)
@@ -398,9 +402,15 @@
             updateCounts($scope.memberList);
         };
         $scope.removeMemberFromMeeting = function (id) {
+            if (!isTodaysDate()) {
+                $scope.open();
+                alert("Members cannot be delete for historical meetings.");
+                return;
+            }
             var xrf = {};
             xrf.userId = id;
             xrf.meetingId = $scope.selectedMeetingId;
+            xrf.effectiveDate = $scope.attendanceDate;
             $dataService.removeMemberFromMeeting(xrf)
                 .then(function () {
                 removeMember(xrf);
@@ -423,17 +433,17 @@
             location.reload();
         };
         $scope.memberGridLpEnd = function (item) {
-            item.fire = 0;
+            item.longPressActive = 0;
             $timeout(function () {
-                $scope.open();
+                $scope.openMemberOptionsDialog(item);
             }, 150);
         };
         $scope.memberGridLp = function (item) {
-            item.fire = 1;
+            item.longPressActive = 1;
             $scope.justLp = true;
             $scope.longPressTimeout = $timeout(function () {
                 $scope.justLp = false;
-                item.fire = 0;
+                item.longPressActive = 0;
             }, 1500);
         };
         $scope.testApi = function () {
@@ -575,6 +585,34 @@
             }, function () {
             });
         };
+        $scope.openMemberOptionsDialog = function (memberVm) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'memberOptions.html',
+                controller: 'memberOptionsCtrl',
+                size: 'sm',
+                resolve: {
+                    data: function () {
+                        return memberVm;
+                    }
+                }
+            });
+            modalInstance.result.then(function (actionType) {
+                switch (actionType) {
+                    case 'late':
+                        break;
+                    case 'visitor':
+                        break;
+                    case 'notes':
+                        break;
+                    case 'remove':
+                        $scope.removeMemberFromMeeting(memberVm.id);
+                        break;
+                    default:
+                }
+            }, function () {
+            });
+        };
     };
     controller.$inject = ['$scope', '$location', 'dataService', '$window', '$uibModal', '$interval', '$timeout', '$localStorage'];
     app.controller('homeCtrl', controller);
@@ -623,5 +661,18 @@
     };
     controller.$inject = ['$scope', '$uibModalInstance', '$timeout', '$window', 'data'];
     app.controller('saveMeetingCtrl', controller);
+})(angular.module("repoFormsApp"));
+(function (app) {
+    var controller = function ($scope, $uibModalInstance, $timeout, $window, data) {
+        $scope.memberVm = data;
+        $scope.optionSelected = function (type) {
+            $uibModalInstance.close(type);
+        };
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss();
+        };
+    };
+    controller.$inject = ['$scope', '$uibModalInstance', '$timeout', '$window', 'data'];
+    app.controller('memberOptionsCtrl', controller);
 })(angular.module("repoFormsApp"));
 //# sourceMappingURL=Ctrl.js.map
