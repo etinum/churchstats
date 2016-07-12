@@ -21,7 +21,7 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ChurchStats", "src\churchst
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicTest", "LogicTest\LogicTest.csproj", "{3615AE2C-8249-4C90-AACE-6A2085453958}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "newdata", "NewData\newdata.csproj", "{C6F312CE-DC25-4997-8F1B-3C346C2068D1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "data", "NewData\data.csproj", "{C6F312CE-DC25-4997-8F1B-3C346C2068D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
