@@ -16,7 +16,8 @@
         $scope.isNewMeeting = false;
         $scope.attendanceDate = new Date();
         $scope.isHistorical = false;
-        $scope.todayDate = new Date();
+        $scope.dateOptions = {};
+        $scope.dateOptions.maxDate = new Date();
         $scope.haveRecorder = false;
         $scope.haveMeeting = false;
         $scope.selectedUserId = 0;
@@ -241,6 +242,7 @@
             user.lastName = $dataService.capitalizeFirstLetter(name.split(' ')[1]);
             ;
             user.fullName = user.firstName + ' ' + user.lastName;
+            return user;
         }
         ;
         var removeMember = function (data) {

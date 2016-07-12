@@ -48,7 +48,8 @@
         
         $scope.attendanceDate = new Date();
         $scope.isHistorical = false;
-        $scope.todayDate = new Date();
+        $scope.dateOptions = {};
+        $scope.dateOptions.maxDate = new Date();
 
 
         $scope.haveRecorder = false;
@@ -330,6 +331,7 @@
             user.firstName = $dataService.capitalizeFirstLetter(name.split(' ')[0]);
             user.lastName = $dataService.capitalizeFirstLetter(name.split(' ')[1]);;
             user.fullName = user.firstName + ' ' + user.lastName;
+            return user;
         };
 
 
@@ -361,6 +363,7 @@
         }
 
         // Event handler
+
 
         $scope.changeAttendanceDate = () => {
             if ($scope.haveRecorder) {

@@ -17,7 +17,7 @@
                     <p class="input-group">
                         <input id="attendanceDate" name="attendanceDate" type="text" ng-click="attendanceDatePopup = !attendanceDatePopup" class="form-control" uib-datepicker-popup="{{format}}"
                                ng-model="attendanceDate" ng-change="changeAttendanceDate()" is-open="attendanceDatePopup" datepicker-options="dateOptions" ng-required="true"
-                               close-text="Close" alt-input-formats="altInputFormats" max-date="todayDate" readonly />
+                               close-text="Close" alt-input-formats="altInputFormats" readonly />
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-primary" ng-click="changeAttendanceDateToday()">Today</button>
                         </span>
@@ -126,7 +126,7 @@
 
                         <div class="btn-toolbar">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-primary" style="margin-bottom: 10px" ng-model="showAddMember" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
+                                <button type="button" class="btn btn-primary" style="margin-bottom: 10px" ng-model="showAddMember" ng-click="globalSearchString='';addMeetingMembers=''; filterMembersBySearch()" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
                                     <i class="glyphicon" ng-class="{'glyphicon-plus': !showAddMember, 'glyphicon-search': showAddMember}">
                                     </i>
                                 </button>
