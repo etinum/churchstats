@@ -26,13 +26,14 @@ namespace NewData
         public Nullable<bool> Active { get; set; }
         public Nullable<int> TagType { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
-        public Nullable<System.DateTime> LastUpdated { get; set; }
-        public Nullable<int> LastEditedBy { get; set; }
+        public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public Nullable<int> ModifiedByUserId { get; set; }
+        public Nullable<System.DateTime> CreatedByUserId { get; set; }
     
+        public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<X_Meeting_Tag> X_Meeting_Tag { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<X_User_Tag> X_User_Tag { get; set; }
-        public virtual User User { get; set; }
     }
 }

@@ -16,8 +16,10 @@ namespace NewData
     {
         public int MeetingId { get; set; }
         public int TagId { get; set; }
-        public Nullable<System.DateTime> DateCreated { get; set; }
-        public Nullable<int> LastEditedBy { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<int> ModifiedByUserId { get; set; }
+        public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public Nullable<System.DateTime> CreatedByUserId { get; set; }
     
         public virtual Meeting Meeting { get; set; }
         public virtual Tag Tag { get; set; }

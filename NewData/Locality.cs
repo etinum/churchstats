@@ -26,9 +26,10 @@ namespace NewData
         public Nullable<int> ContactInfoId { get; set; }
         public string Notes { get; set; }
         public byte[] Photo { get; set; }
-        public Nullable<System.DateTime> DateCreated { get; set; }
-        public Nullable<System.DateTime> LastUpdated { get; set; }
-        public Nullable<int> LastEditedBy { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public Nullable<int> ModifiedByUserId { get; set; }
+        public Nullable<System.DateTime> CreatedByUserId { get; set; }
     
         public virtual Address Address { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }

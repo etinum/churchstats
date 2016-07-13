@@ -16,7 +16,10 @@ namespace NewData
     {
         public int UserId { get; set; }
         public int FamilyMemberUserId { get; set; }
-        public Nullable<System.DateTime> DateCreated { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public Nullable<System.DateTime> CreatedByUserId { get; set; }
+        public Nullable<System.DateTime> ModifiedByUserId { get; set; }
     
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }

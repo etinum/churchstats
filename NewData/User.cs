@@ -24,6 +24,7 @@ namespace NewData
             this.Localities = new HashSet<Locality>();
             this.Meetings = new HashSet<Meeting>();
             this.Meetings1 = new HashSet<Meeting>();
+            this.Roles = new HashSet<Role>();
             this.Tags = new HashSet<Tag>();
             this.User1 = new HashSet<User>();
             this.X_AdminUser_Meeting = new HashSet<X_AdminUser_Meeting>();
@@ -49,9 +50,10 @@ namespace NewData
         public Nullable<int> AddressId { get; set; }
         public Nullable<int> ContactInfoId { get; set; }
         public Nullable<int> LocalityId { get; set; }
-        public Nullable<System.DateTime> DateCreated { get; set; }
-        public Nullable<System.DateTime> LastUpdated { get; set; }
-        public Nullable<int> LastEditedBy { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public Nullable<int> ModifiedByUserId { get; set; }
+        public Nullable<System.DateTime> CreatedByUserId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Address> Addresses { get; set; }
@@ -70,6 +72,8 @@ namespace NewData
         public virtual ICollection<Meeting> Meetings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Meeting> Meetings1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Role> Roles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Tag> Tags { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
