@@ -72,6 +72,7 @@
     <Compile Include="ModelExt\AddressExt.cs" />
     <Compile Include="ModelExt\AttendanceExt.cs" />
     <Compile Include="ModelExt\ContactInfoExt.cs" />
+    <Compile Include="ModelExt\CStatsEntitiesExt.cs" />
     <Compile Include="ModelExt\IAuditedEntity.cs" />
     <Compile Include="ModelExt\LocalityExt.cs" />
     <Compile Include="ModelExt\MeetingExt.cs" />

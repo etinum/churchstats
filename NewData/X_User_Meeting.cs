@@ -19,10 +19,10 @@ namespace Data
         public Nullable<MemberTypeEnum> MemberType { get; set; }
         public Nullable<bool> Active { get; set; }
         public Nullable<System.DateTime> EffectiveDate { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<int> CreatedByUserId { get; set; }
+        public Nullable<int> ModifiedByUserId { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
-        public Nullable<System.DateTime> CreatedByUserId { get; set; }
-        public Nullable<System.DateTime> ModifiedByUserId { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
     
         public virtual Meeting Meeting { get; set; }
         public virtual User User { get; set; }

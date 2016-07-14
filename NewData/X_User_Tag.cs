@@ -17,10 +17,10 @@ namespace Data
         public int UserId { get; set; }
         public int TagId { get; set; }
         public Nullable<System.DateTime> DateAdded { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<int> CreatedByUserId { get; set; }
+        public Nullable<int> ModifiedByUserId { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
-        public Nullable<System.DateTime> CreatedByUserId { get; set; }
-        public Nullable<System.DateTime> ModifiedByUserId { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
     
         public virtual Tag Tag { get; set; }
         public virtual User User { get; set; }

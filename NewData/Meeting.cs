@@ -32,10 +32,10 @@ namespace Data
         public Nullable<int> ContactInfoId { get; set; }
         public string Notes { get; set; }
         public Nullable<System.DateTime> UsualTime { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
-        public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public Nullable<int> CreatedByUserId { get; set; }
         public Nullable<int> ModifiedByUserId { get; set; }
-        public Nullable<System.DateTime> CreatedByUserId { get; set; }
+        public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
     
         public virtual Address Address { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -43,7 +43,6 @@ namespace Data
         public virtual ContactInfo ContactInfo { get; set; }
         public virtual MeetingType MeetingType { get; set; }
         public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<X_AdminUser_Meeting> X_AdminUser_Meeting { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

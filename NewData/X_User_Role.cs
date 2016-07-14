@@ -16,10 +16,10 @@ namespace Data
     {
         public int RoleId { get; set; }
         public int UserId { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<int> CreatedByUserId { get; set; }
+        public Nullable<int> ModifiedByUserId { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
-        public Nullable<System.DateTime> CreatedByUserId { get; set; }
-        public Nullable<System.DateTime> ModifiedByUserId { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
     
         public virtual Role Role { get; set; }
         public virtual User User { get; set; }
