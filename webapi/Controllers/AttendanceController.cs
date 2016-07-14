@@ -7,7 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Runtime.Remoting.Contexts;
 using System.Web.Http;
-using NewData;
+using Data;
 using webapi.Hubs;
 using webapi.Mappers;
 using webapi.ViewModels;
@@ -47,7 +47,7 @@ namespace webapi.Controllers
             if (attendanceViewModel.Id == 0)
             {
                 attendance = _mapper.Map<Attendance>(attendanceViewModel);
-                attendance.LastUpdated = DateTime.Now;
+                attendance.ModifiedDate = DateTime.Now;
                 attendance.DateRecorded = DateTime.Now;
                 _ctx.Attendances.Add(attendance);
 

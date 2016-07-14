@@ -7,8 +7,8 @@
     <ProjectGuid>{C6F312CE-DC25-4997-8F1B-3C346C2068D1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NewData</RootNamespace>
-    <AssemblyName>NewData</AssemblyName>
+    <RootNamespace>Data</RootNamespace>
+    <AssemblyName>Data</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -69,6 +69,22 @@
     <Compile Include="MemberTypeEnum.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="ModelExt\AddressExt.cs" />
+    <Compile Include="ModelExt\AttendanceExt.cs" />
+    <Compile Include="ModelExt\ContactInfoExt.cs" />
+    <Compile Include="ModelExt\IAuditedEntity.cs" />
+    <Compile Include="ModelExt\LocalityExt.cs" />
+    <Compile Include="ModelExt\MeetingExt.cs" />
+    <Compile Include="ModelExt\MeetingTypeExt.cs" />
+    <Compile Include="ModelExt\RoleExt.cs" />
+    <Compile Include="ModelExt\TagExt.cs" />
+    <Compile Include="ModelExt\UserExt.cs" />
+    <Compile Include="ModelExt\X_AdminUser_MeetingExt.cs" />
+    <Compile Include="ModelExt\X_Meeting_TagExt.cs" />
+    <Compile Include="ModelExt\X_User_FamilyMemberExt.cs" />
+    <Compile Include="ModelExt\X_User_MeetingExt.cs" />
+    <Compile Include="ModelExt\X_User_RoleExt.cs" />
+    <Compile Include="ModelExt\X_User_TagExt.cs" />
     <Compile Include="Role.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -156,6 +172,7 @@
       <DependentUpon>MemberTypeEnum.cs</DependentUpon>
     </TypeScriptCompile>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

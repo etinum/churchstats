@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NewData
+namespace Data
 {
     using System;
     using System.Data.Entity;

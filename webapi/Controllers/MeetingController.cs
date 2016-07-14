@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Web.Http;
 using webapi.ViewModels;
 using AutoMapper;
-using NewData;
+using Data;
 using webapi.Hubs;
 using webapi.Mappers;
 using webapi.Utils;

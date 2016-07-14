@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using NewData;
+using Data;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Text.RegularExpressions;
@@ -12,7 +12,7 @@ using AutoMapper;
 using webapi.Mappers;
 using webapi.Utils;
 using webapi.ViewModels;
-using User = NewData.User;
+using User = Data.User;
 
 namespace webapi.Controllers
 {
@@ -41,7 +41,7 @@ namespace webapi.Controllers
         [HttpPost]
         public IHttpActionResult SaveUser(UserViewModel userViewModel)
         {
-            var user = _mapper.Map<NewData.User>(userViewModel);
+            var user = _mapper.Map<Data.User>(userViewModel);
             if (user.Id == 0)
             {
                 user.DateCreated = DateTime.Now;
