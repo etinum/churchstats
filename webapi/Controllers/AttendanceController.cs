@@ -30,12 +30,6 @@ namespace webapi.Controllers
 
         }
 
-        //[HttpPost]
-        //public IEnumerable<AttendanceViewModel> GetMeetingUpdate(int meetingId, DateTime updatesSince)
-        //{
-        //    return _mapper.Map<IEnumerable<Attendance>,IEnumerable<AttendanceViewModel>>( _attendanceLogic.GetMeetingUpdate(meetingId, updatesSince));
-        //}
-
         // Save attendance instance and alert all the subscribed clients
         [HttpPost]
         public IHttpActionResult SaveAttendance(AttendanceViewModel attendanceViewModel)

@@ -8,13 +8,13 @@ namespace webapi.ViewModels
 
         public int Id { get; set; }
         public string FirstName { get; set; }
+        public string MiddleName { get; set; }
         public string LastName { get; set; }
         public bool? Gender { get; set; }
         public int? BirthYear { get; set; }
         public byte[] Picture { get; set; }
         public bool? IsSaved { get; set; }
         public bool? IsBaptized { get; set; }
-        public string MiddleName { get; set; }
         public string Notes { get; set; }
         public DateTime? BaptizedDate { get; set; }
         public DateTime? SavedDate { get; set; }

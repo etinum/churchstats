@@ -62,7 +62,7 @@ namespace webapi.Controllers
                         a.UserId,
                         a.AttendType,
                         a.RecorderId,
-                        a.LastUpdated,
+                        a.ModifiedDate,
                         a.Notes
                     });
 
@@ -93,7 +93,7 @@ namespace webapi.Controllers
                 userViewModel.AttendType = match.AttendType;
                 userViewModel.RecorderId = match.RecorderId;
                 userViewModel.AttendanceId = match.Id;
-                userViewModel.LastRecorded = match.LastUpdated;
+                userViewModel.LastRecorded = match.ModifiedDate;
                 userViewModel.AttendanceNotes = match.Notes;
                 var usermatch = userList.FirstOrDefault(r => r.Id == match.RecorderId);
                 if (usermatch != null) userViewModel.RecorderName = usermatch.FirstName + ' ' + usermatch.LastName;

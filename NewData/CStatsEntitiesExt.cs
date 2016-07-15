@@ -41,7 +41,6 @@ namespace Data
             foreach (var entity in modifiedAuditedEntities)
             {
                 entity.ModifiedDate = DateTime.Now;
-                entity.CreatedDate = DateTime.Now;
                 entity.ModifiedByUserId = _userId;
 
             }

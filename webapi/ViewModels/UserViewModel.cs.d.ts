@@ -2,13 +2,13 @@
 	interface UserViewModel {
 		id: number;
 		firstName: string;
+		middleName: string;
 		lastName: string;
 		gender: boolean;
 		birthYear: number;
 		picture: any[];
 		isSaved: boolean;
 		isBaptized: boolean;
-		middleName: string;
 		notes: string;
 		baptizedDate: Date;
 		savedDate: Date;

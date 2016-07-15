@@ -480,7 +480,7 @@
                 if (recorder.id != null) {
                     member.recorderId = data.recorderId;
                     member.recorderName = recorder.fullName;
-                    member.lastRecorded = data.lastUpdated;
+                    member.lastRecorded = data.modifiedDate;
                     member.attendanceId = data.id;
                     member.attendanceNotes = data.notes;
                 }

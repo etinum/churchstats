@@ -37,7 +37,7 @@
     var directive = ($parse, $timeout) => {
         return {
             restrict: 'A',
-            link: function ($scope, $elm, $attrs) {
+            link: ($scope, $elm, $attrs) => {
                 var timer;
                 $elm.bind('touchstart', onEnter);
                 $elm.bind('touchend', onExit);
@@ -55,11 +55,11 @@
                     //To handle click event properly
                     $scope.longPressSent = false;
                     // We'll set a timeout for 600 ms for a long press
-                    timer = $timeout(function () {
+                    timer = $timeout(() => {
                         $scope.longPressSent = true;
                         // If the touchend event hasn't fired,
                         // apply the function given in on the element's on-long-press attribute
-                        $scope.$apply(function () {
+                        $scope.$apply(() => {
                             functionHandler($scope, {
                                 $event: evt
                             });

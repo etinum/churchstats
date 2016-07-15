@@ -2,22 +2,25 @@ declare module modeltypings {
     interface UserViewModel {
         id: number;
         firstName: string;
+        middleName: string;
         lastName: string;
         gender: boolean;
         birthYear: number;
         picture: any[];
         isSaved: boolean;
         isBaptized: boolean;
-        middleName: string;
         notes: string;
         baptizedDate: Date;
         savedDate: Date;
         addressId: number;
         contactInfoId: number;
         localityId: number;
-        dateCreated: Date;
-        lastUpdated: Date;
-        lastEditedBy: number;
+        createdByUserId: number;
+        modifiedByUserId: number;
+        modifiedDate: Date;
+        createdDate: Date;
+
+
         fullName: string;
         fullNameRev: string;
         attendType: AttendTypeEnum;
@@ -41,9 +44,6 @@ declare module modeltypings {
         contactInfoId: number;
         notes: string;
         usualTime: Date;
-        dateCreated: Date;
-        lastUpdated: Date;
-        lastEditedBy: number;
     }
 
     interface MeetingTypeViewModel {
@@ -59,7 +59,8 @@ declare module modeltypings {
     interface XMeetingUserViewModel {
         userId: number;
         meetingId: number;
-        memberType: MemberTypeEnum;
+        memberType: any;
+        active: boolean;
         effectiveDate: Date;
     }
 
@@ -69,13 +70,15 @@ declare module modeltypings {
         meetingId: number;
         recorderId: number;
         dateRecorded: Date;
-        lastUpdated: Date;
         meetingDate: Date;
-		attendType: AttendTypeEnum;
-        memberType: MemberTypeEnum;
-        isVisitor: boolean;
+        attendType: any;
+        memberType: any;
         notes: string;
         isArchive: boolean;
+        createdByUserId: number;
+        modifiedByUserId: number;
+        modifiedDate: Date;
+        createdDate: Date;
 
     }
 

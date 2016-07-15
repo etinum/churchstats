@@ -23,17 +23,17 @@ namespace webapi.Utils
 
                 if (sourceValue != null)
                 {
-                    if (prop.PropertyType == typeof(string))
-                    {
-                        if (!string.IsNullOrWhiteSpace(sourceValue as string))
-                        {
-                            prop.SetValue(target, sourceValue, null);
-                        }
-                    }
-                    else
-                    {
+                    //if (prop.PropertyType == typeof(string))
+                    //{
+                    //    if (!string.IsNullOrWhiteSpace(sourceValue as string))
+                    //    {
+                    //        prop.SetValue(target, sourceValue, null);
+                    //    }
+                    //}
+                    //else
+                    //{
                         prop.SetValue(target, sourceValue, null);
-                    }
+                    //}
                 }
             }
             return target;
