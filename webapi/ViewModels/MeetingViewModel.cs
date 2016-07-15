@@ -13,9 +13,9 @@ namespace webapi.ViewModels
         public int? ContactInfoId { get; set; }
         public string Notes { get; set; }
         public DateTime? UsualTime { get; set; }
-        public DateTime? DateCreated { get; set; }
-        public DateTime? LastUpdated { get; set; }
-        public int? LastEditedBy { get; set; }
-
+        public int? CreatedByUserId { get; set; }
+        public int? ModifiedByUserId { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 namespace Data
 {
-    public partial class Role : IAuditedEntity
+    public partial class X_User_Role : IAuditedEntity
     {
 
     }

@@ -47,7 +47,6 @@ namespace webapi.Controllers
             if (attendanceViewModel.Id == 0)
             {
                 attendance = _mapper.Map<Attendance>(attendanceViewModel);
-                attendance.ModifiedDate = DateTime.Now;
                 attendance.DateRecorded = DateTime.Now;
                 _ctx.Attendances.Add(attendance);
 
@@ -60,7 +59,6 @@ namespace webapi.Controllers
 
                 if (attendance != null)
                 {
-                    attendance.LastUpdated = DateTime.Now;
                     attendance.AttendType = attendanceViewModel.AttendType;
                     attendance.RecorderId = attendanceViewModel.RecorderId;
                 }

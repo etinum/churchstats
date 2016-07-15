@@ -1,6 +1,6 @@
 namespace Data
 {
-    public partial class Tag : IAuditedEntity
+    public partial class X_User_Tag : IAuditedEntity
     {
 
     }

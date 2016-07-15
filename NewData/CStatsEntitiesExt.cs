@@ -9,11 +9,16 @@ namespace Data
 {
     public partial class CStatsEntities : DbContext
     {
+        private readonly int _userId;
+
+        public CStatsEntities(int userId)
+        {
+            _userId = userId;
+        }
 
         public override int SaveChanges()
         {
 
-            var entityList = ChangeTracker.Entries();
 
             var addedAuditedEntities = ChangeTracker.Entries<IAuditedEntity>()
               .Where(p => p.State == EntityState.Added)
@@ -28,6 +33,8 @@ namespace Data
             {
                 entity.CreatedDate = DateTime.Now;
                 entity.ModifiedDate = DateTime.Now;
+                entity.CreatedByUserId = _userId;
+                entity.ModifiedByUserId = _userId;
 
             }
 
@@ -35,6 +42,8 @@ namespace Data
             {
                 entity.ModifiedDate = DateTime.Now;
                 entity.CreatedDate = DateTime.Now;
+                entity.ModifiedByUserId = _userId;
+
             }
 
 

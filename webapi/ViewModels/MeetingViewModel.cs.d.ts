@@ -9,8 +9,9 @@
 		contactInfoId: number;
 		notes: string;
 		usualTime: Date;
-		dateCreated: Date;
-		lastUpdated: Date;
-		lastEditedBy: number;
+		createdByUserId: number;
+		modifiedByUserId: number;
+		modifiedDate: Date;
+		createdDate: Date;
 	}
 }

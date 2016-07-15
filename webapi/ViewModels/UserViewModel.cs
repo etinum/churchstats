@@ -21,9 +21,12 @@ namespace webapi.ViewModels
         public int? AddressId { get; set; }
         public int? ContactInfoId { get; set; }
         public int? LocalityId { get; set; }
-        public DateTime? DateCreated { get; set; }
-        public DateTime? LastUpdated { get; set; }
-        public int? LastEditedBy { get; set; }
+        public int? CreatedByUserId { get; set; }
+        public int? ModifiedByUserId { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
+
+
         public string FullName => FirstName + " " + LastName;
         public string FullNameRev => LastName + ", " + FirstName;
 

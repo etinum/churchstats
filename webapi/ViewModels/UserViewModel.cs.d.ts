@@ -15,9 +15,10 @@
 		addressId: number;
 		contactInfoId: number;
 		localityId: number;
-		dateCreated: Date;
-		lastUpdated: Date;
-		lastEditedBy: number;
+		createdByUserId: number;
+		modifiedByUserId: number;
+		modifiedDate: Date;
+		createdDate: Date;
 		attendType: any;
 		recorderId: number;
 		recorderName: string;

@@ -67,7 +67,7 @@ namespace webapi.Controllers
                     });
 
             var listXUserId =
-                _ctx.X_User_Meeting.Where(x => x.MeetingId == meetingId && x.Active.Value && x.DateAdded <= meetingDate)
+                _ctx.X_User_Meeting.Where(x => x.MeetingId == meetingId && x.Active.Value && x.EffectiveDate <= meetingDate)
                     .Select(r => r.UserId);
 
             var listUserId = attendances.Select(a => a.UserId);
@@ -143,7 +143,7 @@ namespace webapi.Controllers
                 xref = _ctx.X_User_Meeting.Create();
                 xref.UserId = data.UserId;
                 xref.MeetingId = data.MeetingId;
-                xref.DateAdded = data.EffectiveDate ?? DateTime.Now;
+                xref.EffectiveDate = data.EffectiveDate ?? DateTime.Now;
                 xref.Active = true;
                 _ctx.X_User_Meeting.Add(xref);
 
@@ -182,7 +182,6 @@ namespace webapi.Controllers
 
             if (meeting.Id == 0)
             {
-                meeting.DateCreated = DateTime.Now;
                 meeting.DayOfTheWeek = (int) DateTime.Now.DayOfWeek;
                 _ctx.Meetings.Add(meeting);
 

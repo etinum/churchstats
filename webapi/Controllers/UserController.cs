@@ -44,8 +44,6 @@ namespace webapi.Controllers
             var user = _mapper.Map<Data.User>(userViewModel);
             if (user.Id == 0)
             {
-                user.DateCreated = DateTime.Now;
-                user.LastUpdated = DateTime.Now;
                 _ctx.Users.Add(user);
             }
             else
