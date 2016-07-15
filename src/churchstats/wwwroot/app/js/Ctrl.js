@@ -468,7 +468,7 @@
         hub.client.UpdateAttendance = function (data) {
             var member = {};
             var recorder = {};
-            if (data.recorderId === 0) {
+            if (data.recorderId === 0 || !data.recorderId) {
                 member = $scope.fullUserList.filter(function (item) { return item.id === data.userId; })[0];
             }
             else {

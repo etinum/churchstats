@@ -643,7 +643,7 @@
             var member = <modeltypings.UserViewModel>{};
             var recorder = <modeltypings.UserViewModel>{};
 
-            if (data.recorderId === 0) {
+            if (data.recorderId === 0 || !data.recorderId) {
                 member = $scope.fullUserList.filter(item => item.id === data.userId)[0];
             } else {
                 member = $scope.fullMemberList.filter(item => item.id === data.userId)[0];
