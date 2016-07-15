@@ -93,7 +93,6 @@
                 }
                 else {
                     setupMeetingField(meeting);
-                    hub.server.subscribe($scope.selectedMeetingId);
                     $interval(function () {
                         checkIdleRefresh();
                     }, 60 * 1000);
@@ -119,7 +118,11 @@
             $scope.haveMeeting = true;
             $scope.isNewMeeting = false;
             $localStorage.selectedMeetingId = $scope.selectedMeetingId = meeting.id;
-            getMeetingMembers(meeting.id, $scope.attendanceDate);
+            $.connection.hub.start()
+                .done(function () {
+                hub.server.subscribe($scope.selectedMeetingId);
+                getMeetingMembers(meeting.id, $scope.attendanceDate);
+            });
         }
         ;
         function gridAdjustBySize() {

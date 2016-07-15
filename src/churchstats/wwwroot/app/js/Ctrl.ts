@@ -153,8 +153,6 @@
 
                     setupMeetingField(meeting);
 
-                    hub.server.subscribe($scope.selectedMeetingId);
-
                     $interval(() => {
                         checkIdleRefresh();
                     },
@@ -186,7 +184,11 @@
             $scope.haveMeeting = true;
             $scope.isNewMeeting = false;
             $localStorage.selectedMeetingId = $scope.selectedMeetingId = meeting.id;
-            getMeetingMembers(meeting.id, $scope.attendanceDate);
+            $.connection.hub.start()
+                .done(() => {
+                    hub.server.subscribe($scope.selectedMeetingId);
+                    getMeetingMembers(meeting.id, $scope.attendanceDate);
+                });
         };
 
 
