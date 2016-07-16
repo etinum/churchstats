@@ -20,7 +20,7 @@ AS
             WHERE   UserId = @UserIdToRemove;
         END TRY
         BEGIN CATCH
-            PRINT 'error trying to replace in x_user_meeting table';
+            PRINT 'error trying to replace in x_user_meeting table -- deleting instead';
             DELETE  FROM dbo.X_User_Meeting
             WHERE   UserId = @UserIdToRemove;
         END CATCH;
@@ -39,3 +39,4 @@ AS
         WHERE   Id = @UserIdToRemove;
 	
     END;
+DELETE FROM dbo.[User] WHERE id = 283
