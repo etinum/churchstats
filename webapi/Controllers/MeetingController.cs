@@ -42,9 +42,17 @@ namespace webapi.Controllers
         [HttpGet]
         public IHttpActionResult GetAllMeetingTypes()
         {
-            var meetingTypes = _ctx.MeetingTypes.ToList();
+            try
+            {
+                var meetingTypes = _ctx.MeetingTypes.ToList();
+                return Ok(_mapper.Map<List<MeetingTypeViewModel>>(meetingTypes));
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex);
 
-            return Ok(_mapper.Map<List<MeetingTypeViewModel>>(meetingTypes));
+            }
+            
         }
 
 
