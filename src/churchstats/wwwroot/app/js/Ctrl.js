@@ -245,6 +245,7 @@
             user.lastName = $dataService.capitalizeFirstLetter(name.split(' ')[1]);
             ;
             user.fullName = user.firstName + ' ' + user.lastName;
+            user.fullNameRev = user.lastName + ', ' + user.firstName;
             return user;
         }
         ;
