@@ -13,7 +13,8 @@ namespace Data
     
     public enum MemberTypeEnum : int
     {
-        Visitor = 1,
-        Returning = 2
+        Normal = 1,
+        Returning = 2,
+        Visitor = 3
     }
 }

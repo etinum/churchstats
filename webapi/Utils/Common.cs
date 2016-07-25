@@ -14,7 +14,7 @@ namespace webapi.Utils
             foreach (var prop in typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
 
-                if (prop.Name.Contains("id"))
+                if (prop.Name.Equals("id"))
                 {
                     continue;
                 }
@@ -23,17 +23,9 @@ namespace webapi.Utils
 
                 if (sourceValue != null)
                 {
-                    //if (prop.PropertyType == typeof(string))
-                    //{
-                    //    if (!string.IsNullOrWhiteSpace(sourceValue as string))
-                    //    {
-                    //        prop.SetValue(target, sourceValue, null);
-                    //    }
-                    //}
-                    //else
-                    //{
-                        prop.SetValue(target, sourceValue, null);
-                    //}
+
+                    prop.SetValue(target, sourceValue, null);
+
                 }
             }
             return target;

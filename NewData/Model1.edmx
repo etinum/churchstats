@@ -754,8 +754,9 @@
           <Member Name="Late" Value="4" />
         </EnumType>
         <EnumType Name="MemberTypeEnum">
-        <Member Name="Visitor" Value="1" />
+          <Member Name="Normal" Value="1" />
           <Member Name="Returning" Value="2" />
+          <Member Name="Visitor" Value="3" />
         </EnumType>
         <EntityType Name="Address">
           <Key>

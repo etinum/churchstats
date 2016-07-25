@@ -230,30 +230,56 @@
             switch ($scope.sortNameType) {
                 case 'FA':
                     $scope.fullMemberList.sort((a, b) => {
-                        if (a.firstName < b.firstName) return -1;
-                        if (a.firstName > b.firstName) return 1;
-                        return 0;
+                        if (a.firstName === b.firstName) {
+                            if (a.lastName < b.lastName) return -1;
+                            if (a.lastName > b.lastName) return 1;
+                            return 0;                            
+                        } else {
+                            if (a.firstName < b.firstName) return -1;
+                            if (a.firstName > b.firstName) return 1;                            
+                            return 0;
+                        }
+
                     });
                     break;
                 case 'FD':
                     $scope.fullMemberList.sort((a, b) => {
-                        if (a.firstName > b.firstName) return -1;
-                        if (a.firstName < b.firstName) return 1;
-                        return 0;
+                        if (a.firstName === b.firstName) {
+                            if (a.lastName > b.lastName) return -1;
+                            if (a.lastName < b.lastName) return 1;
+                            return 0;
+                        } else {
+                            if (a.firstName > b.firstName) return -1;
+                            if (a.firstName < b.firstName) return 1;
+                            return 0;
+                        }
                     });
                     break;
                 case 'LA':
                     $scope.fullMemberList.sort((a, b) => {
-                        if (a.lastName < b.lastName) return -1;
-                        if (a.lastName > b.lastName) return 1;
-                        return 0;
+                        if (a.lastName === b.lastName) {
+                            if (a.firstName < b.firstName) return -1;
+                            if (a.firstName > b.firstName) return 1;
+                            return 0;
+                        } else {
+                            if (a.lastName < b.lastName) return -1;
+                            if (a.lastName > b.lastName) return 1;
+                            return 0;
+                        }
+
                     });
                     break;
                 case 'LD':
                     $scope.fullMemberList.sort((a, b) => {
-                        if (a.lastName > b.lastName) return -1;
-                        if (a.lastName < b.lastName) return 1;
-                        return 0;
+                        if (a.lastName === b.lastName) {
+                            if (a.firstName > b.firstName) return -1;
+                            if (a.firstName < b.firstName) return 1;
+                            return 0;
+                        } else {
+                            if (a.lastName > b.lastName) return -1;
+                            if (a.lastName < b.lastName) return 1;
+                            return 0;
+                        }
                     });
                     break;
                 default:
@@ -320,8 +346,11 @@
 
         function parseNameForUser(user: modeltypings.UserViewModel, name: string) {
 
-            if (name.split(' ').length !== 2) {
-                alert('Sorry, we accept first and last name only');
+
+            var names = name.split(' ');
+
+            if (names.length !== 2 && names.length !== 3) {
+                alert('Must have at least first and last name or first middle last.  ');
                 return null;
             }
 
@@ -330,10 +359,20 @@
                 return null;
             }
 
-            user.firstName = $dataService.capitalizeFirstLetter(name.split(' ')[0]);
-            user.lastName = $dataService.capitalizeFirstLetter(name.split(' ')[1]);;
-            user.fullName = user.firstName + ' ' + user.lastName;
-            user.fullNameRev = user.lastName + ', ' + user.firstName;
+
+            if (names.length > 2) {
+                user.firstName = $dataService.capitalizeFirstLetter(names[0]);
+                user.lastName = $dataService.capitalizeFirstLetter(names[2]);
+                user.middleName = $dataService.capitalizeFirstLetter(names[1]);
+                user.fullName = user.firstName + ' ' + user.middleName + ' ' + user.lastName;
+                user.fullNameRev = user.lastName + ', ' + user.firstName + ' ' + user.middleName;
+            } else {
+                user.firstName = $dataService.capitalizeFirstLetter(names[0]);
+                user.lastName = $dataService.capitalizeFirstLetter(names[1]);
+                user.fullName = user.firstName + ' ' + user.lastName;
+                user.fullNameRev = user.lastName + ', ' + user.firstName;
+            }
+
             return user;
         };
 
@@ -834,6 +873,10 @@
                 case 'visitor':
                     break;
                 case 'notes':
+                        $timeout(() => {
+                            $scope.openMemberEditDialog(memberVm);
+                        }, 250);
+                    
                     break;
                 case 'remove':
                     $scope.removeMemberFromMeeting(memberVm.id);
@@ -850,7 +893,35 @@
 
         }
 
+        $scope.openMemberEditDialog = (memberVm: modeltypings.UserViewModel) => {
 
+
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'memberEdit.html',
+                controller: 'memberEditCtrl',
+                size: 'sm',
+                resolve: {
+                    data: () => {
+                        return memberVm;
+                    }
+                }
+
+            });
+
+            modalInstance.result.then((userVm: modeltypings.UserViewModel) => {
+
+
+
+                
+
+
+            },
+                () => {
+
+                });
+
+        }
 
     };
 
@@ -943,4 +1014,26 @@
     };
     controller.$inject = ['$scope', '$uibModalInstance', '$timeout', '$window', 'data'];
     app.controller('memberOptionsCtrl', controller);
+})(angular.module("repoFormsApp"));
+
+
+(app => {
+    var controller = ($scope, $uibModalInstance, $timeout, $window, data) => {
+
+
+        $scope.memberVm = <modeltypings.UserViewModel>data;
+
+
+        $scope.save = (userVm: modeltypings.UserViewModel) => {
+            $uibModalInstance.close(userVm);
+        };
+
+        $scope.cancel = () => {
+            $uibModalInstance.dismiss();
+        }
+
+
+    };
+    controller.$inject = ['$scope', '$uibModalInstance', '$timeout', '$window', 'data'];
+    app.controller('memberEditCtrl', controller);
 })(angular.module("repoFormsApp"));

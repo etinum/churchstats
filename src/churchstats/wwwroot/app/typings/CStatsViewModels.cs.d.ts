@@ -59,7 +59,7 @@ declare module modeltypings {
     interface XMeetingUserViewModel {
         userId: number;
         meetingId: number;
-        memberType: any;
+        memberType: MemberTypeEnum;
         active: boolean;
         effectiveDate: Date;
     }
@@ -72,7 +72,7 @@ declare module modeltypings {
         dateRecorded: Date;
         meetingDate: Date;
         attendType: any;
-        memberType: any;
+        memberType: MemberTypeEnum;
         notes: string;
         isArchive: boolean;
         createdByUserId: number;
@@ -89,7 +89,8 @@ declare module modeltypings {
         Late = 4,
     }
     const enum MemberTypeEnum {
-        Visitor = 1,
+        Normal = 1,
         Returning = 2,
+        Visitor = 3,
     }
 }

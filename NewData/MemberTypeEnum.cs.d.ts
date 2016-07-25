@@ -1,6 +1,7 @@
 ﻿declare module server {
 	const enum MemberTypeEnum {
-		Visitor = 1,
+		Normal = 1,
 		Returning = 2,
+		Visitor = 3,
 	}
 }

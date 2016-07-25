@@ -19,6 +19,8 @@
 		modifiedByUserId: number;
 		modifiedDate: Date;
 		createdDate: Date;
+		fullName: string;
+		fullNameRev: string;
 		attendType: any;
 		recorderId: number;
 		recorderName: string;

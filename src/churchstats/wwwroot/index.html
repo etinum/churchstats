@@ -104,14 +104,33 @@
         <h4>What would you like to do with {{memberVm.fullName}}?</h4>
 
         <ul class="list-group">
-        <li class="list-group-item"><a ng-click="optionSelected('late')"><i class="glyphicon glyphicon-road"></i> Over 15 minutes late</a></li>
+        <li class="list-group-item"><a ng-click="optionSelected('late')"><i class="glyphicon glyphicon-road"></i> Edit User</a></li>
         <li class="list-group-item"><a ng-click="optionSelected('visitor')"><i class="glyphicon glyphicon-road"></i> Set as visitor</a></li>
-        <li class="list-group-item"><a ng-click="optionSelected('notes')"><i class="glyphicon glyphicon-file"></i> Add notes</a></li>
+        <li class="list-group-item"><a ng-click="optionSelected('notes')"><i class="glyphicon glyphicon-file"></i> Add attendance note</a></li>
         <li class="list-group-item"><a ng-click="optionSelected('remove')" style='color: red'><i class="glyphicon glyphicon-remove"></i> Remove</a></li>
         </ul>
 
     </div>
     <div class="modal-footer">
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+
+
+
+<script type="text/ng-template" id="memberEdit.html">
+    <div class="modal-header">
+        <h4 class="modal-title">Update fields for {{memberVm.fullName}}</h4>
+    </div>
+    <div class="modal-body">
+        <input ng-model="memberVm.fullName" class="form-control" placeholder="Name" type="text" />
+        <input ng-model="memberVm.birthYear" class="form-control" placeholder="Approximate Year of Birth" type="text" />
+        <input ng-model="memberVm.attendanceNotes" class="form-control" placeholder="Notes" type="text" />
+
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="save(memberVm)">Save</button>
         <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
     </div>
 </script>

@@ -27,8 +27,23 @@ namespace webapi.ViewModels
         public DateTime? CreatedDate { get; set; }
 
 
-        public string FullName => FirstName + " " + LastName;
-        public string FullNameRev => LastName + ", " + FirstName;
+        public string FullName
+        {
+            get
+            {
+                var name = string.IsNullOrEmpty(MiddleName) ? FirstName + " " + LastName : FirstName + " " + MiddleName + " " + LastName;
+                return name;
+            }
+        }
+
+        public string FullNameRev
+        {
+            get
+            {
+                var name = string.IsNullOrEmpty(MiddleName) ? LastName + ", " + FirstName : LastName + ", " + FirstName + " " + MiddleName;
+                return name;
+            }
+        }
 
         public AttendTypeEnum? AttendType { get; set; }
         public int? RecorderId { get; set; }
