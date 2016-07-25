@@ -20,6 +20,7 @@ namespace webapi.Controllers
     {
         readonly IMapper _mapper;
         private readonly CStatsEntities _ctx;
+        readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public UserController()
         {
@@ -33,6 +34,11 @@ namespace webapi.Controllers
         [HttpGet]
         public IHttpActionResult GetAllUsers()
         {
+
+
+            _logger.Error("We are asking for users!");
+            _logger.Warn("This is just a warning");
+
             var users = _ctx.Users.ToList();
             return Ok(_mapper.Map<IEnumerable<UserViewModel>>(users));
         }

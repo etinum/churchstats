@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Owin;
 using webapi.Utils;
 
+[assembly: log4net.Config.XmlConfigurator(ConfigFile = "Web.config", Watch = true)]
 namespace webapi
 {
     public class Startup
