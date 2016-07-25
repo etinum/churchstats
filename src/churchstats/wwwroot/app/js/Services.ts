@@ -171,7 +171,7 @@
             return deferred.promise;
         };
 
-        var addMemberToMeeting = (data) => {
+        var addMemberToMeeting = (data : modeltypings.XMeetingUserViewModel) => {
             var url = baseWebApiUrl + 'api/Meeting/AddMemberToMeeting';
             var deferred = $q.defer();
 

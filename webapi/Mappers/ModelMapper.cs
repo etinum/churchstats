@@ -23,6 +23,10 @@ namespace webapi.Mappers
 
             CreateMap<Attendance, AttendanceViewModel>();
             CreateMap<AttendanceViewModel, Attendance>();
+
+            CreateMap<X_User_Meeting, XMeetingUserViewModel>();
+            CreateMap<XMeetingUserViewModel, X_User_Meeting>();
+
         }
     }
 }

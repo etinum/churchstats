@@ -138,6 +138,7 @@ namespace webapi.Controllers
             {
                 xref = Ctx.X_User_Meeting.Create();
                 xref.UserId = data.UserId;
+                xref.MemberType = data.MemberType;
                 xref.MeetingId = data.MeetingId;
                 xref.EffectiveDate = data.EffectiveDate ?? DateTime.Now;
                 xref.Active = true;
@@ -146,6 +147,8 @@ namespace webapi.Controllers
             }
             else
             {
+                var efModel = Mapper.Map<X_User_Meeting>(data);
+                Common.MergeObjects(efModel, xref);
                 xref.Active = true;
             }
 
@@ -160,8 +163,9 @@ namespace webapi.Controllers
                 Id = 0,
                 AttendType = AttendTypeEnum.Unknown,
                 UserId = data.UserId,
-                MeetingId = data.MeetingId
-                
+                MeetingId = data.MeetingId,
+                MemberType = data.MemberType
+
             };
 
             var subscribed = Hub.Clients.Group(data.MeetingId.ToString());

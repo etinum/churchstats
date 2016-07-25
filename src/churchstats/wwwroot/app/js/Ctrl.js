@@ -7,7 +7,6 @@
 })(angular.module("repoFormsApp"));
 (function (app) {
     var controller = function ($scope, $location, $dataService, $window, $uibModal, $interval, $timeout, $localStorage) {
-        var devmode = false;
         $scope.$storage = $localStorage;
         $scope.rf = {};
         $scope.recorderFieldDisable = false;
@@ -393,12 +392,23 @@
             var data = {};
             data.meetingId = $scope.selectedMeetingId;
             data.userId = member.id;
+            data.memberType = 1;
             data.effectiveDate = $scope.attendanceDate;
             member.attendType = 3;
             updateMemberList(member);
             $scope.load = $dataService.addMemberToMeeting(data)
                 .then(function () {
                 $scope.addMeetingMembers = '';
+            });
+        };
+        $scope.UpdateMember = function (member, memberType) {
+            var data = {};
+            data.meetingId = $scope.selectedMeetingId;
+            data.userId = member.id;
+            data.memberType = memberType;
+            member.attendType = member.attendType;
+            $scope.load = $dataService.addMemberToMeeting(data)
+                .then(function () {
             });
         };
         $scope.AddNewUserAsMember = function (name) {
@@ -652,6 +662,11 @@
                     case 'late':
                         break;
                     case 'visitor':
+                        memberVm.
+                            $scope.load = $dataService.addMemberToMeeting()
+                            .then(function () {
+                            getMeetingMembers($scope.selectedMeetingId, $scope.attendanceDate);
+                        });
                         break;
                     case 'notes':
                         $timeout(function () {

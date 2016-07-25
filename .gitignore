@@ -80,3 +80,5 @@ project.lock.json
 src/*/node_modules/*
 
 .vs/
+*.js.map
+log.txt

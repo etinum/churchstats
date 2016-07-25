@@ -33,7 +33,6 @@
 
     var controller = ($scope, $location, $dataService, $window, $uibModal, $interval, $timeout, $localStorage) => {
 
-        var devmode = false;
 
         $scope.$storage = $localStorage;
 
@@ -78,6 +77,11 @@
         $scope.attendTypeEnum.absent = modeltypings.AttendTypeEnum.Absent;
         $scope.attendTypeEnum.unknown = modeltypings.AttendTypeEnum.Unknown;
 
+
+        //const enum MemberTypeEnum {
+        //    Normal = 1,
+        //    Returning = 2,
+        //    Visitor = 3,
 
 
         var lastAction = Date.now();
@@ -511,6 +515,7 @@
             var data = <modeltypings.XMeetingUserViewModel>{};
             data.meetingId = $scope.selectedMeetingId;
             data.userId = member.id;
+            data.memberType = modeltypings.MemberTypeEnum.Normal;
             data.effectiveDate = $scope.attendanceDate;
             member.attendType = modeltypings.AttendTypeEnum.Unknown;
             updateMemberList(member);
@@ -522,6 +527,21 @@
                 });
 
         };
+
+        $scope.UpdateMember = (member: modeltypings.UserViewModel, memberType: modeltypings.MemberTypeEnum) => {
+
+            var data = <modeltypings.XMeetingUserViewModel>{};
+            data.meetingId = $scope.selectedMeetingId;
+            data.userId = member.id;
+            data.memberType = memberType;
+            member.attendType = member.attendType;
+
+            $scope.load = $dataService.addMemberToMeeting(data)
+                .then(() => {
+                });
+
+        };
+
 
         $scope.AddNewUserAsMember = (name) => {
 
@@ -871,6 +891,11 @@
                 case 'late':
                      break;
                 case 'visitor':
+                        memberVm.
+                        $scope.load = $dataService.addMemberToMeeting()
+                            .then(() => {
+                                getMeetingMembers($scope.selectedMeetingId, $scope.attendanceDate);
+                            });
                     break;
                 case 'notes':
                         $timeout(() => {
