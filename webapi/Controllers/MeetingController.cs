@@ -19,24 +19,12 @@ namespace webapi.Controllers
     public class MeetingController : ApiControllerWithHub<AttendHub>
     {
 
-        readonly IMapper _mapper;
-        private readonly CStatsEntities _ctx;
-
-        public MeetingController()
-        {
-            var config = new MapperConfiguration(cfg => {
-                cfg.AddProfile<ModelMapper>();
-            });
-            _mapper = config.CreateMapper();
-            _ctx = new CStatsEntities();
-        }
-
         [HttpGet]
         public IHttpActionResult GetAllMeetings()
         {
-            var meetings = _ctx.Meetings.ToList();
+            var meetings = Ctx.Meetings.ToList();
 
-            return Ok(_mapper.Map<List<MeetingViewModel>>(meetings));
+            return Ok(Mapper.Map<List<MeetingViewModel>>(meetings));
         }
 
         [HttpGet]
@@ -44,8 +32,8 @@ namespace webapi.Controllers
         {
             try
             {
-                var meetingTypes = _ctx.MeetingTypes.ToList();
-                return Ok(_mapper.Map<List<MeetingTypeViewModel>>(meetingTypes));
+                var meetingTypes = Ctx.MeetingTypes.ToList();
+                return Ok(Mapper.Map<List<MeetingTypeViewModel>>(meetingTypes));
             }
             catch (Exception ex)
             {
@@ -61,7 +49,7 @@ namespace webapi.Controllers
         {
 
 
-            var attendances = (from a in _ctx.Attendances
+            var attendances = (from a in Ctx.Attendances
                 where a.MeetingId == meetingId
                       && (DbFunctions.TruncateTime(a.MeetingDate.Value) == DbFunctions.TruncateTime(meetingDate))
                 select new
@@ -75,20 +63,20 @@ namespace webapi.Controllers
                     });
 
             var listXUserId =
-                _ctx.X_User_Meeting.Where(x => x.MeetingId == meetingId && x.Active.Value && x.EffectiveDate <= meetingDate)
+                Ctx.X_User_Meeting.Where(x => x.MeetingId == meetingId && x.Active.Value && x.EffectiveDate <= meetingDate)
                     .Select(r => r.UserId);
 
             var listUserId = attendances.Select(a => a.UserId);
 
             var totalListUserId = listXUserId.Concat(listUserId).Distinct();
 
-            var users = (from u in _ctx.Users
+            var users = (from u in Ctx.Users
                 join l in totalListUserId on u.Id equals l
                 select u);
 
-            var userViewModels = _mapper.Map<List<UserViewModel>>(users);
+            var userViewModels = Mapper.Map<List<UserViewModel>>(users);
 
-            var userList = _ctx.Users.ToList();
+            var userList = Ctx.Users.ToList();
 
             foreach (var userViewModel in userViewModels)
             {
@@ -116,23 +104,23 @@ namespace webapi.Controllers
 
             // remove attendance record if it exist
             var attrec =
-                _ctx.Attendances.FirstOrDefault(
+                Ctx.Attendances.FirstOrDefault(
                     r =>
                         r.UserId == data.UserId && r.MeetingId == data.MeetingId &&
                         DbFunctions.TruncateTime(r.DateRecorded) == DbFunctions.TruncateTime(data.EffectiveDate.Value));
 
             if (attrec != null)
             {
-                _ctx.Attendances.Remove(attrec);
-                _ctx.SaveChanges();
+                Ctx.Attendances.Remove(attrec);
+                Ctx.SaveChanges();
             }
 
 
-            var xref = _ctx.X_User_Meeting.FirstOrDefault(r => r.MeetingId == data.MeetingId && r.UserId == data.UserId);
+            var xref = Ctx.X_User_Meeting.FirstOrDefault(r => r.MeetingId == data.MeetingId && r.UserId == data.UserId);
 
             if (xref == null) return NotFound();
             xref.Active = false;
-            _ctx.SaveChanges();
+            Ctx.SaveChanges();
 
             var subscribed = Hub.Clients.Group(data.MeetingId.ToString());
             subscribed.RemoveMember(data);
@@ -144,16 +132,16 @@ namespace webapi.Controllers
         public IHttpActionResult AddMemberToMeeting(XMeetingUserViewModel data)
         {
 
-            var xref = _ctx.X_User_Meeting.FirstOrDefault(r => r.MeetingId == data.MeetingId && r.UserId == data.UserId);
+            var xref = Ctx.X_User_Meeting.FirstOrDefault(r => r.MeetingId == data.MeetingId && r.UserId == data.UserId);
 
             if (xref == null)
             {
-                xref = _ctx.X_User_Meeting.Create();
+                xref = Ctx.X_User_Meeting.Create();
                 xref.UserId = data.UserId;
                 xref.MeetingId = data.MeetingId;
                 xref.EffectiveDate = data.EffectiveDate ?? DateTime.Now;
                 xref.Active = true;
-                _ctx.X_User_Meeting.Add(xref);
+                Ctx.X_User_Meeting.Add(xref);
 
             }
             else
@@ -162,7 +150,7 @@ namespace webapi.Controllers
             }
 
 
-            _ctx.SaveChanges();
+            Ctx.SaveChanges();
 
 
             
@@ -186,22 +174,22 @@ namespace webapi.Controllers
         public IHttpActionResult SaveMeeting(MeetingViewModel meetingViewModel)
         {
 
-            var meeting = _mapper.Map<Meeting>(meetingViewModel);
+            var meeting = Mapper.Map<Meeting>(meetingViewModel);
 
             if (meeting.Id == 0)
             {
                 meeting.DayOfTheWeek = (int) DateTime.Now.DayOfWeek;
-                _ctx.Meetings.Add(meeting);
+                Ctx.Meetings.Add(meeting);
 
             }
             else
             {
 
-                var meetingTarget = _ctx.Meetings.First(r => r.Id == meeting.Id);
+                var meetingTarget = Ctx.Meetings.First(r => r.Id == meeting.Id);
                 Common.MergeObjects(meeting, meetingTarget);
 
             }
-            _ctx.SaveChanges();
+            Ctx.SaveChanges();
             return Ok(meeting.Id);
 
         }

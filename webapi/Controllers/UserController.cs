@@ -16,49 +16,33 @@ using User = Data.User;
 
 namespace webapi.Controllers
 {
-    public class UserController : ApiController
+    public class UserController : CustomApiController
     {
-        readonly IMapper _mapper;
-        private readonly CStatsEntities _ctx;
-        readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public UserController()
-        {
-            var config = new MapperConfiguration(cfg => {
-                cfg.AddProfile<ModelMapper>();
-            });
-            _mapper = config.CreateMapper();
-            _ctx = new CStatsEntities();
-        }
 
         [HttpGet]
         public IHttpActionResult GetAllUsers()
         {
-
-
-            _logger.Error("We are asking for users!");
-            _logger.Warn("This is just a warning");
-
-            var users = _ctx.Users.ToList();
-            return Ok(_mapper.Map<IEnumerable<UserViewModel>>(users));
+            var users = Ctx.Users.ToList();
+            return Ok(Mapper.Map<IEnumerable<UserViewModel>>(users));
         }
 
 
         [HttpPost]
         public IHttpActionResult SaveUser(UserViewModel userViewModel)
         {
-            var user = _mapper.Map<Data.User>(userViewModel);
+            var user = Mapper.Map<Data.User>(userViewModel);
             if (user.Id == 0)
             {
-                _ctx.Users.Add(user);
+                Ctx.Users.Add(user);
             }
             else
             {
-                var userTarget = _ctx.Users.First(r => r.Id == user.Id);
+                var userTarget = Ctx.Users.First(r => r.Id == user.Id);
                 Common.MergeObjects(user, userTarget);
             }
 
-            _ctx.SaveChanges();
+            Ctx.SaveChanges();
             return Ok(user.Id);
 
         }

@@ -5,7 +5,7 @@ using Microsoft.AspNet.SignalR.Hubs;
 
 namespace webapi.Controllers
 {
-    public abstract class ApiControllerWithHub<THub> : ApiController
+    public abstract class ApiControllerWithHub<THub> : CustomApiController
         where THub : IHub
     {
         Lazy<IHubContext> hub = new Lazy<IHubContext>(
