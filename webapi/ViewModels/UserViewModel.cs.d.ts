@@ -9,6 +9,8 @@
 		picture: any[];
 		isSaved: boolean;
 		isBaptized: boolean;
+		isActive: boolean;
+		userType: any;
 		notes: string;
 		baptizedDate: Date;
 		savedDate: Date;

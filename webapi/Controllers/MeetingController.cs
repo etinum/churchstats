@@ -71,8 +71,8 @@ namespace webapi.Controllers
             var totalListUserId = listXUserId.Concat(listUserId).Distinct();
 
             var users = (from u in Ctx.Users
-                join l in totalListUserId on u.Id equals l
-                select u);
+                         join l in totalListUserId on u.Id equals l
+                         select u);
 
             var userViewModels = Mapper.Map<List<UserViewModel>>(users);
 

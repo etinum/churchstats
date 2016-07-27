@@ -6,7 +6,7 @@
     app.controller('masterCtrl', controller);
 })(angular.module("repoFormsApp"));
 (function (app) {
-    var controller = function ($scope, $location, $dataService, $window, $uibModal, $interval, $timeout, $localStorage) {
+    var controller = function ($scope, $location, $dataService, $window, $uibModal, $interval, $timeout, $localStorage, $q) {
         $scope.$storage = $localStorage;
         $scope.rf = {};
         $scope.recorderFieldDisable = false;
@@ -249,7 +249,7 @@
             $scope.$evalAsync(function () {
                 $scope.memberList = $scope.fullMemberList.filter(function (item) { return item.fullName.toLowerCase().indexOf($scope.globalSearchString.toLowerCase()) > -1; });
                 filterMemberListAttendTypes();
-                $scope.availableMemberList = $scope.fullUserList.filter(function (item) { return $dataService.arrayObjectIndexOf($scope.fullMemberList, item.fullName, "fullName", false) === -1; });
+                $scope.availableMemberList = $scope.fullUserList.filter(function (item) { return $dataService.arrayObjectIndexOf($scope.fullMemberList, item.fullName, "fullName", false) === -1 && item.isActive; });
                 updateCounts($scope.memberList);
             });
         }
@@ -297,6 +297,13 @@
             var index = $dataService.arrayObjectIndexOf($scope.fullMemberList, data.userId, "id");
             if (index > -1) {
                 $scope.fullMemberList.splice(index, 1);
+                filterMembersBySearch();
+            }
+        };
+        var updateUser = function (data) {
+            var index = $dataService.arrayObjectIndexOf($scope.fullUserList, data.id, "id");
+            if (index > -1) {
+                $scope.fullUserList.splice(index, 1, data);
                 filterMembersBySearch();
             }
         };
@@ -463,9 +470,10 @@
             updateCounts($scope.memberList);
         };
         $scope.removeMemberFromMeeting = function (id) {
+            var deferred = $q.defer();
             if (!isTodaysDate()) {
                 alert("Members cannot be delete for historical meetings.");
-                return;
+                return deferred.resolve();
             }
             var xrf = {};
             xrf.userId = id;
@@ -474,7 +482,9 @@
             $dataService.removeMemberFromMeeting(xrf)
                 .then(function () {
                 removeMember(xrf);
+                deferred.resolve();
             });
+            return deferred.promise;
         };
         $scope.reloadUser = function () {
             delete $localStorage.selectedUserId;
@@ -659,19 +669,14 @@
             });
             modalInstance.result.then(function (actionType) {
                 switch (actionType) {
-                    case 'late':
-                        break;
-                    case 'visitor':
-                        memberVm.
-                            $scope.load = $dataService.addMemberToMeeting()
-                            .then(function () {
-                            getMeetingMembers($scope.selectedMeetingId, $scope.attendanceDate);
-                        });
-                        break;
-                    case 'notes':
+                    case 'editUser':
                         $timeout(function () {
                             $scope.openMemberEditDialog(memberVm);
                         }, 250);
+                        break;
+                    case 'visitor':
+                        break;
+                    case 'notes':
                         break;
                     case 'remove':
                         $scope.removeMemberFromMeeting(memberVm.id);
@@ -694,11 +699,21 @@
                 }
             });
             modalInstance.result.then(function (userVm) {
+                $dataService.saveUser(userVm)
+                    .then(function () {
+                    if (!userVm.isActive) {
+                        $scope.removeMemberFromMeeting(userVm.id)
+                            .then(function () {
+                            updateUser(userVm);
+                            getMeetingMembers($scope.selectedMeetingId, $scope.attendanceDate);
+                        });
+                    }
+                });
             }, function () {
             });
         };
     };
-    controller.$inject = ['$scope', '$location', 'dataService', '$window', '$uibModal', '$interval', '$timeout', '$localStorage'];
+    controller.$inject = ['$scope', '$location', 'dataService', '$window', '$uibModal', '$interval', '$timeout', '$localStorage', '$q'];
     app.controller('homeCtrl', controller);
 })(angular.module("repoFormsApp"));
 (function (app) {

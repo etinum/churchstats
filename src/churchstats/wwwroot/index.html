@@ -59,7 +59,8 @@
             <input ng-model="inputString" class="form-control" placeholder="are you sure... " type="text" />
             <span class="input-group-btn">
                 <button type="button" class="btn btn-danger" ng-click="close()">
-                    <i class="glyphicon glyphicon-thunbs-up"> Just DO IT!
+                    <i class="glyphicon glyphicon-thunbs-up">
+                        Just DO IT!
                     </i>
                 </button>
             </span>
@@ -86,7 +87,7 @@
         <h3 class="modal-title">{{titleString}}</h3>
     </div>
     <div class="modal-body">
-            <input ng-model="inputString" class="form-control" placeholder={{placeHolderString}} type="text" />
+        <input ng-model="inputString" class="form-control" placeholder={{placeHolderString}} type="text" />
     </div>
     <div class="modal-footer  bg-default">
         <button class="btn btn-primary" type="button" ng-click="save()">Save</button>
@@ -100,14 +101,14 @@
         <!--<h3 class="modal-title">Options</h3>-->
     </div>
     <div class="modal-body">
-        
+
         <h4>What would you like to do with {{memberVm.fullName}}?</h4>
 
         <ul class="list-group">
-        <li class="list-group-item"><a ng-click="optionSelected('late')"><i class="glyphicon glyphicon-road"></i> Edit User</a></li>
-        <li class="list-group-item"><a ng-click="optionSelected('visitor')"><i class="glyphicon glyphicon-road"></i> Set as visitor</a></li>
-        <li class="list-group-item"><a ng-click="optionSelected('notes')"><i class="glyphicon glyphicon-file"></i> Add attendance note</a></li>
-        <li class="list-group-item"><a ng-click="optionSelected('remove')" style='color: red'><i class="glyphicon glyphicon-remove"></i> Remove</a></li>
+            <li class="list-group-item"><a ng-click="optionSelected('editUser')"><i class="glyphicon glyphicon-road"></i> Edit User</a></li>
+            <li class="list-group-item"><a ng-click="optionSelected('visitor')"><i class="glyphicon glyphicon-road"></i> Set as visitor</a></li>
+            <li class="list-group-item"><a ng-click="optionSelected('notes')"><i class="glyphicon glyphicon-file"></i> Add attendance note</a></li>
+            <li class="list-group-item"><a ng-click="optionSelected('remove')" style='color: red'><i class="glyphicon glyphicon-remove"></i> Remove</a></li>
         </ul>
 
     </div>
@@ -123,14 +124,15 @@
         <h4 class="modal-title">Update fields for {{memberVm.fullName}}</h4>
     </div>
     <div class="modal-body">
-        <input ng-model="memberVm.fullName" class="form-control" placeholder="Name" type="text" />
-        <input ng-model="memberVm.birthYear" class="form-control" placeholder="Approximate Year of Birth" type="text" />
-        <input ng-model="memberVm.attendanceNotes" class="form-control" placeholder="Notes" type="text" />
-
-
+        <input ng-model="memberVm.firstName" class="form-control" placeholder="First Name" type="text" />
+        <input ng-model="memberVm.middleName" class="form-control" placeholder="Middle Name" type="text" />
+        <input ng-model="memberVm.lastName" class="form-control" placeholder="Last Name" type="text" />
+        <input ng-model="memberVm.birthYear" class="form-control" placeholder="Approximate Year of Birth" type="number" />
+        <textarea row="2" ng-model="memberVm.notes" class="form-control" placeholder="User notes"></textarea>
+        <label>Active: <input type="checkbox" ng-model="memberVm.isActive" /></label>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" type="button" ng-click="save(memberVm)">Save</button>
+        <button class="btn btn-primary" type="button" ng-click="save(memberVm)">Update</button>
         <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
     </div>
 </script>

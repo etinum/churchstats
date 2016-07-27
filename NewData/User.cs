@@ -20,6 +20,7 @@ namespace Data
             this.Attendances = new HashSet<Attendance>();
             this.Attendances1 = new HashSet<Attendance>();
             this.Meetings = new HashSet<Meeting>();
+            this.UserNotes = new HashSet<UserNote>();
             this.X_AdminUser_Meeting = new HashSet<X_AdminUser_Meeting>();
             this.X_User_FamilyMember = new HashSet<X_User_FamilyMember>();
             this.X_User_FamilyMember1 = new HashSet<X_User_FamilyMember>();
@@ -37,12 +38,14 @@ namespace Data
         public byte[] Picture { get; set; }
         public Nullable<bool> IsSaved { get; set; }
         public Nullable<bool> IsBaptized { get; set; }
+        public bool IsActive { get; set; }
         public string Notes { get; set; }
         public Nullable<System.DateTime> BaptizedDate { get; set; }
         public Nullable<System.DateTime> SavedDate { get; set; }
         public Nullable<int> AddressId { get; set; }
         public Nullable<int> ContactInfoId { get; set; }
         public Nullable<int> LocalityId { get; set; }
+        public Nullable<UserTypeEnum> UserType { get; set; }
         public Nullable<int> CreatedByUserId { get; set; }
         public Nullable<int> ModifiedByUserId { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
@@ -57,6 +60,8 @@ namespace Data
         public virtual Locality Locality { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Meeting> Meetings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserNote> UserNotes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<X_AdminUser_Meeting> X_AdminUser_Meeting { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

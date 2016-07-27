@@ -15,6 +15,8 @@ namespace webapi.ViewModels
         public byte[] Picture { get; set; }
         public bool? IsSaved { get; set; }
         public bool? IsBaptized { get; set; }
+        public bool IsActive { get; set; }
+        public UserTypeEnum? UserType { get; set; }
         public string Notes { get; set; }
         public DateTime? BaptizedDate { get; set; }
         public DateTime? SavedDate { get; set; }

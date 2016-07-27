@@ -23,7 +23,7 @@ namespace webapi.Controllers
         [HttpGet]
         public IHttpActionResult GetAllUsers()
         {
-            var users = Ctx.Users.ToList();
+            var users = Ctx.Users.Where(u => u.IsActive);
             return Ok(Mapper.Map<IEnumerable<UserViewModel>>(users));
         }
 

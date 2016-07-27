@@ -33,12 +33,13 @@ namespace Data
         public virtual DbSet<MeetingType> MeetingTypes { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Tag> Tags { get; set; }
-        public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<X_AdminUser_Meeting> X_AdminUser_Meeting { get; set; }
         public virtual DbSet<X_Meeting_Tag> X_Meeting_Tag { get; set; }
         public virtual DbSet<X_User_FamilyMember> X_User_FamilyMember { get; set; }
         public virtual DbSet<X_User_Meeting> X_User_Meeting { get; set; }
         public virtual DbSet<X_User_Role> X_User_Role { get; set; }
         public virtual DbSet<X_User_Tag> X_User_Tag { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserNote> UserNotes { get; set; }
     }
 }

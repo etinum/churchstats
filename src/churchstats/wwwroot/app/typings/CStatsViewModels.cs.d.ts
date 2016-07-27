@@ -9,6 +9,8 @@ declare module modeltypings {
         picture: any[];
         isSaved: boolean;
         isBaptized: boolean;
+        isActive: boolean;
+        userType: UserTypeEnum;
         notes: string;
         baptizedDate: Date;
         savedDate: Date;
@@ -92,5 +94,10 @@ declare module modeltypings {
         Normal = 1,
         Returning = 2,
         Visitor = 3,
+    }
+
+    const enum UserTypeEnum {
+        Normal = 1,
+        GospelContact = 2,
     }
 }

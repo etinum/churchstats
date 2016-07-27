@@ -42,12 +42,12 @@ namespace Data
         public virtual ICollection<Attendance> Attendances { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
         public virtual MeetingType MeetingType { get; set; }
-        public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<X_AdminUser_Meeting> X_AdminUser_Meeting { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<X_Meeting_Tag> X_Meeting_Tag { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<X_User_Meeting> X_User_Meeting { get; set; }
+        public virtual User User { get; set; }
     }
 }

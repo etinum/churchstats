@@ -31,7 +31,7 @@
 
 (app => {
 
-    var controller = ($scope, $location, $dataService, $window, $uibModal, $interval, $timeout, $localStorage) => {
+    var controller = ($scope, $location, $dataService, $window, $uibModal, $interval, $timeout, $localStorage, $q) => {
 
 
         $scope.$storage = $localStorage;
@@ -44,7 +44,7 @@
         $scope.isNewUser = false;
         $scope.isNewMeeting = false;
 
-        
+
         $scope.attendanceDate = new Date();
         $scope.isHistorical = false;
         $scope.dateOptions = {};
@@ -204,7 +204,8 @@
             } else {
                 $scope.$evalAsync(() => {
                     $scope.gridModValue = 3;
-                });            }
+                });
+            }
         };
 
 
@@ -237,10 +238,10 @@
                         if (a.firstName === b.firstName) {
                             if (a.lastName < b.lastName) return -1;
                             if (a.lastName > b.lastName) return 1;
-                            return 0;                            
+                            return 0;
                         } else {
                             if (a.firstName < b.firstName) return -1;
-                            if (a.firstName > b.firstName) return 1;                            
+                            if (a.firstName > b.firstName) return 1;
                             return 0;
                         }
 
@@ -324,7 +325,7 @@
 
                 filterMemberListAttendTypes();
 
-                $scope.availableMemberList = $scope.fullUserList.filter(item => $dataService.arrayObjectIndexOf($scope.fullMemberList, item.fullName, "fullName", false) === -1);
+                $scope.availableMemberList = $scope.fullUserList.filter(item => $dataService.arrayObjectIndexOf($scope.fullMemberList, item.fullName, "fullName", false) === -1 && item.isActive);
                 updateCounts($scope.memberList);
             });
         }
@@ -391,6 +392,19 @@
 
         };
 
+
+
+        var updateUser = (data: modeltypings.UserViewModel) => {
+
+            var index = $dataService.arrayObjectIndexOf($scope.fullUserList, data.id, "id");
+            if (index > -1) {
+                $scope.fullUserList.splice(index, 1, data);
+                filterMembersBySearch();
+            }
+
+        };
+        
+
         function checkIdleRefresh() {
 
             var time = Date.now() - lastAction;
@@ -404,7 +418,7 @@
             lastAction = Date.now();
         }
 
-        function isTodaysDate() : boolean {
+        function isTodaysDate(): boolean {
             return ($scope.attendanceDate.toDateString() === new Date().toDateString());
         }
 
@@ -415,20 +429,20 @@
             if ($scope.haveRecorder) {
                 getMeetingMembers($scope.selectedMeetingId, $scope.attendanceDate);
             }
-       };
+        };
 
         $scope.changeAttendanceDateToday = () => {
             if ($scope.haveRecorder && $scope.attendanceDate.toDateString() !== new Date().toDateString()) {
                 getMeetingMembers($scope.selectedMeetingId, new Date());
                 $scope.attendanceDate = new Date();
-            }            
+            }
         }
 
         $scope.$watch('attendanceDate',
             (newValue: Date) => {
-            if (newValue != null)
-                $scope.isHistorical = (newValue.toDateString() !== new Date().toDateString());
-        });
+                if (newValue != null)
+                    $scope.isHistorical = (newValue.toDateString() !== new Date().toDateString());
+            });
 
 
         $scope.tbd = () => {
@@ -443,7 +457,7 @@
                 });
             getMeetingMembers($scope.selectedMeetingId, $scope.attendanceDate);
         };
-            
+
 
 
         $scope.sortNameAlpha = (type: string) => {
@@ -462,7 +476,7 @@
                     $scope.isFirstSort = false;
                     $scope.firstSortAsc = false;
                     break;
-            default:
+                default:
             }
 
             filterMembersBySearch();
@@ -510,7 +524,7 @@
                 });
         };
 
-        $scope.AddMember = (member : modeltypings.UserViewModel) => {
+        $scope.AddMember = (member: modeltypings.UserViewModel) => {
 
             var data = <modeltypings.XMeetingUserViewModel>{};
             data.meetingId = $scope.selectedMeetingId;
@@ -580,7 +594,7 @@
                 ? $scope.attendTypeEnum.present
                 : ((item.attendType === $scope.attendTypeEnum.absent) ? $scope.attendTypeEnum.unknown : $scope.attendTypeEnum.absent);
         };
-        
+
 
         $scope.memberSelected = (item: modeltypings.UserViewModel) => {
             if ($scope.justLp) {
@@ -611,9 +625,11 @@
 
         $scope.removeMemberFromMeeting = (id: number) => {
 
+            var deferred = $q.defer();
+
             if (!isTodaysDate()) {
                 alert("Members cannot be delete for historical meetings.");
-                return;
+                return deferred.resolve();
             }
 
             var xrf = <modeltypings.XMeetingUserViewModel>{};
@@ -624,7 +640,10 @@
             $dataService.removeMemberFromMeeting(xrf)
                 .then(() => {
                     removeMember(xrf);
+                    deferred.resolve();
                 });
+
+            return deferred.promise;
         }
 
 
@@ -634,7 +653,7 @@
             delete $localStorage.selectedMeetingId;
 
             $timeout(() => {
-                location.reload();                
+                location.reload();
             }, 250);
         };
 
@@ -725,7 +744,8 @@
                     member.attendanceId = 0;
                     if ($scope.fullMemberList.filter(item => item.id === data.userId)[0] == null) {
                         updateMemberList(member);
-                    }                }
+                    }
+                }
                 filterMembersBySearch();
 
             });
@@ -771,19 +791,18 @@
 
 
                 $scope.$watch('initLoadCount',
-                (newValue) =>
-                {
-                    if (newValue === 3) {
-                        if ($localStorage.selectedUserId != undefined) {
-                            const user = $dataService.arrayGetObject($scope.userList, $localStorage.selectedUserId, "id");
-                            if (user != null)
-                            setupUserField(user);
+                    (newValue) => {
+                        if (newValue === 3) {
+                            if ($localStorage.selectedUserId != undefined) {
+                                const user = $dataService.arrayGetObject($scope.userList, $localStorage.selectedUserId, "id");
+                                if (user != null)
+                                    setupUserField(user);
+                            }
                         }
-                    }
-                });
+                    });
 
 
-    });
+            });
 
 
         // Modal Activities
@@ -864,7 +883,7 @@
             },
                 () => {
 
-            });
+                });
 
         }
 
@@ -888,26 +907,26 @@
 
 
                 switch (actionType) {
-                case 'late':
-                     break;
-                case 'visitor':
-                        memberVm.
-                        $scope.load = $dataService.addMemberToMeeting()
-                            .then(() => {
-                                getMeetingMembers($scope.selectedMeetingId, $scope.attendanceDate);
-                            });
-                    break;
-                case 'notes':
+                    case 'editUser':
                         $timeout(() => {
                             $scope.openMemberEditDialog(memberVm);
                         }, 250);
-                    
-                    break;
-                case 'remove':
-                    $scope.removeMemberFromMeeting(memberVm.id);
-                    break;
 
-                default:
+                        break;
+                    case 'visitor':
+                        //memberVm.
+                        //    $scope.load = $dataService.addMemberToMeeting()
+                        //        .then(() => {
+                        //            getMeetingMembers($scope.selectedMeetingId, $scope.attendanceDate);
+                        //        });
+                        break;
+                    case 'notes':
+                        break;
+                    case 'remove':
+                        $scope.removeMemberFromMeeting(memberVm.id);
+                        break;
+
+                    default:
                 }
 
 
@@ -937,9 +956,18 @@
             modalInstance.result.then((userVm: modeltypings.UserViewModel) => {
 
 
+                $dataService.saveUser(userVm)
+                    .then(() => {
 
-                
-
+                        if (!userVm.isActive) {
+                            $scope.removeMemberFromMeeting(userVm.id)
+                                .then(() => {
+                                    updateUser(userVm);
+                                    getMeetingMembers($scope.selectedMeetingId, $scope.attendanceDate);
+                                });
+                        }
+                        
+                    });
 
             },
                 () => {
@@ -950,7 +978,7 @@
 
     };
 
-    controller.$inject = ['$scope', '$location', 'dataService', '$window', '$uibModal', '$interval', '$timeout', '$localStorage'];
+    controller.$inject = ['$scope', '$location', 'dataService', '$window', '$uibModal', '$interval', '$timeout', '$localStorage', '$q'];
     app.controller('homeCtrl', controller);
 })(angular.module("repoFormsApp"));
 
@@ -1047,7 +1075,6 @@
 
 
         $scope.memberVm = <modeltypings.UserViewModel>data;
-
 
         $scope.save = (userVm: modeltypings.UserViewModel) => {
             $uibModalInstance.close(userVm);
