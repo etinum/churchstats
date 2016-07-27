@@ -705,9 +705,9 @@
                         $scope.removeMemberFromMeeting(userVm.id)
                             .then(function () {
                             updateUser(userVm);
-                            getMeetingMembers($scope.selectedMeetingId, $scope.attendanceDate);
                         });
                     }
+                    getMeetingMembers($scope.selectedMeetingId, $scope.attendanceDate);
                 });
             }, function () {
             });
