@@ -124,12 +124,23 @@
         <h4 class="modal-title">Update fields for {{memberVm.fullName}}</h4>
     </div>
     <div class="modal-body">
-        <input ng-model="memberVm.firstName" class="form-control" placeholder="First Name" type="text" />
-        <input ng-model="memberVm.middleName" class="form-control" placeholder="Middle Name" type="text" />
-        <input ng-model="memberVm.lastName" class="form-control" placeholder="Last Name" type="text" />
-        <input ng-model="memberVm.birthYear" class="form-control" placeholder="Approximate Year of Birth" type="number" />
-        <textarea row="2" ng-model="memberVm.notes" class="form-control" placeholder="User notes"></textarea>
-        <label>Active: <input type="checkbox" ng-model="memberVm.isActive" /></label>
+        <form name="theForm">
+            <input ng-model="memberVm.firstName" class="form-control" placeholder="First Name" type="text" />
+            <input ng-model="memberVm.middleName" class="form-control" placeholder="Middle Name" type="text" />
+            <input ng-model="memberVm.lastName" class="form-control" placeholder="Last Name" type="text" />
+            <input ng-model="memberVm.birthYear" name="birthYear" class="form-control" placeholder="Approximate Year of Birth" type="number" />
+            <div role="alert">
+                <span class="error" ng-show="theForm.birthYear.$error.required">
+                    Required!
+                </span>
+                <span class="error" ng-show="theForm.birthYear.$error.number">
+                    Not valid number!
+                </span>
+            </div>
+
+            <textarea row="2" ng-model="memberVm.notes" class="form-control" placeholder="User notes"></textarea>           
+            <label>Active: <input type="checkbox" ng-model="memberVm.isActive" /></label>
+        </form>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" type="button" ng-click="save(memberVm)">Update</button>

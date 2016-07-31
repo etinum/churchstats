@@ -17,8 +17,6 @@ namespace Data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            this.Attendances = new HashSet<Attendance>();
-            this.Attendances1 = new HashSet<Attendance>();
             this.Meetings = new HashSet<Meeting>();
             this.UserNotes = new HashSet<UserNote>();
             this.X_AdminUser_Meeting = new HashSet<X_AdminUser_Meeting>();
@@ -27,6 +25,8 @@ namespace Data
             this.X_User_Meeting = new HashSet<X_User_Meeting>();
             this.X_User_Role = new HashSet<X_User_Role>();
             this.X_User_Tag = new HashSet<X_User_Tag>();
+            this.Attendances = new HashSet<Attendance>();
+            this.Attendances1 = new HashSet<Attendance>();
         }
     
         public int Id { get; set; }
@@ -52,10 +52,6 @@ namespace Data
         public Nullable<System.DateTime> CreatedDate { get; set; }
     
         public virtual Address Address { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Attendance> Attendances { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Attendance> Attendances1 { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
         public virtual Locality Locality { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -74,5 +70,9 @@ namespace Data
         public virtual ICollection<X_User_Role> X_User_Role { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<X_User_Tag> X_User_Tag { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Attendance> Attendances { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Attendance> Attendances1 { get; set; }
     }
 }

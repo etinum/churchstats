@@ -26,7 +26,6 @@ namespace Data
         }
     
         public virtual DbSet<Address> Addresses { get; set; }
-        public virtual DbSet<Attendance> Attendances { get; set; }
         public virtual DbSet<ContactInfo> ContactInfoes { get; set; }
         public virtual DbSet<Locality> Localities { get; set; }
         public virtual DbSet<Meeting> Meetings { get; set; }
@@ -41,5 +40,6 @@ namespace Data
         public virtual DbSet<X_User_Tag> X_User_Tag { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserNote> UserNotes { get; set; }
+        public virtual DbSet<Attendance> Attendances { get; set; }
     }
 }

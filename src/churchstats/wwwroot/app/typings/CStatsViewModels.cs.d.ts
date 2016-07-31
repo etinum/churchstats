@@ -26,6 +26,7 @@ declare module modeltypings {
         fullName: string;
         fullNameRev: string;
         attendType: AttendTypeEnum;
+        memberType: MemberTypeEnum;
         recorderId: number;
         recorderName: string;
         attendanceId: number;
@@ -54,10 +55,6 @@ declare module modeltypings {
         active: boolean;
     }
 
-    interface XMeetingMemberModel {
-        memberId: number;
-        meetingId: number;
-    }
     interface XMeetingUserViewModel {
         userId: number;
         meetingId: number;

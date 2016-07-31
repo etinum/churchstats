@@ -287,6 +287,7 @@
             else {
                 user.firstName = $dataService.capitalizeFirstLetter(names[0]);
                 user.lastName = $dataService.capitalizeFirstLetter(names[1]);
+                user.middleName = "";
                 user.fullName = user.firstName + ' ' + user.lastName;
                 user.fullNameRev = user.lastName + ', ' + user.firstName;
             }
@@ -408,11 +409,11 @@
                 $scope.addMeetingMembers = '';
             });
         };
-        $scope.UpdateMember = function (member, memberType) {
+        $scope.UpdateMember = function (member) {
             var data = {};
             data.meetingId = $scope.selectedMeetingId;
             data.userId = member.id;
-            data.memberType = memberType;
+            data.memberType = member.memberType;
             member.attendType = member.attendType;
             $scope.load = $dataService.addMemberToMeeting(data)
                 .then(function () {
@@ -462,6 +463,7 @@
             attendance.userId = item.id;
             attendance.id = item.attendanceId;
             attendance.attendType = item.attendType;
+            attendance.memberType = item.memberType;
             attendance.meetingDate = $scope.attendanceDate;
             $dataService.saveAttendance(attendance)
                 .then(function (response) {
@@ -675,6 +677,9 @@
                         }, 250);
                         break;
                     case 'visitor':
+                        memberVm.memberType = 3;
+                        $scope.UpdateMember(memberVm);
+                        $scope.memberSelected(memberVm);
                         break;
                     case 'notes':
                         break;

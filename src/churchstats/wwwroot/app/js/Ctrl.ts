@@ -374,6 +374,7 @@
             } else {
                 user.firstName = $dataService.capitalizeFirstLetter(names[0]);
                 user.lastName = $dataService.capitalizeFirstLetter(names[1]);
+                user.middleName = "";
                 user.fullName = user.firstName + ' ' + user.lastName;
                 user.fullNameRev = user.lastName + ', ' + user.firstName;
             }
@@ -542,12 +543,12 @@
 
         };
 
-        $scope.UpdateMember = (member: modeltypings.UserViewModel, memberType: modeltypings.MemberTypeEnum) => {
+        $scope.UpdateMember = (member: modeltypings.UserViewModel) => {
 
             var data = <modeltypings.XMeetingUserViewModel>{};
             data.meetingId = $scope.selectedMeetingId;
             data.userId = member.id;
-            data.memberType = memberType;
+            data.memberType = member.memberType;
             member.attendType = member.attendType;
 
             $scope.load = $dataService.addMemberToMeeting(data)
@@ -612,6 +613,7 @@
             attendance.userId = item.id;
             attendance.id = item.attendanceId;
             attendance.attendType = item.attendType;
+            attendance.memberType = item.memberType;
             attendance.meetingDate = $scope.attendanceDate;
 
             $dataService.saveAttendance(attendance)
@@ -914,11 +916,9 @@
 
                         break;
                     case 'visitor':
-                        //memberVm.
-                        //    $scope.load = $dataService.addMemberToMeeting()
-                        //        .then(() => {
-                        //            getMeetingMembers($scope.selectedMeetingId, $scope.attendanceDate);
-                        //        });
+                        memberVm.memberType = modeltypings.MemberTypeEnum.Visitor;
+                        $scope.UpdateMember(memberVm);
+                        $scope.memberSelected(memberVm);
                         break;
                     case 'notes':
                         break;

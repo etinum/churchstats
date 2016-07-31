@@ -18,7 +18,7 @@ namespace Data
         public int UserId { get; set; }
         public int MeetingId { get; set; }
         public Nullable<int> RecorderId { get; set; }
-        public System.DateTime DateRecorded { get; set; }
+        public Nullable<System.DateTime> DateRecorded { get; set; }
         public Nullable<System.DateTime> MeetingDate { get; set; }
         public Nullable<AttendTypeEnum> AttendType { get; set; }
         public Nullable<MemberTypeEnum> MemberType { get; set; }

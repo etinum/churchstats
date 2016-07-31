@@ -9,7 +9,7 @@ namespace webapi.ViewModels
         public int UserId { get; set; }
         public int MeetingId { get; set; }
         public int? RecorderId { get; set; }
-        public DateTime DateRecorded { get; set; }
+        public DateTime? DateRecorded { get; set; }
         public DateTime? MeetingDate { get; set; }
         public AttendTypeEnum? AttendType { get; set; }
         public MemberTypeEnum? MemberType { get; set; }

@@ -40,7 +40,7 @@ namespace webapi.Controllers
                 return Ok(ex);
 
             }
-            
+
         }
 
 
@@ -50,25 +50,30 @@ namespace webapi.Controllers
 
 
             var attendances = (from a in Ctx.Attendances
-                where a.MeetingId == meetingId
-                      && (DbFunctions.TruncateTime(a.MeetingDate.Value) == DbFunctions.TruncateTime(meetingDate))
-                select new
-                    {
-                        a.Id,
-                        a.UserId,
-                        a.AttendType,
-                        a.RecorderId,
-                        a.ModifiedDate,
-                        a.Notes
-                    });
+                               where a.MeetingId == meetingId
+                                     && (DbFunctions.TruncateTime(a.MeetingDate.Value) == DbFunctions.TruncateTime(meetingDate))
+                               select new
+                               {
+                                   a.Id,
+                                   a.UserId,
+                                   a.AttendType,
+                                   a.RecorderId,
+                                   a.MemberType,
+                                   a.ModifiedDate,
+                                   a.Notes
+                               });
 
-            var listXUserId =
+            var listXUserIdMemberType =
                 Ctx.X_User_Meeting.Where(x => x.MeetingId == meetingId && x.Active.Value && x.EffectiveDate <= meetingDate)
-                    .Select(r => r.UserId);
+                    .Select(r => new
+                    {
+                        r.UserId,
+                        r.MemberType
+                    });
 
             var listUserId = attendances.Select(a => a.UserId);
 
-            var totalListUserId = listXUserId.Concat(listUserId).Distinct();
+            var totalListUserId = listXUserIdMemberType.Select(r => r.UserId).Concat(listUserId).Distinct();
 
             var users = (from u in Ctx.Users
                          join l in totalListUserId on u.Id equals l
@@ -84,9 +89,15 @@ namespace webapi.Controllers
                 if (match == null)
                 {
                     userViewModel.AttendType = AttendTypeEnum.Unknown;
+                    if (listXUserIdMemberType.Select(r => r.UserId).Contains(userViewModel.Id))
+                    {
+                        userViewModel.MemberType =
+                            listXUserIdMemberType.First(r => r.UserId == userViewModel.Id).MemberType;
+                    }
                     continue;
                 }
                 userViewModel.AttendType = match.AttendType;
+                userViewModel.MemberType = match.MemberType;
                 userViewModel.RecorderId = match.RecorderId;
                 userViewModel.AttendanceId = match.Id;
                 userViewModel.LastRecorded = match.ModifiedDate;
@@ -156,7 +167,7 @@ namespace webapi.Controllers
             Ctx.SaveChanges();
 
 
-            
+
 
             var attendanceVm = new AttendanceViewModel()
             {
@@ -182,7 +193,7 @@ namespace webapi.Controllers
 
             if (meeting.Id == 0)
             {
-                meeting.DayOfTheWeek = (int) DateTime.Now.DayOfWeek;
+                meeting.DayOfTheWeek = (int)DateTime.Now.DayOfWeek;
                 Ctx.Meetings.Add(meeting);
 
             }

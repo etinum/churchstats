@@ -29,7 +29,7 @@
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="MeetingId" Type="int" Nullable="false" />
           <Property Name="RecorderId" Type="int" />
-          <Property Name="DateRecorded" Type="datetime" Nullable="false" />
+          <Property Name="DateRecorded" Type="datetime" />
           <Property Name="MeetingDate" Type="datetime" />
           <Property Name="AttendType" Type="int" />
           <Property Name="MemberType" Type="int" />
@@ -667,7 +667,6 @@
       <Schema Namespace="CstatsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="CStatsEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Addresses" EntityType="CstatsModel.Address" />
-          <EntitySet Name="Attendances" EntityType="CstatsModel.Attendance" />
           <EntitySet Name="ContactInfoes" EntityType="CstatsModel.ContactInfo" />
           <EntitySet Name="Localities" EntityType="CstatsModel.Locality" />
           <EntitySet Name="Meetings" EntityType="CstatsModel.Meeting" />
@@ -687,10 +686,6 @@
           <AssociationSet Name="FK_Meeting_Address" Association="CstatsModel.FK_Meeting_Address">
             <End Role="Address" EntitySet="Addresses" />
             <End Role="Meeting" EntitySet="Meetings" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Attendance_Meeting" Association="CstatsModel.FK_Attendance_Meeting">
-            <End Role="Meeting" EntitySet="Meetings" />
-            <End Role="Attendance" EntitySet="Attendances" />
           </AssociationSet>
           <AssociationSet Name="FK_Locality_ContactInfo" Association="CstatsModel.FK_Locality_ContactInfo">
             <End Role="ContactInfo" EntitySet="ContactInfoes" />
@@ -734,14 +729,6 @@
             <End Role="Address" EntitySet="Addresses" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
-          <AssociationSet Name="FK_Attendance_Recorder" Association="CstatsModel.FK_Attendance_Recorder">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Attendance" EntitySet="Attendances" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Attendance_User" Association="CstatsModel.FK_Attendance_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Attendance" EntitySet="Attendances" />
-          </AssociationSet>
           <AssociationSet Name="FK_User_ContactInfo" Association="CstatsModel.FK_User_ContactInfo">
             <End Role="ContactInfo" EntitySet="ContactInfoes" />
             <End Role="User" EntitySet="Users" />
@@ -782,6 +769,19 @@
             <End Role="User" EntitySet="Users" />
             <End Role="X_User_Tag" EntitySet="X_User_Tag" />
           </AssociationSet>
+          <EntitySet Name="Attendances" EntityType="CstatsModel.Attendance" />
+          <AssociationSet Name="FK_Attendance_Meeting" Association="CstatsModel.FK_Attendance_Meeting">
+            <End Role="Meeting" EntitySet="Meetings" />
+            <End Role="Attendance" EntitySet="Attendances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attendance_Recorder" Association="CstatsModel.FK_Attendance_Recorder">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Attendance" EntitySet="Attendances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attendance_User" Association="CstatsModel.FK_Attendance_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Attendance" EntitySet="Attendances" />
+          </AssociationSet>
           </EntityContainer>
         <EnumType Name="AttendTypeEnum">
           <Member Name="Present" Value="1" />
@@ -813,28 +813,6 @@
           <NavigationProperty Name="Meetings" Relationship="CstatsModel.FK_Meeting_Address" FromRole="Address" ToRole="Meeting" />
           <NavigationProperty Name="Users" Relationship="CstatsModel.FK_User_Address" FromRole="Address" ToRole="User" />
         </EntityType>
-        <EntityType Name="Attendance">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="MeetingId" Type="Int32" Nullable="false" />
-          <Property Name="RecorderId" Type="Int32" />
-          <Property Name="DateRecorded" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="MeetingDate" Type="DateTime" Precision="3" />
-          <Property Name="AttendType" Type="CstatsModel.AttendTypeEnum" />
-          <Property Name="MemberType" Type="CstatsModel.MemberTypeEnum" />
-          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="IsArchive" Type="Boolean" />
-          <Property Name="CreatedByUserId" Type="Int32" />
-          <Property Name="ModifiedByUserId" Type="Int32" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Meeting" Relationship="CstatsModel.FK_Attendance_Meeting" FromRole="Attendance" ToRole="Meeting" />
-          <NavigationProperty Name="User" Relationship="CstatsModel.FK_Attendance_Recorder" FromRole="Attendance" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="CstatsModel.FK_Attendance_User" FromRole="Attendance" ToRole="User" />
-          </EntityType>
         <EntityType Name="ContactInfo">
           <Key>
             <PropertyRef Name="Id" />
@@ -890,13 +868,13 @@
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Address" Relationship="CstatsModel.FK_Meeting_Address" FromRole="Meeting" ToRole="Address" />
-          <NavigationProperty Name="Attendances" Relationship="CstatsModel.FK_Attendance_Meeting" FromRole="Meeting" ToRole="Attendance" />
           <NavigationProperty Name="ContactInfo" Relationship="CstatsModel.FK_Meeting_ContactInfo" FromRole="Meeting" ToRole="ContactInfo" />
           <NavigationProperty Name="MeetingType" Relationship="CstatsModel.FK_Meeting_MeetingType" FromRole="Meeting" ToRole="MeetingType" />
           <NavigationProperty Name="X_AdminUser_Meeting" Relationship="CstatsModel.FK_X_AdminUser_Meeting_Meeting" FromRole="Meeting" ToRole="X_AdminUser_Meeting" />
           <NavigationProperty Name="X_Meeting_Tag" Relationship="CstatsModel.FK_X_Meeting_Tag_Meeting" FromRole="Meeting" ToRole="X_Meeting_Tag" />
           <NavigationProperty Name="X_User_Meeting" Relationship="CstatsModel.FK_X_User_Meeting_Meeting" FromRole="Meeting" ToRole="X_User_Meeting" />
           <NavigationProperty Name="User" Relationship="CstatsModel.FK_Meeting_User" FromRole="Meeting" ToRole="User" />
+          <NavigationProperty Name="Attendances" Relationship="CstatsModel.FK_Attendance_Meeting" FromRole="Meeting" ToRole="Attendance" />
         </EntityType>
         <EntityType Name="MeetingType">
           <Key>
@@ -1052,18 +1030,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Attendance_Meeting">
-          <End Type="CstatsModel.Meeting" Role="Meeting" Multiplicity="1" />
-          <End Type="CstatsModel.Attendance" Role="Attendance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Meeting">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Attendance">
-              <PropertyRef Name="MeetingId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Locality_ContactInfo">
           <End Type="CstatsModel.ContactInfo" Role="ContactInfo" Multiplicity="0..1" />
           <End Type="CstatsModel.Locality" Role="Locality" Multiplicity="*" />
@@ -1198,8 +1164,6 @@
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Address" Relationship="CstatsModel.FK_User_Address" FromRole="User" ToRole="Address" />
-          <NavigationProperty Name="Attendances" Relationship="CstatsModel.FK_Attendance_Recorder" FromRole="User" ToRole="Attendance" />
-          <NavigationProperty Name="Attendances1" Relationship="CstatsModel.FK_Attendance_User" FromRole="User" ToRole="Attendance" />
           <NavigationProperty Name="ContactInfo" Relationship="CstatsModel.FK_User_ContactInfo" FromRole="User" ToRole="ContactInfo" />
           <NavigationProperty Name="Locality" Relationship="CstatsModel.FK_User_Locality" FromRole="User" ToRole="Locality" />
           <NavigationProperty Name="Meetings" Relationship="CstatsModel.FK_Meeting_User" FromRole="User" ToRole="Meeting" />
@@ -1210,6 +1174,8 @@
           <NavigationProperty Name="X_User_Meeting" Relationship="CstatsModel.FK_X_User_Meeting_User" FromRole="User" ToRole="X_User_Meeting" />
           <NavigationProperty Name="X_User_Role" Relationship="CstatsModel.FK_X_User_Role_User" FromRole="User" ToRole="X_User_Role" />
           <NavigationProperty Name="X_User_Tag" Relationship="CstatsModel.FK_X_User_Tag_User" FromRole="User" ToRole="X_User_Tag" />
+          <NavigationProperty Name="Attendances" Relationship="CstatsModel.FK_Attendance_Recorder" FromRole="User" ToRole="Attendance" />
+          <NavigationProperty Name="Attendances1" Relationship="CstatsModel.FK_Attendance_User" FromRole="User" ToRole="Attendance" />
         </EntityType>
         <EntityType Name="UserNote">
           <Key>
@@ -1233,32 +1199,6 @@
             </Principal>
             <Dependent Role="User">
               <PropertyRef Name="AddressId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Attendance_Recorder">
-          <End Type="CstatsModel.User" Role="User" Multiplicity="0..1" />
-          <End Type="CstatsModel.Attendance" Role="Attendance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Attendance">
-              <PropertyRef Name="RecorderId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Attendance_User">
-          <End Type="CstatsModel.User" Role="User" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="CstatsModel.Attendance" Role="Attendance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Attendance">
-              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1386,6 +1326,66 @@
           <Member Name="Normal" Value="1" />
           <Member Name="GospelContact" Value="2" />
         </EnumType>
+        <EntityType Name="Attendance">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="MeetingId" Type="Int32" Nullable="false" />
+          <Property Name="RecorderId" Type="Int32" />
+          <Property Name="DateRecorded" Type="DateTime" Precision="3" />
+          <Property Name="MeetingDate" Type="DateTime" Precision="3" />
+          <Property Name="AttendType" Type="CstatsModel.AttendTypeEnum" />
+          <Property Name="MemberType" Type="CstatsModel.MemberTypeEnum" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsArchive" Type="Boolean" />
+          <Property Name="CreatedByUserId" Type="Int32" />
+          <Property Name="ModifiedByUserId" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Meeting" Relationship="CstatsModel.FK_Attendance_Meeting" FromRole="Attendance" ToRole="Meeting" />
+          <NavigationProperty Name="User" Relationship="CstatsModel.FK_Attendance_Recorder" FromRole="Attendance" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="CstatsModel.FK_Attendance_User" FromRole="Attendance" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Attendance_Meeting">
+          <End Type="CstatsModel.Meeting" Role="Meeting" Multiplicity="1" />
+          <End Type="CstatsModel.Attendance" Role="Attendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meeting">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Attendance">
+              <PropertyRef Name="MeetingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Attendance_Recorder">
+          <End Type="CstatsModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="CstatsModel.Attendance" Role="Attendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Attendance">
+              <PropertyRef Name="RecorderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Attendance_User">
+          <End Type="CstatsModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="CstatsModel.Attendance" Role="Attendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Attendance">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1405,26 +1405,6 @@
                 <ScalarProperty Name="City" ColumnName="City" />
                 <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
                 <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Attendances">
-            <EntityTypeMapping TypeName="CstatsModel.Attendance">
-              <MappingFragment StoreEntitySet="Attendance">
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedByUserId" ColumnName="ModifiedByUserId" />
-                <ScalarProperty Name="CreatedByUserId" ColumnName="CreatedByUserId" />
-                <ScalarProperty Name="IsArchive" ColumnName="IsArchive" />
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="MemberType" ColumnName="MemberType" />
-                <ScalarProperty Name="AttendType" ColumnName="AttendType" />
-                <ScalarProperty Name="MeetingDate" ColumnName="MeetingDate" />
-                <ScalarProperty Name="DateRecorded" ColumnName="DateRecorded" />
-                <ScalarProperty Name="RecorderId" ColumnName="RecorderId" />
-                <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1633,6 +1613,26 @@
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Attendances">
+            <EntityTypeMapping TypeName="CstatsModel.Attendance">
+              <MappingFragment StoreEntitySet="Attendance">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedByUserId" ColumnName="ModifiedByUserId" />
+                <ScalarProperty Name="CreatedByUserId" ColumnName="CreatedByUserId" />
+                <ScalarProperty Name="IsArchive" ColumnName="IsArchive" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="MemberType" ColumnName="MemberType" />
+                <ScalarProperty Name="AttendType" ColumnName="AttendType" />
+                <ScalarProperty Name="MeetingDate" ColumnName="MeetingDate" />
+                <ScalarProperty Name="DateRecorded" ColumnName="DateRecorded" />
+                <ScalarProperty Name="RecorderId" ColumnName="RecorderId" />
+                <ScalarProperty Name="MeetingId" ColumnName="MeetingId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

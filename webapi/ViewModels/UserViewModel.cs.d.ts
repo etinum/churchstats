@@ -24,6 +24,7 @@
 		fullName: string;
 		fullNameRev: string;
 		attendType: any;
+		memberType: any;
 		recorderId: number;
 		recorderName: string;
 		attendanceId: number;

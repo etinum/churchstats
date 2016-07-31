@@ -48,6 +48,7 @@ namespace webapi.ViewModels
         }
 
         public AttendTypeEnum? AttendType { get; set; }
+        public MemberTypeEnum? MemberType { get; set; }
         public int? RecorderId { get; set; }
         public string RecorderName { get; set; }
         public int AttendanceId { get; set; }

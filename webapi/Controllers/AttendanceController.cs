@@ -10,6 +10,7 @@ using System.Web.Http;
 using Data;
 using webapi.Hubs;
 using webapi.Mappers;
+using webapi.Utils;
 using webapi.ViewModels;
 
 namespace webapi.Controllers
@@ -50,25 +51,21 @@ namespace webapi.Controllers
             {
                 attendance = _ctx.Attendances.FirstOrDefault(r => r.Id == attendanceViewModel.Id);
 
-
                 if (attendance != null)
                 {
-                    attendance.AttendType = attendanceViewModel.AttendType;
-                    attendance.RecorderId = attendanceViewModel.RecorderId;
+                    var efModel = Mapper.Map<Attendance>(attendanceViewModel);
+                    Common.MergeObjects(efModel, attendance);
                 }
             }
 
             _ctx.SaveChanges();
 
 
-            if (attendance != null)
-            {
-                var subscribed = Hub.Clients.Group(attendance.MeetingId.ToString());
-                subscribed.UpdateAttendance(_mapper.Map<AttendanceViewModel>(attendance));
-                return Ok(attendance.Id);
+            if (attendance == null) return NotFound();
 
-            }
-            return NotFound();
+            var subscribed = Hub.Clients.Group(attendance.MeetingId.ToString());
+            subscribed.UpdateAttendance(_mapper.Map<AttendanceViewModel>(attendance));
+            return Ok(attendance.Id);
         }
 
 
