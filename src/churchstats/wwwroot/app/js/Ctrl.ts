@@ -585,15 +585,23 @@
                 });
         };
 
-        $scope.setMemberAttendType = (item) => {
+        $scope.setMemberAttendType = (item: modeltypings.UserViewModel) => {
             if ($scope.justLp) {
                 $timeout.cancel($scope.longPressTimeout);
                 $scope.justLp = false;
                 return;
             }
+
             item.attendType = (item.attendType === $scope.attendTypeEnum.unknown)
                 ? $scope.attendTypeEnum.present
                 : ((item.attendType === $scope.attendTypeEnum.absent) ? $scope.attendTypeEnum.unknown : $scope.attendTypeEnum.absent);
+
+
+            $timeout.cancel($scope.memberSelectedTimeout);
+            $scope.memberSelectedTimeout = $timeout(() => {
+                $scope.memberSelected(item);
+            }, 750);
+
         };
 
 

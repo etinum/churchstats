@@ -241,8 +241,8 @@
                         <div ng-show="showGrid">
                             <div class="clearfix" ng-if="$index % gridModValue == 0"></div>
                             <label class="btn" style="border-style: dotted; border-color: whitesmoke" ng-class="{'longPressConfirm':item.longPressActive ,'col-xs-4': (gridModValue === 3), 'col-xs-3': (gridModValue === 4),'btn-success': item.attendType === attendTypeEnum.present, 'btn-warning': item.attendType === attendTypeEnum.unknown, 'btn-danger': item.attendType === attendTypeEnum.absent}"
-                                   ng-click="setMemberAttendType(item); memberSelected(item)" on-long-press="memberGridLp(item)" on-touch-end="memberGridLpEnd(item)" prevent-click="true">
-                                <span ng-show="!isFirstSort">{{item.fullNameRev}}</span><span ng-show="isFirstSort"><i ng-show="item.birthYear > 2005" class="glyphicon glyphicon-pawn"></i><i ng-show="item.memberType==3" class="glyphicon glyphicon-road"></i> {{item.fullName}}</span>
+                                   ng-click="setMemberAttendType(item)" on-long-press="memberGridLp(item)" on-touch-end="memberGridLpEnd(item)" prevent-click="true">
+                                <i ng-show="item.birthYear > 2004" class="glyphicon glyphicon-pawn"></i><i ng-show="item.memberType==3" class="glyphicon glyphicon-road"></i> <span ng-show="!isFirstSort">{{item.fullNameRev}}</span><span ng-show="isFirstSort">{{item.fullName}}</span>
                             </label>
                         </div>
 

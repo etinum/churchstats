@@ -43,70 +43,130 @@ namespace webapi.Controllers
 
         }
 
+        private UserViewModel GenUserVm(User u, User recorderUser, Attendance a, X_User_Meeting x)
+        {
+            var uVm = Mapper.Map<UserViewModel>(u);
+            uVm.AttendanceId = a.Id;
+            uVm.AttendType = a.Id == 0 ? AttendTypeEnum.Unknown : a.AttendType;
+            uVm.MemberType = a.MemberType ?? x.MemberType;
+            uVm.RecorderId = a.RecorderId;
+            uVm.LastRecorded = a.ModifiedDate;
+            uVm.AttendanceNotes = a.Notes;
+            uVm.RecorderName = recorderUser.Id == 0 ? null : recorderUser.FirstName + ' ' + recorderUser.LastName;
+            return uVm;
+
+        }
+
 
         [HttpGet]
         public IHttpActionResult GetMeetingMembers(int meetingId, DateTime meetingDate)
         {
 
 
-            var attendances = (from a in Ctx.Attendances
-                               where a.MeetingId == meetingId
-                                     && (DbFunctions.TruncateTime(a.MeetingDate.Value) == DbFunctions.TruncateTime(meetingDate))
-                               select new
-                               {
-                                   a.Id,
-                                   a.UserId,
-                                   a.AttendType,
-                                   a.RecorderId,
-                                   a.MemberType,
-                                   a.ModifiedDate,
-                                   a.Notes
-                               });
 
-            var listXUserIdMemberType =
-                Ctx.X_User_Meeting.Where(x => x.MeetingId == meetingId && x.Active.Value && x.EffectiveDate <= meetingDate)
-                    .Select(r => new
-                    {
-                        r.UserId,
-                        r.MemberType
-                    });
+            var listX = Ctx.X_User_Meeting.Where(r => r.Active.Value && r.MeetingId == meetingId).ToList();
 
-            var listUserId = attendances.Select(a => a.UserId);
+            var listAttendToday =
+                Ctx.Attendances.Where(
+                    r =>
+                        r.MeetingId == meetingId &&
+                        (DbFunctions.TruncateTime(r.MeetingDate.Value) == DbFunctions.TruncateTime(meetingDate))).
+                        GroupBy(a => a.UserId).Select(a => a.FirstOrDefault()).ToList();
 
-            var totalListUserId = listXUserIdMemberType.Select(r => r.UserId).Concat(listUserId).Distinct();
+            var users = Ctx.Users.ToList();
 
-            var users = (from u in Ctx.Users
-                         join l in totalListUserId on u.Id equals l
-                         select u);
 
-            var userViewModels = Mapper.Map<List<UserViewModel>>(users);
+            var userVms = from x in listX
+                          join u in users
+                              on x.UserId equals u.Id
+                          join att in listAttendToday
+                    on x.UserId equals att.UserId
+                    into list1
+                          from l in list1.DefaultIfEmpty(new Attendance())
+                          join u2 in users
+                              on l.RecorderId equals u2.Id
+                              into list2
+                          from l2 in list2.DefaultIfEmpty(new User())
+                          select GenUserVm(u, l2, l, x);
 
-            var userList = Ctx.Users.ToList();
 
-            foreach (var userViewModel in userViewModels)
-            {
-                var match = attendances.FirstOrDefault(r => r.UserId == userViewModel.Id);
-                if (match == null)
-                {
-                    userViewModel.AttendType = AttendTypeEnum.Unknown;
-                    if (listXUserIdMemberType.Select(r => r.UserId).Contains(userViewModel.Id))
-                    {
-                        userViewModel.MemberType =
-                            listXUserIdMemberType.First(r => r.UserId == userViewModel.Id).MemberType;
-                    }
-                    continue;
-                }
-                userViewModel.AttendType = match.AttendType;
-                userViewModel.MemberType = match.MemberType;
-                userViewModel.RecorderId = match.RecorderId;
-                userViewModel.AttendanceId = match.Id;
-                userViewModel.LastRecorded = match.ModifiedDate;
-                userViewModel.AttendanceNotes = match.Notes;
-                var usermatch = userList.FirstOrDefault(r => r.Id == match.RecorderId);
-                if (usermatch != null) userViewModel.RecorderName = usermatch.FirstName + ' ' + usermatch.LastName;
-            }
 
-            return Ok(userViewModels);
+
+            //var userVms = from x in listX
+            //              join att in listAttendToday
+            //                  on x.UserId equals att.UserId
+            //                  into list1
+            //              from l in list1.DefaultIfEmpty(new Attendance())
+            //              join u in users
+            //                  on l.UserId equals u.Id
+            //                            into list2
+            //              from l2 in list2.DefaultIfEmpty(new User())
+            //                  //join u2 in users
+            //                  //    on l.RecorderId equals u2.Id
+            //                  //    into list2
+            //                  //from l2 in list2.DefaultIfEmpty(new User())
+            //              select GenUserVm(l2, null, l, x);
+
+
+
+            //var attendances = (from a in Ctx.Attendances
+            //                   where a.MeetingId == meetingId
+            //                         && (DbFunctions.TruncateTime(a.MeetingDate.Value) == DbFunctions.TruncateTime(meetingDate))
+            //                   select new
+            //                   {
+            //                       a.Id,
+            //                       a.UserId,
+            //                       a.AttendType,
+            //                       a.RecorderId,
+            //                       a.MemberType,
+            //                       a.ModifiedDate,
+            //                       a.Notes
+            //                   });
+
+            //var listXUserIdMemberType =
+            //    Ctx.X_User_Meeting.Where(x => x.MeetingId == meetingId && x.Active.Value && x.EffectiveDate <= meetingDate)
+            //        .Select(r => new
+            //        {
+            //            r.UserId,
+            //            r.MemberType
+            //        });
+
+            //var listUserId = attendances.Select(a => a.UserId);
+
+            //var totalListUserId = listXUserIdMemberType.Select(r => r.UserId).Concat(listUserId).Distinct();
+
+            //var users = (from u in Ctx.Users
+            //             join l in totalListUserId on u.Id equals l
+            //             select u);
+
+            //var userViewModels = Mapper.Map<List<UserViewModel>>(users);
+
+            //var userList = Ctx.Users.ToList();
+
+            //foreach (var userViewModel in userViewModels)
+            //{
+            //    var match = attendances.FirstOrDefault(r => r.UserId == userViewModel.Id);
+            //    if (match == null)
+            //    {
+            //        userViewModel.AttendType = AttendTypeEnum.Unknown;
+            //        if (listXUserIdMemberType.Select(r => r.UserId).Contains(userViewModel.Id))
+            //        {
+            //            userViewModel.MemberType =
+            //                listXUserIdMemberType.First(r => r.UserId == userViewModel.Id).MemberType;
+            //        }
+            //        continue;
+            //    }
+            //    userViewModel.AttendType = match.AttendType;
+            //    userViewModel.MemberType = match.MemberType;
+            //    userViewModel.RecorderId = match.RecorderId;
+            //    userViewModel.AttendanceId = match.Id;
+            //    userViewModel.LastRecorded = match.ModifiedDate;
+            //    userViewModel.AttendanceNotes = match.Notes;
+            //    var usermatch = userList.FirstOrDefault(r => r.Id == match.RecorderId);
+            //    if (usermatch != null) userViewModel.RecorderName = usermatch.FirstName + ' ' + usermatch.LastName;
+            //}
+
+            return Ok(userVms);
         }
 
         [HttpPost]
