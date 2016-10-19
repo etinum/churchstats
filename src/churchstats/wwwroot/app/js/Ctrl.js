@@ -37,6 +37,7 @@
         $scope.attendTypeEnum.present = 1;
         $scope.attendTypeEnum.absent = 2;
         $scope.attendTypeEnum.unknown = 3;
+        $scope.lastMemberIdSelected = 0;
         var lastAction = Date.now();
         var hub = $.connection.attendHub;
         var recorderFieldTimeout;
@@ -449,9 +450,15 @@
                 ? $scope.attendTypeEnum.present
                 : ((item.attendType === $scope.attendTypeEnum.absent) ? $scope.attendTypeEnum.unknown : $scope.attendTypeEnum.absent);
             $timeout.cancel($scope.memberSelectedTimeout);
-            $scope.memberSelectedTimeout = $timeout(function () {
+            if (item.id === $scope.lastMemberIdSelected) {
+                $scope.memberSelectedTimeout = $timeout(function () {
+                    $scope.memberSelected(item);
+                }, 750);
+            }
+            else {
                 $scope.memberSelected(item);
-            }, 750);
+            }
+            $scope.lastMemberIdSelected = item.id;
         };
         $scope.memberSelected = function (item) {
             if ($scope.justLp) {

@@ -9,6 +9,7 @@ using System.Web.Http;
 using webapi.ViewModels;
 using AutoMapper;
 using Data;
+using Microsoft.Ajax.Utilities;
 using webapi.Hubs;
 using webapi.Mappers;
 using webapi.Utils;
@@ -62,11 +63,9 @@ namespace webapi.Controllers
         public IHttpActionResult GetMeetingMembers(int meetingId, DateTime meetingDate)
         {
 
-
-
             var listX = Ctx.X_User_Meeting.Where(r => r.Active.Value && r.MeetingId == meetingId).ToList();
 
-            var listAttendToday =
+            var listAttendOnDate =
                 Ctx.Attendances.Where(
                     r =>
                         r.MeetingId == meetingId &&
@@ -76,10 +75,10 @@ namespace webapi.Controllers
             var users = Ctx.Users.ToList();
 
 
-            var userVms = from x in listX
+            var userVms = (from x in listX
                           join u in users
                               on x.UserId equals u.Id
-                          join att in listAttendToday
+                          join att in listAttendOnDate
                     on x.UserId equals att.UserId
                     into list1
                           from l in list1.DefaultIfEmpty(new Attendance())
@@ -87,84 +86,29 @@ namespace webapi.Controllers
                               on l.RecorderId equals u2.Id
                               into list2
                           from l2 in list2.DefaultIfEmpty(new User())
-                          select GenUserVm(u, l2, l, x);
+                          select GenUserVm(u, l2, l, x));
 
 
+            // If date is historical (not today)
+            if (meetingDate.Date != DateTime.Today)
+            {
+
+                var userHaveAttVms = (from att in listAttendOnDate
+                    join u in users
+                        on att.UserId equals u.Id
+                        into list1
+                    from l in list1.DefaultIfEmpty(new User())
+                    join u2 in users
+                        on att.RecorderId equals u2.Id
+                        into list2
+                    from l2 in list2.DefaultIfEmpty(new User())
+                    select GenUserVm(l, l2, att, new X_User_Meeting()));
+
+                userVms = userVms.Concat(userHaveAttVms).DistinctBy(r => r.Id);
+
+            }
 
 
-            //var userVms = from x in listX
-            //              join att in listAttendToday
-            //                  on x.UserId equals att.UserId
-            //                  into list1
-            //              from l in list1.DefaultIfEmpty(new Attendance())
-            //              join u in users
-            //                  on l.UserId equals u.Id
-            //                            into list2
-            //              from l2 in list2.DefaultIfEmpty(new User())
-            //                  //join u2 in users
-            //                  //    on l.RecorderId equals u2.Id
-            //                  //    into list2
-            //                  //from l2 in list2.DefaultIfEmpty(new User())
-            //              select GenUserVm(l2, null, l, x);
-
-
-
-            //var attendances = (from a in Ctx.Attendances
-            //                   where a.MeetingId == meetingId
-            //                         && (DbFunctions.TruncateTime(a.MeetingDate.Value) == DbFunctions.TruncateTime(meetingDate))
-            //                   select new
-            //                   {
-            //                       a.Id,
-            //                       a.UserId,
-            //                       a.AttendType,
-            //                       a.RecorderId,
-            //                       a.MemberType,
-            //                       a.ModifiedDate,
-            //                       a.Notes
-            //                   });
-
-            //var listXUserIdMemberType =
-            //    Ctx.X_User_Meeting.Where(x => x.MeetingId == meetingId && x.Active.Value && x.EffectiveDate <= meetingDate)
-            //        .Select(r => new
-            //        {
-            //            r.UserId,
-            //            r.MemberType
-            //        });
-
-            //var listUserId = attendances.Select(a => a.UserId);
-
-            //var totalListUserId = listXUserIdMemberType.Select(r => r.UserId).Concat(listUserId).Distinct();
-
-            //var users = (from u in Ctx.Users
-            //             join l in totalListUserId on u.Id equals l
-            //             select u);
-
-            //var userViewModels = Mapper.Map<List<UserViewModel>>(users);
-
-            //var userList = Ctx.Users.ToList();
-
-            //foreach (var userViewModel in userViewModels)
-            //{
-            //    var match = attendances.FirstOrDefault(r => r.UserId == userViewModel.Id);
-            //    if (match == null)
-            //    {
-            //        userViewModel.AttendType = AttendTypeEnum.Unknown;
-            //        if (listXUserIdMemberType.Select(r => r.UserId).Contains(userViewModel.Id))
-            //        {
-            //            userViewModel.MemberType =
-            //                listXUserIdMemberType.First(r => r.UserId == userViewModel.Id).MemberType;
-            //        }
-            //        continue;
-            //    }
-            //    userViewModel.AttendType = match.AttendType;
-            //    userViewModel.MemberType = match.MemberType;
-            //    userViewModel.RecorderId = match.RecorderId;
-            //    userViewModel.AttendanceId = match.Id;
-            //    userViewModel.LastRecorded = match.ModifiedDate;
-            //    userViewModel.AttendanceNotes = match.Notes;
-            //    var usermatch = userList.FirstOrDefault(r => r.Id == match.RecorderId);
-            //    if (usermatch != null) userViewModel.RecorderName = usermatch.FirstName + ' ' + usermatch.LastName;
-            //}
 
             return Ok(userVms);
         }
@@ -209,7 +153,7 @@ namespace webapi.Controllers
             {
                 xref = Ctx.X_User_Meeting.Create();
                 xref.UserId = data.UserId;
-                xref.MemberType = data.MemberType;
+                xref.MemberType = data.MemberType ?? MemberTypeEnum.Normal;
                 xref.MeetingId = data.MeetingId;
                 xref.EffectiveDate = data.EffectiveDate ?? DateTime.Now;
                 xref.Active = true;

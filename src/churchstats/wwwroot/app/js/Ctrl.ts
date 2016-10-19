@@ -78,6 +78,8 @@
         $scope.attendTypeEnum.unknown = modeltypings.AttendTypeEnum.Unknown;
 
 
+        $scope.lastMemberIdSelected = 0;
+
         //const enum MemberTypeEnum {
         //    Normal = 1,
         //    Returning = 2,
@@ -598,10 +600,16 @@
 
 
             $timeout.cancel($scope.memberSelectedTimeout);
-            $scope.memberSelectedTimeout = $timeout(() => {
-                $scope.memberSelected(item);
-            }, 750);
 
+            if (item.id === $scope.lastMemberIdSelected) {
+                $scope.memberSelectedTimeout = $timeout(() => {
+                        $scope.memberSelected(item);
+                    },
+                    750);
+            } else {
+                $scope.memberSelected(item);
+            }
+            $scope.lastMemberIdSelected = item.id;
         };
 
 

@@ -34,6 +34,7 @@ namespace webapi.Controllers
             var user = Mapper.Map<Data.User>(userViewModel);
             if (user.Id == 0)
             {
+                user.IsActive = true;
                 Ctx.Users.Add(user);
             }
             else
