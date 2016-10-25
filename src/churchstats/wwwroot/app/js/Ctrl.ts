@@ -206,7 +206,7 @@
                 });
             } else {
                 $scope.$evalAsync(() => {
-                    $scope.gridModValue = 3;
+                    $scope.gridModValue = 2;
                 });
             }
         };

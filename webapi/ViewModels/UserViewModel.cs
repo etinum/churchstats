@@ -35,7 +35,7 @@ namespace webapi.ViewModels
             get
             {
                 var nickname = string.IsNullOrEmpty(NickName) ? "" : $"({NickName})";
-                var name = string.IsNullOrEmpty(MiddleName) ? $"{FirstName} {LastName}{nickname}" : $"{FirstName} {MiddleName} {LastName}{nickname}";
+                var name = string.IsNullOrEmpty(MiddleName) ? $"{nickname}{FirstName} {LastName}" : $"{nickname}{FirstName} {MiddleName} {LastName}";
                 return name;
             }
         }
@@ -45,7 +45,7 @@ namespace webapi.ViewModels
             get
             {
                 var nickname = string.IsNullOrEmpty(NickName) ? "" : $"({NickName})";
-                var name = string.IsNullOrEmpty(MiddleName) ? $"{LastName}, {FirstName}{nickname}" : $"{LastName}, {FirstName} {MiddleName}{nickname}";
+                var name = string.IsNullOrEmpty(MiddleName) ? $"{nickname}{LastName}, {FirstName}" : $"{nickname}{LastName}, {FirstName} {MiddleName}";
                 return name;
             }
         }
