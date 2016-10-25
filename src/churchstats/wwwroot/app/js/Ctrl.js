@@ -29,6 +29,7 @@
         $scope.lastSortAsc = true;
         $scope.isFirstSort = true;
         $scope.showGrid = true;
+        $scope.hideChildren = true;
         gridAdjustBySize();
         $scope.hideUnknown = false;
         $scope.hidePresent = false;
@@ -152,6 +153,12 @@
             $scope.fullMemberList.push(member);
             filterMembersBySearch();
         };
+        function filterMembersByChildren() {
+            if ($scope.hideChildren) {
+                $scope.memberList = $scope.memberList
+                    .filter(function (item) { return item.birthYear <= 2004; });
+            }
+        }
         $scope.filterMembersBySearch = filterMembersBySearch;
         function sortName() {
             switch ($scope.sortNameType) {
@@ -250,6 +257,7 @@
             $scope.$evalAsync(function () {
                 $scope.memberList = $scope.fullMemberList.filter(function (item) { return item.fullName.toLowerCase().indexOf($scope.globalSearchString.toLowerCase()) > -1; });
                 filterMemberListAttendTypes();
+                filterMembersByChildren();
                 $scope.availableMemberList = $scope.fullUserList.filter(function (item) { return $dataService.arrayObjectIndexOf($scope.fullMemberList, item.fullName, "fullName", false) === -1 && item.isActive; });
                 updateCounts($scope.memberList);
             });

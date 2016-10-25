@@ -66,6 +66,7 @@
         $scope.isFirstSort = true;
 
         $scope.showGrid = true;
+        $scope.hideChildren = true;
         gridAdjustBySize();
 
         $scope.hideUnknown = false;
@@ -230,6 +231,15 @@
         };
 
 
+        function filterMembersByChildren() {
+
+            if ($scope.hideChildren) {
+                $scope.memberList = $scope.memberList
+                    .filter(item => item.birthYear <= 2004);
+            }
+
+        }
+
         $scope.filterMembersBySearch = filterMembersBySearch;
 
 
@@ -326,6 +336,8 @@
                 $scope.memberList = $scope.fullMemberList.filter(item => item.fullName.toLowerCase().indexOf($scope.globalSearchString.toLowerCase()) > -1);
 
                 filterMemberListAttendTypes();
+
+                filterMembersByChildren();
 
                 $scope.availableMemberList = $scope.fullUserList.filter(item => $dataService.arrayObjectIndexOf($scope.fullMemberList, item.fullName, "fullName", false) === -1 && item.isActive);
                 updateCounts($scope.memberList);
@@ -998,8 +1010,6 @@
     app.controller('homeCtrl', controller);
 })(angular.module("repoFormsApp"));
 
-
-
 (app => {
     var controller = ($scope, $uibModalInstance, $timeout, $window, $location) => {
 
@@ -1017,7 +1027,6 @@
     controller.$inject = ['$scope', '$uibModalInstance', '$timeout', '$window', '$location'];
     app.controller('confirmResetCtrl', controller);
 })(angular.module("repoFormsApp"));
-
 
 (app => {
     var controller = ($scope, $uibModalInstance, $timeout, $window, data) => {
@@ -1063,7 +1072,6 @@
     app.controller('saveMeetingCtrl', controller);
 })(angular.module("repoFormsApp"));
 
-
 (app => {
     var controller = ($scope, $uibModalInstance, $timeout, $window, data) => {
 
@@ -1084,7 +1092,6 @@
     controller.$inject = ['$scope', '$uibModalInstance', '$timeout', '$window', 'data'];
     app.controller('memberOptionsCtrl', controller);
 })(angular.module("repoFormsApp"));
-
 
 (app => {
     var controller = ($scope, $uibModalInstance, $timeout, $window, data) => {

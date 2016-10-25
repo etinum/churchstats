@@ -151,6 +151,13 @@
                                     </i>
                                 </button>
                             </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary" style="margin-bottom: 10px" ng-model="hideChildren" ng-click="hideChildren = hideChildren ? 0 : 1; filterMembersBySearch()">
+                                    <i class="glyphicon" ng-class="{'glyphicon-baby-formula': hideChildren, 'glyphicon-knight': !hideChildren}">
+                                    </i>
+                                </button>
+                            </div>
+
                         </div>
 
                         <div ng-show="showAddMember" class="input-group col-sm-10" style="margin-bottom: 15px">
@@ -239,6 +246,7 @@
                     <div>
 
                         <div ng-show="showGrid">
+                            
                             <div class="clearfix" ng-if="$index % gridModValue == 0"></div>
                             <label class="btn" style="border-style: dotted; border-color: whitesmoke" ng-class="{'longPressConfirm':item.longPressActive ,'col-xs-4': (gridModValue === 3), 'col-xs-3': (gridModValue === 4),'btn-success': item.attendType === attendTypeEnum.present, 'btn-warning': item.attendType === attendTypeEnum.unknown, 'btn-danger': item.attendType === attendTypeEnum.absent}"
                                    ng-click="setMemberAttendType(item)" on-long-press="memberGridLp(item)" on-touch-end="memberGridLpEnd(item)" prevent-click="true">
