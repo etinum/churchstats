@@ -4,6 +4,7 @@ declare module modeltypings {
         firstName: string;
         middleName: string;
         lastName: string;
+        nickName: string;
         gender: boolean;
         birthYear: number;
         picture: any[];

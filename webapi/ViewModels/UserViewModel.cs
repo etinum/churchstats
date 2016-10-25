@@ -10,6 +10,7 @@ namespace webapi.ViewModels
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
+        public string NickName { get; set; }
         public bool? Gender { get; set; }
         public int? BirthYear { get; set; }
         public byte[] Picture { get; set; }
@@ -33,7 +34,8 @@ namespace webapi.ViewModels
         {
             get
             {
-                var name = string.IsNullOrEmpty(MiddleName) ? FirstName + " " + LastName : FirstName + " " + MiddleName + " " + LastName;
+                var nickname = string.IsNullOrEmpty(NickName) ? "" : $"({NickName})";
+                var name = string.IsNullOrEmpty(MiddleName) ? $"{FirstName} {LastName}{nickname}" : $"{FirstName} {MiddleName} {LastName}{nickname}";
                 return name;
             }
         }
@@ -42,7 +44,8 @@ namespace webapi.ViewModels
         {
             get
             {
-                var name = string.IsNullOrEmpty(MiddleName) ? LastName + ", " + FirstName : LastName + ", " + FirstName + " " + MiddleName;
+                var nickname = string.IsNullOrEmpty(NickName) ? "" : $"({NickName})";
+                var name = string.IsNullOrEmpty(MiddleName) ? $"{LastName}, {FirstName}{nickname}" : $"{LastName}, {FirstName} {MiddleName}{nickname}";
                 return name;
             }
         }

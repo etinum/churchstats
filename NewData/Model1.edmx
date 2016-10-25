@@ -134,6 +134,7 @@
           <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
           <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NickName" Type="nvarchar" MaxLength="50" />
           <Property Name="Gender" Type="bit" />
           <Property Name="BirthYear" Type="int" />
           <Property Name="Picture" Type="varbinary(max)" />
@@ -1146,6 +1147,7 @@
           <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NickName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Gender" Type="Boolean" />
           <Property Name="BirthYear" Type="Int32" />
           <Property Name="Picture" Type="Binary" MaxLength="Max" FixedLength="false" />
@@ -1581,6 +1583,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="CstatsModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="NickName" ColumnName="NickName" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="ModifiedByUserId" ColumnName="ModifiedByUserId" />
