@@ -106,7 +106,8 @@
 
         <ul class="list-group">
             <li class="list-group-item"><a ng-click="optionSelected('editUser')"><i class="glyphicon glyphicon-road"></i> Edit User</a></li>
-            <li class="list-group-item"><a ng-click="optionSelected('visitor')"><i class="glyphicon glyphicon-road"></i> Set as visitor</a></li>
+            <li class="list-group-item" ng-show="memberVm.memberType !== 3"><a ng-click="optionSelected('visitor')"><i class="glyphicon glyphicon-road"></i> Set as visitor</a></li>
+            <li class="list-group-item" ng-show="memberVm.memberType === 3"><a ng-click="optionSelected('visitorRemove')"><i class="glyphicon glyphicon-road"></i> Remove visitor status</a></li>
             <li class="list-group-item"><a ng-click="optionSelected('notes')"><i class="glyphicon glyphicon-file"></i> Add attendance note</a></li>
             <li class="list-group-item"><a ng-click="optionSelected('remove')" style='color: red'><i class="glyphicon glyphicon-remove"></i> Remove</a></li>
         </ul>
@@ -140,11 +141,16 @@
             </div>
 
             <textarea row="2" ng-model="memberVm.notes" class="form-control" placeholder="User notes"></textarea>           
+            <br />
+            <div class="btn-group">
+                <label class="btn btn-primary" ng-model="memberVm.gender" uib-btn-radio="true">Brother</label>
+                <label class="btn btn-primary" ng-model="memberVm.gender" uib-btn-radio="false">Sister</label>
+            </div>
             <label>Active: <input type="checkbox" ng-model="memberVm.isActive" /></label>
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" type="button" ng-click="save(memberVm)">Update</button>
+        <button class="btn btn-primary" type="button" ng-click="save(memberVm)">Submit</button>
         <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
     </div>
 </script>

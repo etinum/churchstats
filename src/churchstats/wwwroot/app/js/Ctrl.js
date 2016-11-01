@@ -274,6 +274,7 @@
             var user = {};
             user = parseNameForUser(user, name);
             user.attendType = 3;
+            user.isActive = true;
             return user;
         };
         function parseNameForUser(user, name) {
@@ -689,28 +690,38 @@
                 }
             });
             modalInstance.result.then(function (actionType) {
-                switch (actionType) {
-                    case 'editUser':
-                        $timeout(function () {
-                            $scope.openMemberEditDialog(memberVm);
-                        }, 250);
-                        break;
-                    case 'visitor':
-                        memberVm.memberType = 3;
-                        $scope.UpdateMember(memberVm);
-                        $scope.memberSelected(memberVm);
-                        break;
-                    case 'notes':
-                        break;
-                    case 'remove':
-                        $scope.removeMemberFromMeeting(memberVm.id);
-                        break;
-                    default:
-                }
+                $scope.menuOptionSelected(actionType, memberVm);
             }, function () {
             });
         };
+        $scope.menuOptionSelected = function (actionType, memberVm) {
+            switch (actionType) {
+                case 'editUser':
+                    $timeout(function () {
+                        $scope.openMemberEditDialog(memberVm);
+                    }, 250);
+                    break;
+                case 'visitor':
+                    memberVm.memberType = 3;
+                    $scope.UpdateMember(memberVm);
+                    $scope.memberSelected(memberVm);
+                    break;
+                case 'visitorRemove':
+                    memberVm.memberType = 1;
+                    $scope.UpdateMember(memberVm);
+                    $scope.memberSelected(memberVm);
+                    break;
+                case 'notes':
+                    break;
+                case 'remove':
+                    $scope.removeMemberFromMeeting(memberVm.id);
+                    break;
+                default:
+            }
+        };
         $scope.openMemberEditDialog = function (memberVm) {
+            var isAttendanceTaker = memberVm == null;
+            memberVm = isAttendanceTaker ? $dataService.arrayGetObject($scope.fullUserList, $scope.selectedUserId, "id") : memberVm;
             var modalInstance = $uibModal.open({
                 animation: true,
                 templateUrl: 'memberEdit.html',
@@ -725,6 +736,9 @@
             modalInstance.result.then(function (userVm) {
                 $dataService.saveUser(userVm)
                     .then(function () {
+                    if (isAttendanceTaker) {
+                        location.reload();
+                    }
                     if (!userVm.isActive) {
                         $scope.removeMemberFromMeeting(userVm.id)
                             .then(function () {
@@ -732,6 +746,41 @@
                         });
                     }
                     getMeetingMembers($scope.selectedMeetingId, $scope.attendanceDate);
+                });
+            }, function () {
+            });
+        };
+        $scope.openNewUserMemberDialog = function (name) {
+            var userVm = createUserViewModel(name);
+            if (userVm == null) {
+                return;
+            }
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'memberEdit.html',
+                controller: 'memberEditCtrl',
+                size: 'sm',
+                resolve: {
+                    data: function () {
+                        return userVm;
+                    }
+                }
+            });
+            modalInstance.result.then(function (userVm) {
+                $scope.load = $dataService.saveUser(userVm)
+                    .then(function (response) {
+                    userVm.id = response.data;
+                    var xref = {};
+                    xref.meetingId = $scope.selectedMeetingId;
+                    xref.userId = userVm.id;
+                    xref.effectiveDate = $scope.attendanceDate;
+                    updateMemberList(userVm);
+                    updateUserList(userVm);
+                    $scope.load = $dataService.addMemberToMeeting(xref)
+                        .then(function () {
+                        $scope.addMeetingMembers = '';
+                        $scope.forceRefreshList();
+                    });
                 });
             }, function () {
             });

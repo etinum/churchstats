@@ -358,6 +358,7 @@
             var user = <modeltypings.UserViewModel>{};
             user = parseNameForUser(user, name);
             user.attendType = modeltypings.AttendTypeEnum.Unknown;
+            user.isActive = true;
 
             return user;
 
@@ -919,7 +920,6 @@
 
         $scope.openMemberOptionsDialog = (memberVm: modeltypings.UserViewModel) => {
 
-
             var modalInstance = $uibModal.open({
                 animation: true,
                 templateUrl: 'memberOptions.html',
@@ -936,26 +936,7 @@
             modalInstance.result.then((actionType: string) => {
 
 
-                switch (actionType) {
-                    case 'editUser':
-                        $timeout(() => {
-                            $scope.openMemberEditDialog(memberVm);
-                        }, 250);
-
-                        break;
-                    case 'visitor':
-                        memberVm.memberType = modeltypings.MemberTypeEnum.Visitor;
-                        $scope.UpdateMember(memberVm);
-                        $scope.memberSelected(memberVm);
-                        break;
-                    case 'notes':
-                        break;
-                    case 'remove':
-                        $scope.removeMemberFromMeeting(memberVm.id);
-                        break;
-
-                    default:
-                }
+                $scope.menuOptionSelected(actionType, memberVm);
 
 
             },
@@ -965,8 +946,40 @@
 
         }
 
+        $scope.menuOptionSelected = (actionType: string, memberVm: modeltypings.UserViewModel) => {
+            switch (actionType) {
+                case 'editUser':
+                    $timeout(() => {
+                        $scope.openMemberEditDialog(memberVm);
+                    }, 250);
+
+                    break;
+                case 'visitor':
+                    memberVm.memberType = modeltypings.MemberTypeEnum.Visitor;
+                    $scope.UpdateMember(memberVm);
+                    $scope.memberSelected(memberVm);
+                    break;
+                case 'visitorRemove':
+                    memberVm.memberType = modeltypings.MemberTypeEnum.Normal;
+                    $scope.UpdateMember(memberVm);
+                    $scope.memberSelected(memberVm);
+                    break;
+                case 'notes':
+                    break;
+                case 'remove':
+                    $scope.removeMemberFromMeeting(memberVm.id);
+                    break;
+
+                default:
+            }
+        }
+
+
         $scope.openMemberEditDialog = (memberVm: modeltypings.UserViewModel) => {
 
+            var isAttendanceTaker = memberVm == null;
+
+            memberVm = isAttendanceTaker ? $dataService.arrayGetObject($scope.fullUserList, $scope.selectedUserId, "id") : memberVm;
 
             var modalInstance = $uibModal.open({
                 animation: true,
@@ -987,6 +1000,10 @@
                 $dataService.saveUser(userVm)
                     .then(() => {
 
+                        if (isAttendanceTaker) {
+                            location.reload();
+                        }
+
                         if (!userVm.isActive) {
                             $scope.removeMemberFromMeeting(userVm.id)
                                 .then(() => {
@@ -1003,6 +1020,65 @@
                 });
 
         }
+
+
+        $scope.openNewUserMemberDialog = (name: string) => {
+
+
+
+            var userVm = createUserViewModel(name);
+            if (userVm == null) {
+                return;
+            }
+
+
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'memberEdit.html',
+                controller: 'memberEditCtrl',
+                size: 'sm',
+                resolve: {
+                    data: () => {
+                        return userVm;
+                    }
+                }
+
+            });
+
+
+            modalInstance.result.then((userVm: modeltypings.UserViewModel) => {
+
+
+                $scope.load = $dataService.saveUser(userVm)
+                    .then((response) => {
+
+                        userVm.id = response.data;
+
+                        var xref = <modeltypings.XMeetingUserViewModel>{};
+                        xref.meetingId = $scope.selectedMeetingId;
+                        xref.userId = userVm.id;
+                        xref.effectiveDate = $scope.attendanceDate;
+
+                        updateMemberList(userVm);
+                        updateUserList(userVm);
+
+                        $scope.load = $dataService.addMemberToMeeting(xref)
+                            .then(() => {
+                                // reset fields
+                                $scope.addMeetingMembers = '';
+                                $scope.forceRefreshList();
+                            });
+                    });
+
+            },
+                () => {
+
+                });
+
+        }
+
+
+
 
     };
 

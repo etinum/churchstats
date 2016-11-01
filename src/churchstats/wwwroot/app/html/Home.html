@@ -36,7 +36,7 @@
             <div class="col-sm-5">
                 <div ng-class="{'input-group':haveRecorder || isNewUser}">
                     <span class="input-group-btn" ng-show="haveRecorder">
-                        <button type="button" class="btn btn-primary" ng-click="openSaveUserDialog()">
+                        <button type="button" class="btn btn-primary" ng-click="openMemberEditDialog()">
                             <i class="glyphicon glyphicon-edit">
                             </i>
                         </button>
@@ -165,7 +165,7 @@
                                    ng-model="addMeetingMembers" ng-required="true" uib-typeahead="item.fullName for item in availableMemberList  | filter:$viewValue | limitTo:8" autocomplete="off" typeahead-on-select="AddMember($item)" placeholder="Add member" />
                             <span class="input-group-btn">
                                 <input type="button" class="btn btn-primary" value="Add New User"
-                                       ng-click="AddNewUserAsMember(addMeetingMembers)" />
+                                       ng-click="openNewUserMemberDialog(addMeetingMembers)" />
                             </span>
                         </div>
 
@@ -260,11 +260,12 @@
                                 <div class="col-xs-12 col-sm-4  control-label">
                                     <div class="btn-group" is-open="hideIcon" uib-dropdown>
                                         <button type="button" class="btn btn-link" uib-dropdown-toggle>
-                                            <b><span ng-show="!isFirstSort">{{item.fullNameRev}}</span><span ng-show="isFirstSort">{{item.fullName}}</span></b> <i ng-hide="hideIcon" class="glyphicon glyphicon-chevron-right"></i><i ng-hide="!hideIcon" class="glyphicon glyphicon-chevron-down"></i>
+                                            <b><i ng-show="item.memberType === 3" class="glyphicon glyphicon-road"></i> <span ng-show="!isFirstSort">{{item.fullNameRev}}</span><span ng-show="isFirstSort">{{item.fullName}}</span></b> <i ng-hide="hideIcon" class="glyphicon glyphicon-chevron-right"></i><i ng-hide="!hideIcon" class="glyphicon glyphicon-chevron-down"></i>
                                         </button>
                                         <ul class="dropdown-menu" uib-dropdown-menu role="menu">
                                             <li role="menuitem"><a ng-click="openMemberEditDialog(item)"><i class="glyphicon glyphicon-edit"></i> Edit User</a></li>
-                                            <li role="menuitem"><a ng-click="tbd()"><i class="glyphicon glyphicon-road"></i> Set as visitor</a></li>
+                                            <li role="menuitem" ng-show="item.memberType !== 3"><a ng-click="menuOptionSelected('visitor', item)"><i class="glyphicon glyphicon-road"></i> Set as visitor</a></li>
+                                            <li role="menuitem" ng-show="item.memberType === 3"><a ng-click="menuOptionSelected('visitorRemove', item)"><i class="glyphicon glyphicon-road"></i> Remove visitor status</a></li>
                                             <li role="menuitem"><a ng-click="tbd()"><i class="glyphicon glyphicon-file"></i> Add notes</a></li>
                                             <li class="divider"></li>
                                             <li role="menuitem"><a ng-click="removeMemberFromMeeting(item.id)" style='color: red'><i class="glyphicon glyphicon-remove"></i> Remove</a></li>
