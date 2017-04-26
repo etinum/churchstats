@@ -3,7 +3,7 @@
     [UserId]           INT            NOT NULL,
     [MeetingId]        INT            NOT NULL,
     [RecorderId]       INT            NULL,
-    [DateRecorded]     DATETIME       NOT NULL,
+    [DateRecorded]     DATETIME       NULL,
     [MeetingDate]      DATETIME       NULL,
     [AttendType]       INT            NULL,
     [MemberType]       INT            NULL,
@@ -18,6 +18,8 @@
     CONSTRAINT [FK_Attendance_Recorder] FOREIGN KEY ([RecorderId]) REFERENCES [dbo].[User] ([Id]),
     CONSTRAINT [FK_Attendance_User] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id]) ON DELETE CASCADE
 );
+
+
 
 
 
