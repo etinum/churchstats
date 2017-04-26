@@ -82,3 +82,4 @@ src/*/node_modules/*
 .vs/
 *.js.map
 log.txt
+database/database.jfm
