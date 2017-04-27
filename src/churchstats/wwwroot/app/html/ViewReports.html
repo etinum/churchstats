@@ -1,7 +1,7 @@
 <table st-table="displayCollection" st-safe-src="fms" class="table table-striped">
     <thead>
         <tr>
-            <th st-sort="investigator">Investigator</th>
+            <th st-sort="name">Meeting Name</th>
             <th st-sort="accountNumber">Account Number</th>
             <th st-sort="client">Client</th>
             <th st-sort="closeType">Close Type</th>
@@ -10,20 +10,23 @@
         <tr>
             <th colspan="5"><input st-search="" class="form-control" placeholder="global search ..." type="text" /></th>
         </tr>
+        <tr>
+            <td>
+                <div class="row">
+                    <div class="col-lg-4"><input st-search="" class="form-control" placeholder="Meeting Name ..." type="text" /></div>
+                    <div class="col-lg-4"><input st-search="" class="form-control" placeholder="Meeting Date ..." type="text" /></div>
+                    <div class="col-lg-4"><button class="btn btn-sm btn-default" type="button" title="Textt" ng-click="Refresh()"><i class="glyphicon glyphicon-refresh"></i></button></div>
+                </div>
+            </td>
+        </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="row in displayCollection">
-            <td>{{row.investigator}}</td>
+        <tr ng-repeat="row in meetingList">
+            <td>{{row.name}}</td>
             <td>{{row.accountNumber}}</td>
             <td>{{row.client}}</td>
             <td>{{row.closeType}}</td>
             <td>{{row.customerName}}</td>
-            <td>
-                <button type="button" ng-click="edit(row)" class="btn btn-sm btn-default">
-                    <i class="glyphicon glyphicon-edit">
-                    </i>
-                </button>
-            </td>
         </tr>
     </tbody>
 </table>

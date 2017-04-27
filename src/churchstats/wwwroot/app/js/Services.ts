@@ -226,6 +226,26 @@
                 });
             return deferred.promise;
         }
+
+        var getReport = (reportType: string, meetingId: number, date: Date) => {
+            var url = baseWebApiUrl + 'api/Report/GetReport';
+            var deferred = $q.defer();
+            var data =
+                {
+                    reportType: reportType,
+                    meetingId: meetingId,
+                    date: date
+                }
+            $http.post(url, data)
+                .then(response => {
+                    deferred.resolve(response.data);
+                }, (response) => {
+                    alertFailed(response);
+                    deferred.reject(response);
+                });
+            return deferred.promise;
+
+        }
         
 
        // Google api 
@@ -261,6 +281,7 @@
             saveAttendance: saveAttendance,
             removeMemberFromMeeting: removeMemberFromMeeting,
             getLocation: getLocation,
+            getReport: getReport,
             // Helper Methods
             arrayUnique: arrayUnique,
             arrayObjectIndexOf: arrayObjectIndexOf,

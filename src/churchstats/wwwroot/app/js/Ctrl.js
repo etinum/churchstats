@@ -860,4 +860,24 @@
     controller.$inject = ['$scope', '$uibModalInstance', '$timeout', '$window', 'data'];
     app.controller('memberEditCtrl', controller);
 })(angular.module("repoFormsApp"));
+(function (app) {
+    var controller = function ($scope, $timeout, $window, dataService) {
+        var reportType = 'attend';
+        var meetingId = 1;
+        var date = '1/2/2016';
+        dataService.getReport(reportType, meetingId, date)
+            .then(function (value) {
+            $scope.meetingList = value;
+        });
+        $scope.Refresh = function () {
+            alert("refreshed");
+            dataService.getReport('attend', 2, '1/2/2016')
+                .then(function (value) {
+                $scope.meetingList = value;
+            });
+        };
+    };
+    controller.$inject = ['$scope', '$timeout', '$window', 'dataService'];
+    app.controller('reportsCtrl', controller);
+})(angular.module("repoFormsApp"));
 //# sourceMappingURL=Ctrl.js.map

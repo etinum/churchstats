@@ -16,7 +16,7 @@ angular.module('repoFormsApp', ['ngRoute', 'ngMessages', 'ui.bootstrap', 'enviro
         })
             .when("/viewReports", {
             templateUrl: "app/html/ViewReports.html",
-            controller: "viewCtrl"
+            controller: "reportsCtrl"
         })
             .otherwise({
             redirectTo: "/home"

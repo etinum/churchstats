@@ -1188,3 +1188,33 @@
     controller.$inject = ['$scope', '$uibModalInstance', '$timeout', '$window', 'data'];
     app.controller('memberEditCtrl', controller);
 })(angular.module("repoFormsApp"));
+
+(app => {
+    var controller = ($scope, $timeout, $window, dataService) => {
+
+        var reportType = 'attend'
+        var meetingId = 1;
+        var date = '1/2/2016'
+        dataService.getReport(reportType, meetingId, date)
+            .then((value: modeltypings.MeetingViewModel[]) => {
+                //alert(value[0].name);
+                $scope.meetingList = value;
+        });
+
+        $scope.Refresh = () => {
+            alert("refreshed");
+            dataService.getReport('attend', 2, '1/2/2016')
+                .then((value: modeltypings.MeetingViewModel[]) => {
+                    //alert(value[0].name);
+                    $scope.meetingList = value;
+                });
+        }
+
+        //debugger;
+        //alert($scope.reportData);
+        //alert("Report control");
+    };
+    controller.$inject = ['$scope', '$timeout', '$window', 'dataService'];
+    app.controller('reportsCtrl', controller);
+
+})(angular.module("repoFormsApp"));
