@@ -16,7 +16,7 @@
 
 (app => {
 
-    var service = ($http, $q, $envService) => {
+    var service = ($http: ng.IHttpService, $q: ng.IQService, $envService) => {
 
 
         var arrayUnique = (array) => {
@@ -94,6 +94,10 @@
         // Error messages
         var alertFailed = (response) => {
           //  alert("There was a problem with the back end call, here is your status code: " + response.status);
+        };
+
+        var alertRaw = (response) => {
+              alert("There was a problem with the back end call. Message: " + response);
         };
 
 
@@ -227,9 +231,10 @@
             return deferred.promise;
         }
 
-        var getReport = (reportType: string, meetingId: number, date: Date) => {
+        var getReport = (reportType: string, meetingId: number, date: Date): ng.IPromise<modeltypings.ReportGrid> => {
             var url = baseWebApiUrl + 'api/Report/GetReport';
             var deferred = $q.defer();
+            debugger;
             var data =
                 {
                     reportType: reportType,
@@ -237,14 +242,14 @@
                     date: date
                 }
             $http.post(url, data)
-                .then(response => {
+                .then((response: ng.IHttpPromiseCallbackArg<modeltypings.ReportGrid>) => {
                     deferred.resolve(response.data);
                 }, (response) => {
-                    alertFailed(response);
+                    if (response.data)
+                        alertRaw(response.data.message);
                     deferred.reject(response);
                 });
             return deferred.promise;
-
         }
         
 
@@ -260,9 +265,11 @@
                     }
                 })
                 .then((response) => {
-                    deferred.resolve(response.data.results.map(r => r));
+
+                    var responseData = (<any>(response.data)).results.map(r => r);
+                    deferred.resolve(responseData);
                 }, (response) => {
-                    alertFailed(response);
+
                     deferred.reject(response);
                 });
             return deferred.promise;

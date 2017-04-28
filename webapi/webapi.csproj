@@ -211,11 +211,15 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hubs\AttendHub.cs" />
+    <Compile Include="Logic\CustomLogic.cs" />
+    <Compile Include="Logic\MeetingLogic.cs" />
     <Compile Include="Mappers\ModelMapper.cs" />
     <Compile Include="Utils\Common.cs" />
     <Compile Include="ViewModels\AttendanceViewModel.cs" />
     <Compile Include="ViewModels\MeetingViewModel.cs" />
     <Compile Include="ViewModels\MeetingTypeViewModel.cs" />
+    <Compile Include="ViewModels\ReportGridHeaderViewModel.cs" />
+    <Compile Include="ViewModels\ReportGridViewModel.cs" />
     <Compile Include="ViewModels\ReportRequestViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

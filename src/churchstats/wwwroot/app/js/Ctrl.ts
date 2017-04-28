@@ -1,7 +1,9 @@
 /// <reference path="../typings/persontest.cs.d.ts" />
 /// <reference path="../typings/angular-environment.d.ts" />
 /// <reference path="../typings/cstatsviewmodels.cs.d.ts" />
+/// <reference path="../typings/scopeTypings.d.ts" />
 /// <reference path="../typings/signalr.d.ts" />
+
 
 /* Template for controllers
 (app => {
@@ -1190,29 +1192,26 @@
 })(angular.module("repoFormsApp"));
 
 (app => {
-    var controller = ($scope, $timeout, $window, dataService) => {
+    var controller = ($scope : scopeTypings.IReportScope, $timeout, $window, dataService) => {
 
         var reportType = 'attend'
         var meetingId = 1;
         var date = '1/2/2016'
+        let initialGridId: number = 0;
+        $scope.grids = new Array(1);
+        //$scope.grids[initialGridId] = new Classes.ReportGrid();
+        // Load initial data
         dataService.getReport(reportType, meetingId, date)
-            .then((value: modeltypings.MeetingViewModel[]) => {
-                //alert(value[0].name);
-                $scope.meetingList = value;
+            .then((newGrid: modeltypings.ReportGrid) => {
+                $scope.grids[initialGridId] = angular.copy(newGrid);
         });
 
-        $scope.Refresh = () => {
-            alert("refreshed");
-            dataService.getReport('attend', 2, '1/2/2016')
-                .then((value: modeltypings.MeetingViewModel[]) => {
-                    //alert(value[0].name);
-                    $scope.meetingList = value;
+        $scope.Refresh = (grid: modeltypings.ReportGrid): void => {
+            dataService.getReport('attend2', 1, Date.parse('1-2-2016'))
+                .then((newGrid: modeltypings.ReportGrid) => {
+                    angular.copy(newGrid, grid);
                 });
         }
-
-        //debugger;
-        //alert($scope.reportData);
-        //alert("Report control");
     };
     controller.$inject = ['$scope', '$timeout', '$window', 'dataService'];
     app.controller('reportsCtrl', controller);

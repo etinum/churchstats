@@ -68,6 +68,9 @@
         var baseWebApiUrl = $envService.read('apiUrl');
         var alertFailed = function (response) {
         };
+        var alertRaw = function (response) {
+            alert("There was a problem with the back end call. Message: " + response);
+        };
         var getAllUsers = function () {
             var url = baseWebApiUrl + 'api/User/GetAllUsers';
             var deferred = $q.defer();
@@ -184,6 +187,7 @@
         var getReport = function (reportType, meetingId, date) {
             var url = baseWebApiUrl + 'api/Report/GetReport';
             var deferred = $q.defer();
+            debugger;
             var data = {
                 reportType: reportType,
                 meetingId: meetingId,
@@ -193,7 +197,8 @@
                 .then(function (response) {
                 deferred.resolve(response.data);
             }, function (response) {
-                alertFailed(response);
+                if (response.data)
+                    alertRaw(response.data.message);
                 deferred.reject(response);
             });
             return deferred.promise;
@@ -207,9 +212,9 @@
                 }
             })
                 .then(function (response) {
-                deferred.resolve(response.data.results.map(function (r) { return r; }));
+                var responseData = (response.data).results.map(function (r) { return r; });
+                deferred.resolve(responseData);
             }, function (response) {
-                alertFailed(response);
                 deferred.reject(response);
             });
             return deferred.promise;

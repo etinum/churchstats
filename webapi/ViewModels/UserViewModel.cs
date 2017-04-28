@@ -58,6 +58,13 @@ namespace webapi.ViewModels
         public DateTime? LastRecorded { get; set; }
         public string AttendanceNotes { get; set; }
 
+        public string AttendTypeName {
+            get
+            {
+                return AttendType.GetValueOrDefault().ToString();
+            }
+        }
+
 
     }
 }

@@ -865,15 +865,16 @@
         var reportType = 'attend';
         var meetingId = 1;
         var date = '1/2/2016';
+        var initialGridId = 0;
+        $scope.grids = new Array(1);
         dataService.getReport(reportType, meetingId, date)
-            .then(function (value) {
-            $scope.meetingList = value;
+            .then(function (newGrid) {
+            $scope.grids[initialGridId] = angular.copy(newGrid);
         });
-        $scope.Refresh = function () {
-            alert("refreshed");
-            dataService.getReport('attend', 2, '1/2/2016')
-                .then(function (value) {
-                $scope.meetingList = value;
+        $scope.Refresh = function (grid) {
+            dataService.getReport('attend2', 1, Date.parse('1-2-2016'))
+                .then(function (newGrid) {
+                angular.copy(newGrid, grid);
             });
         };
     };

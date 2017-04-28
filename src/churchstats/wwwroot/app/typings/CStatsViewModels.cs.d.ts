@@ -82,6 +82,16 @@ declare module modeltypings {
 
     }
 
+    interface ReportGrid {
+        headers: ReportHeaders[];
+        rows: any[];
+    }
+
+    interface ReportHeaders {
+        title: string;
+        key: string;
+    }
+
     const enum AttendTypeEnum {
         Present = 1,
         Absent = 2,
