@@ -232,16 +232,19 @@
         }
 
         var getReport = (reportType: string, meetingId: number, date: Date): ng.IPromise<modeltypings.ReportGrid> => {
-            var url = baseWebApiUrl + 'api/Report/GetReport';
+            if (!date)
+            {
+                date = new Date();
+            }
+            var url = baseWebApiUrl + 'api/Report/GetReport/';
             var deferred = $q.defer();
-            debugger;
-            var data =
-                {
+            $http.get(url, {
+                params: {
                     reportType: reportType,
                     meetingId: meetingId,
-                    date: date
+                    meetingDate : date
                 }
-            $http.post(url, data)
+            })
                 .then((response: ng.IHttpPromiseCallbackArg<modeltypings.ReportGrid>) => {
                     deferred.resolve(response.data);
                 }, (response) => {

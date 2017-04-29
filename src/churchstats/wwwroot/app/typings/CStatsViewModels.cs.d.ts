@@ -85,6 +85,9 @@ declare module modeltypings {
     interface ReportGrid {
         headers: ReportHeaders[];
         rows: any[];
+        date: Date;
+        meetingId: number;
+        reportType: string;
     }
 
     interface ReportHeaders {

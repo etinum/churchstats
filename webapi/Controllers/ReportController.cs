@@ -11,22 +11,23 @@ namespace webapi.Controllers
 {
     public class ReportController : CustomApiController
     {
-        [HttpPost]
-        public IHttpActionResult GetReport(ReportRequestViewModel reportType)
+        [HttpGet]
+        public IHttpActionResult GetReport(string reportType, int meetingId, DateTime meetingDate)
         {
             var report = new ReportGridViewModel();
 
-            switch (reportType.ReportType)
+            switch (reportType)
             {
+                // TODO: Move header list to logic class keyed by report type
                 case "attend":
-                    var meeting = Ctx.Meetings.Where(m => m.MeetingTypeId == reportType.MeetingId);
+                    var meeting = Ctx.Meetings.Where(m => m.MeetingTypeId == meetingId);
                     report.Headers = new List<ReportGridHeaderViewModel>() { new ReportGridHeaderViewModel { Title = "Name", Key = "name" } };
                     report.Data =  Mapper.Map<IEnumerable<MeetingViewModel>>(meeting);
                     break;
                 case "attend2":
-                    reportType.MeetingDate = reportType.MeetingDate == DateTime.MinValue ? DateTime.Now : reportType.MeetingDate;
+                    meetingDate = meetingDate == DateTime.MinValue ? DateTime.Now : meetingDate;
                     var ml = new MeetingLogic();
-                    var userAttendMeeting = ml.GetMeetingMembersData(reportType.MeetingId, reportType.MeetingDate);
+                    var userAttendMeeting = ml.GetMeetingMembersData(meetingId, meetingDate);
                     report.Headers = new List<ReportGridHeaderViewModel>() {
                         new ReportGridHeaderViewModel { Title = "Full Name", Key = "fullName" },
                         new ReportGridHeaderViewModel { Title = "Attendance", Key = "attendTypeName" }

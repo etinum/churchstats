@@ -862,21 +862,38 @@
 })(angular.module("repoFormsApp"));
 (function (app) {
     var controller = function ($scope, $timeout, $window, dataService) {
-        var reportType = 'attend';
-        var meetingId = 1;
-        var date = '1/2/2016';
-        var initialGridId = 0;
-        $scope.grids = new Array(1);
-        dataService.getReport(reportType, meetingId, date)
-            .then(function (newGrid) {
-            $scope.grids[initialGridId] = angular.copy(newGrid);
-        });
+        $scope.meetingList = [];
+        var init = function () {
+            var reportType = 'attend';
+            var meetingId = 1;
+            var date = new Date();
+            var initialGridId = 0;
+            $scope.grids = [];
+            $scope.AddGrid(0);
+        };
+        $scope.AddGrid = function (insertIndex) {
+            var newGrid = {};
+            newGrid.reportType = 'attend';
+            newGrid.meetingId = 1;
+            newGrid.date = new Date();
+            $scope.grids.splice(insertIndex, 0, newGrid);
+            $scope.Refresh(newGrid);
+        };
         $scope.Refresh = function (grid) {
-            dataService.getReport('attend2', 1, Date.parse('1-2-2016'))
+            dataService.getReport(grid.reportType, grid.meetingId, grid.date)
                 .then(function (newGrid) {
-                angular.copy(newGrid, grid);
+                angular.extend(grid, newGrid);
             });
         };
+        $scope.ChangeAttendanceDateToday = function (index) {
+            $scope.grids[index].date = new Date();
+        };
+        dataService.getAllMeetings()
+            .then(function (data) {
+            $scope.meetingList = data;
+        });
+        ;
+        init();
     };
     controller.$inject = ['$scope', '$timeout', '$window', 'dataService'];
     app.controller('reportsCtrl', controller);

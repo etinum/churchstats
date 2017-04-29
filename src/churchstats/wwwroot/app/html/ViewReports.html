@@ -1,21 +1,49 @@
-<table ng-repeat="grid in grids" st-table="displayCollection" st-safe-src="fms" class="table table-striped">
-    <thead>
-        <tr>
-            <th ng-repeat="header in grid.headers">{{header.title}}</th>
-        </tr>
-        <tr>
-            <td colspan="100">
-                <div class="row">
-                    <div class="col-xs-6"><input st-search="" class="form-control" placeholder="Meeting Name ..." type="text" /></div>
-                    <div class="col-xs-5"><input st-search="" class="form-control" placeholder="Meeting Date ..." type="text" /></div>
-                    <div class="col-xs-1"><button class="btn btn-sm btn-default" type="button" ng-click="Refresh(grid)"><i class="glyphicon glyphicon-refresh"></i></button></div>
-                </div>
-            </td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="row in grid.data">
-            <td ng-repeat="header in grid.headers">{{row[header.key]}}</td>
-        </tr>
-    </tbody>
-</table>
+<div ng-repeat="grid in grids">
+    <table st-table="displayCollection" st-safe-src="fms" class="table table-striped">
+        <thead>
+            <tr>
+                <th ng-repeat="header in grid.headers">{{header.title}}</th>
+            </tr>
+            <tr>
+                <td colspan="100">
+                    <div class="row">
+                        <div class="form-group row">
+
+                            <div class="col-sm-3 col-xs-12">
+                                <!--TODO: Pull this data from server side-->
+                                <select st-search="" class="form-control" placeholder="Report Type ..." type="text" ng-model="grid.reportType">
+                                    <option value="attend">Meeting List</option>
+                                    <option value="attend2">Attendance</option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-4">
+                               <select class="form-control" ng-model="grid.meetingId">
+                                   <option ng-repeat="meeting in meetingList" ng-value="meeting.id">{{meeting.name}}</option>
+                               </select>
+                            </div>
+
+                            <div class="col-sm-4 col-xs-12">
+                                <p class="input-group">
+                                    <input id="attendanceDate" name="attendanceDate" type="text" ng-click="grid.datePopup = !grid.datePopup" class="form-control" uib-datepicker-popup="{{format}}"
+                                           ng-model="grid.date" is-open="grid.datePopup" datepicker-options="dateOptions" ng-required="true"
+                                           close-text="Close" alt-input-formats="altInputFormats" readonly />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-primary" ng-click="ChangeAttendanceDateToday($index)">Today</button>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="col-sm-1 col-xs-12"><button class="btn btn-sm btn-default" type="button" ng-click="Refresh(grid)"><i class="glyphicon glyphicon-refresh"></i></button></div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="row in grid.data">
+                <td ng-repeat="header in grid.headers">{{row[header.key]}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <button class="btn btn-success floatRight" ng-click="AddGrid($index + 1)">Add Report</button>
+</div>

@@ -1193,25 +1193,45 @@
 
 (app => {
     var controller = ($scope : scopeTypings.IReportScope, $timeout, $window, dataService) => {
+        
+        $scope.meetingList = [];
 
-        var reportType = 'attend'
-        var meetingId = 1;
-        var date = '1/2/2016'
-        let initialGridId: number = 0;
-        $scope.grids = new Array(1);
-        //$scope.grids[initialGridId] = new Classes.ReportGrid();
-        // Load initial data
-        dataService.getReport(reportType, meetingId, date)
-            .then((newGrid: modeltypings.ReportGrid) => {
-                $scope.grids[initialGridId] = angular.copy(newGrid);
-        });
+        var init = function () {
+            var reportType = 'attend'
+            var meetingId = 1;
+            var date = new Date();
+            let initialGridId: number = 0;
+            $scope.grids = [];
+            $scope.AddGrid(0);
+        }
+
+        $scope.AddGrid = (insertIndex: number): void => {
+            let newGrid: modeltypings.ReportGrid = <modeltypings.ReportGrid>{};
+            newGrid.reportType = 'attend';
+            newGrid.meetingId = 1;
+            newGrid.date = new Date();
+            // Insert into array without deleting
+            $scope.grids.splice(insertIndex, 0, newGrid);
+            $scope.Refresh(newGrid);
+        }
 
         $scope.Refresh = (grid: modeltypings.ReportGrid): void => {
-            dataService.getReport('attend2', 1, Date.parse('1-2-2016'))
+            dataService.getReport(grid.reportType, grid.meetingId, grid.date)
                 .then((newGrid: modeltypings.ReportGrid) => {
-                    angular.copy(newGrid, grid);
+                    angular.extend(grid, newGrid);
                 });
         }
+
+        $scope.ChangeAttendanceDateToday = (index : number) => {
+            $scope.grids[index].date = new Date();
+        }
+
+        dataService.getAllMeetings()
+            .then(data => {
+                $scope.meetingList = <modeltypings.MeetingViewModel[]>data;
+            });;
+
+        init();
     };
     controller.$inject = ['$scope', '$timeout', '$window', 'dataService'];
     app.controller('reportsCtrl', controller);

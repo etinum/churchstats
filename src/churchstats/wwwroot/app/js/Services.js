@@ -185,15 +185,18 @@
             return deferred.promise;
         };
         var getReport = function (reportType, meetingId, date) {
-            var url = baseWebApiUrl + 'api/Report/GetReport';
+            if (!date) {
+                date = new Date();
+            }
+            var url = baseWebApiUrl + 'api/Report/GetReport/';
             var deferred = $q.defer();
-            debugger;
-            var data = {
-                reportType: reportType,
-                meetingId: meetingId,
-                date: date
-            };
-            $http.post(url, data)
+            $http.get(url, {
+                params: {
+                    reportType: reportType,
+                    meetingId: meetingId,
+                    meetingDate: date
+                }
+            })
                 .then(function (response) {
                 deferred.resolve(response.data);
             }, function (response) {
