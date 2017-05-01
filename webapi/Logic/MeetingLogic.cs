@@ -60,6 +60,62 @@ namespace webapi.Logic
             return userVms;
         }
 
+        internal ReportGridViewModel GetMeetingMembersAndPastData(int meetingId, DateTime meetingDate, DateTime dateFrom)
+        {
+            var report = new ReportGridViewModel();
+            // The goal here is to get every attendance since the fromDate and extrapolate how many meetings there were and how many each person made.
+            var attendancesSinceDate =
+                Ctx.Attendances.Where(m => m.MeetingId == meetingId && m.MeetingDate >= dateFrom.Date).ToList(); // Force DB call so we can group by dates 
+            
+            //TODO: Add in all users linked to this meeting
+            var users = attendancesSinceDate.DistinctBy(a => a.UserId).Select(a => a.User1).ToList(); // User1 is actual attendance  user. *shrugs*
+
+            var attendencesByMeeting = attendancesSinceDate.GroupBy(a => a.MeetingDate.GetValueOrDefault().Date ).ToList();
+            int numMeetings = attendencesByMeeting.Count;
+
+            // Rather than make a view model, we use dynamic type.
+            var userCounts = new List<dynamic>();
+
+            if (numMeetings > 0) // avoid divide by 0
+            {
+                foreach (var user in users)
+                {
+
+                    var userAttendances = attendancesSinceDate.Where(a => a.UserId == user.Id);
+                    // Calculate attendance since dateFrom.
+                    int attends = userAttendances.Count(ua => ua.AttendType == AttendTypeEnum.Present);
+                    int absents = userAttendances.Count(ua => ua.AttendType == AttendTypeEnum.Absent);
+
+                    AttendTypeEnum meetingDateAttendance = userAttendances.FirstOrDefault(ua => ua.MeetingDate.GetValueOrDefault().Date == meetingDate.Date)?.AttendType ?? AttendTypeEnum.Unknown;
+
+                    var userData = new
+                    {
+                        fullName = user.FirstName + ' ' + user.LastName,
+                        attendTypeName = meetingDateAttendance.ToString(), // Get Friendly Name,
+                        percentAttend = (attends * 100) / numMeetings,
+                        percentAbsent = (absents * 100) / numMeetings
+                    };
+
+                    userCounts.Add(userData);
+                }
+
+                report.Headers = GetReportHeaders("attend");
+                report.Data = userCounts;
+                return report;
+            }
+            else
+            {
+                var errors = new List<dynamic>();
+                errors.Add(new { message = "No Results" });
+                report.Headers = GetReportHeaders("error");
+                report.Data = errors;
+                return report;
+            }
+
+
+
+        }
+
         private UserViewModel GenUserVm(User u, User recorderUser, Attendance a, X_User_Meeting x)
         {
             var uVm = Mapper.Map<UserViewModel>(u);
@@ -72,6 +128,32 @@ namespace webapi.Logic
             uVm.RecorderName = recorderUser.Id == 0 ? null : recorderUser.FirstName + ' ' + recorderUser.LastName;
             return uVm;
 
+        }
+
+        private List<ReportGridHeaderViewModel> GetReportHeaders(string reportName)
+        {
+            switch (reportName)
+            {
+                case "attend":
+                    return new List<ReportGridHeaderViewModel>() {
+                        new ReportGridHeaderViewModel { Title = "Full Name", Key = "fullName" },
+                        new ReportGridHeaderViewModel { Title = "Attendance", Key = "attendTypeName" },
+                        new ReportGridHeaderViewModel { Title = "Percent Present Last 30 Days", Key = "percentAttend" },
+                        new ReportGridHeaderViewModel { Title = "Percent Absent Last 30 Days", Key = "percentAbsent" }
+                    };
+                case "attend2":
+                    return new List<ReportGridHeaderViewModel>() {
+                        new ReportGridHeaderViewModel { Title = "Full Name", Key = "fullName" },
+                        new ReportGridHeaderViewModel { Title = "Attendance", Key = "attendTypeName" }
+                    };
+                case "error":
+                    return new List<ReportGridHeaderViewModel>()
+                    {
+                        new ReportGridHeaderViewModel() {Title = "Message", Key= "message" }
+                    };
+            }
+
+            return new List<ReportGridHeaderViewModel>();
         }
     }
 }

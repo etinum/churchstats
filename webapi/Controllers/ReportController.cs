@@ -15,18 +15,16 @@ namespace webapi.Controllers
         public IHttpActionResult GetReport(string reportType, int meetingId, DateTime meetingDate)
         {
             var report = new ReportGridViewModel();
+            var ml = new MeetingLogic();
 
             switch (reportType)
             {
                 // TODO: Move header list to logic class keyed by report type
                 case "attend":
-                    var meeting = Ctx.Meetings.Where(m => m.MeetingTypeId == meetingId);
-                    report.Headers = new List<ReportGridHeaderViewModel>() { new ReportGridHeaderViewModel { Title = "Name", Key = "name" } };
-                    report.Data =  Mapper.Map<IEnumerable<MeetingViewModel>>(meeting);
+                    report = ml.GetMeetingMembersAndPastData(meetingId, meetingDate, meetingDate.Subtract(new TimeSpan(30,0,0,0))); // Last 30 days
                     break;
                 case "attend2":
                     meetingDate = meetingDate == DateTime.MinValue ? DateTime.Now : meetingDate;
-                    var ml = new MeetingLogic();
                     var userAttendMeeting = ml.GetMeetingMembersData(meetingId, meetingDate);
                     report.Headers = new List<ReportGridHeaderViewModel>() {
                         new ReportGridHeaderViewModel { Title = "Full Name", Key = "fullName" },
