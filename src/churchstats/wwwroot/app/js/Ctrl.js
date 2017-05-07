@@ -864,7 +864,7 @@
     var controller = function ($scope, $timeout, $window, dataService) {
         $scope.meetingList = [];
         var init = function () {
-            var reportType = 'attend';
+            var reportType = 'attend30';
             var meetingId = 1;
             var date = new Date();
             var initialGridId = 0;
@@ -873,7 +873,7 @@
         };
         $scope.AddGrid = function (insertIndex) {
             var newGrid = {};
-            newGrid.reportType = 'attend';
+            newGrid.reportType = 'attend30';
             newGrid.meetingId = 1;
             newGrid.date = new Date();
             $scope.grids.splice(insertIndex, 0, newGrid);

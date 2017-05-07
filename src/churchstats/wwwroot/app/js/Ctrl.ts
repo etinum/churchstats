@@ -1197,7 +1197,7 @@
         $scope.meetingList = [];
 
         var init = function () {
-            var reportType = 'attend'
+            var reportType = 'attend30'
             var meetingId = 1;
             var date = new Date();
             let initialGridId: number = 0;
@@ -1207,7 +1207,7 @@
 
         $scope.AddGrid = (insertIndex: number): void => {
             let newGrid: modeltypings.ReportGrid = <modeltypings.ReportGrid>{};
-            newGrid.reportType = 'attend';
+            newGrid.reportType = 'attend30';
             newGrid.meetingId = 1;
             newGrid.date = new Date();
             // Insert into array without deleting

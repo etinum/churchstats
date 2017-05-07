@@ -20,10 +20,16 @@ namespace webapi.Controllers
             switch (reportType)
             {
                 // TODO: Move header list to logic class keyed by report type
-                case "attend":
+                case "attend30":
                     report = ml.GetMeetingMembersAndPastData(meetingId, meetingDate, meetingDate.Subtract(new TimeSpan(30,0,0,0))); // Last 30 days
                     break;
-                case "attend2":
+                case "attend60":
+                    report = ml.GetMeetingMembersAndPastData(meetingId, meetingDate, meetingDate.Subtract(new TimeSpan(60, 0, 0, 0))); // Last 30 days
+                    break;
+                case "attend90":
+                    report = ml.GetMeetingMembersAndPastData(meetingId, meetingDate, meetingDate.Subtract(new TimeSpan(90, 0, 0, 0))); // Last 30 days
+                    break;
+                case "attend1":
                     meetingDate = meetingDate == DateTime.MinValue ? DateTime.Now : meetingDate;
                     var userAttendMeeting = ml.GetMeetingMembersData(meetingId, meetingDate);
                     report.Headers = new List<ReportGridHeaderViewModel>() {

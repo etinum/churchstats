@@ -99,7 +99,7 @@ namespace webapi.Logic
                     userCounts.Add(userData);
                 }
 
-                report.Headers = GetReportHeaders("attend");
+                report.Headers = GetReportHeaders("attend30");
                 report.Data = userCounts;
                 return report;
             }
@@ -134,14 +134,16 @@ namespace webapi.Logic
         {
             switch (reportName)
             {
-                case "attend":
+                case "attend30":
+                case "attend60":
+                case "attend90":
                     return new List<ReportGridHeaderViewModel>() {
                         new ReportGridHeaderViewModel { Title = "Full Name", Key = "fullName" },
                         new ReportGridHeaderViewModel { Title = "Attendance", Key = "attendTypeName" },
                         new ReportGridHeaderViewModel { Title = "Percent Present Last 30 Days", Key = "percentAttend" },
                         new ReportGridHeaderViewModel { Title = "Percent Absent Last 30 Days", Key = "percentAbsent" }
                     };
-                case "attend2":
+                case "attend1":
                     return new List<ReportGridHeaderViewModel>() {
                         new ReportGridHeaderViewModel { Title = "Full Name", Key = "fullName" },
                         new ReportGridHeaderViewModel { Title = "Attendance", Key = "attendTypeName" }
