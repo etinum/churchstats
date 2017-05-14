@@ -164,7 +164,7 @@
                             <input type="text" ng-maxlength="ng_maxLength" maxlength={{maxLength}} id="addMeetingMembers" name="addMeetingMembers" class="form-control" style="background-color: lightcyan"
                                    ng-model="addMeetingMembers" ng-required="true" uib-typeahead="item.fullName for item in availableMemberList  | filter:$viewValue | limitTo:8" autocomplete="off" typeahead-on-select="AddMember($item)" placeholder="Add member" />
                             <span class="input-group-btn">
-                                <input type="button" class="btn btn-primary" value="Add New User"
+                                <input type="button" class="btn btn-primary" value="Add New Member"
                                        ng-click="openNewUserMemberDialog(addMeetingMembers)" />
                             </span>
                         </div>

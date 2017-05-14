@@ -1,6 +1,7 @@
 angular.module('repoFormsApp', ['ngRoute', 'ngMessages', 'ui.bootstrap', 'environment', 'smart-table', 'cgBusy', 'ngStorage']);
 (function (app) {
     var config = function ($routeProvider, $envServiceProvider) {
+        $routeProvider.caseInsensitiveMatch = true;
         $routeProvider
             .when("/home", {
             templateUrl: "app/html/Home.html",

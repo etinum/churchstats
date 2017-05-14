@@ -8,7 +8,7 @@ using Microsoft.Ajax.Utilities;
 
 namespace webapi.Logic
 {
-    public class MeetingLogic : CustomLogic
+    public class MeetingLogic : BaseLogic
     {
         public IEnumerable<UserViewModel> GetMeetingMembersData(int meetingId, DateTime meetingDate)
         {

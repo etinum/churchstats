@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hangfire;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -11,47 +12,35 @@ namespace webapi.Controllers
 {
     public class ReportController : CustomApiController
     {
+        ReportController() : base()
+        { }
+
         [HttpGet]
         public IHttpActionResult GetReport(string reportType, int meetingId, DateTime meetingDate)
         {
-            var report = new ReportGridViewModel();
-            var ml = new MeetingLogic();
+            var rl = new ReportLogic();
+            var errors = new List<string>();
 
-            switch (reportType)
-            {
-                // TODO: Move header list to logic class keyed by report type
-                case "attend30":
-                    report = ml.GetMeetingMembersAndPastData(meetingId, meetingDate, meetingDate.Subtract(new TimeSpan(30,0,0,0))); // Last 30 days
-                    break;
-                case "attend60":
-                    report = ml.GetMeetingMembersAndPastData(meetingId, meetingDate, meetingDate.Subtract(new TimeSpan(60, 0, 0, 0))); // Last 30 days
-                    break;
-                case "attend90":
-                    report = ml.GetMeetingMembersAndPastData(meetingId, meetingDate, meetingDate.Subtract(new TimeSpan(90, 0, 0, 0))); // Last 30 days
-                    break;
-                case "attend1":
-                    meetingDate = meetingDate == DateTime.MinValue ? DateTime.Now : meetingDate;
-                    var userAttendMeeting = ml.GetMeetingMembersData(meetingId, meetingDate);
-                    report.Headers = new List<ReportGridHeaderViewModel>() {
-                        new ReportGridHeaderViewModel { Title = "Full Name", Key = "fullName" },
-                        new ReportGridHeaderViewModel { Title = "Attendance", Key = "attendTypeName" }
-                    };
-                    report.Data = Mapper.Map<IEnumerable<UserViewModel>>(userAttendMeeting.Where(uam => uam.AttendType != Data.AttendTypeEnum.Present));
-                    break;
-                case "recent":
-                    break;
+            var report = rl.GetReport(reportType, meetingId, meetingDate, errors);
 
-                default:
-                    return BadRequest("Report not found");
-            }
             return Ok(report);
 
         }
 
         [HttpGet]
-        public IHttpActionResult test()
+        public IHttpActionResult TestEmail()
         {
-            return Ok("Some test Test");
+            var mailer = new Mailer();
+            var rl = new ReportLogic();
+            mailer.SendReport(rl.GetReport("attend30", 1, DateTime.Today, new List<string>()), "Weekly Attendance");
+            return Ok("+2");
+        }
+
+        [HttpGet]
+        public IHttpActionResult TestHangFire()
+        {
+            RecurringJob.Trigger("WeeklyAttendance");
+            return Ok("+3");
         }
     }
 }

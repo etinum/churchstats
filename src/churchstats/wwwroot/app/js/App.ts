@@ -9,6 +9,7 @@ angular.module('repoFormsApp', ['ngRoute', 'ngMessages', 'ui.bootstrap', 'enviro
 
 (app => {
     var config = ($routeProvider, $envServiceProvider) => {
+        $routeProvider.caseInsensitiveMatch = true;
         $routeProvider
             .when("/home", {
                 templateUrl: "app/html/Home.html",

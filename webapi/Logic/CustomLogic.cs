@@ -9,13 +9,13 @@ using webapi.Mappers;
 
 namespace webapi.Logic
 {
-    public class CustomLogic
+    public class BaseLogic
     {
         protected readonly IMapper Mapper;
         protected readonly CStatsEntities Ctx;
         protected readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public CustomLogic()
+        public BaseLogic()
         {
             var config = new MapperConfiguration(cfg =>
             {
